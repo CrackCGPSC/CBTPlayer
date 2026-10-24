@@ -21,6 +21,7 @@
             header, aside, #import-modal, #custom-modal, .no-print { display: none !important; }
             #result-modal { position: static !important; background: none !important; backdrop-filter: none !important; overflow: visible !important; }
             #result-modal > div { max-height: none !important; box-shadow: none !important; width: 100% !important; border: none !important; }
+            .page-break-avoid { break-inside: avoid !important; page-break-inside: avoid !important; }
         }
     </style>
 </head>
@@ -54,8 +55,13 @@
                     <option value="hi">हिंदी</option>
                 </select>
             </div>
+            <!-- Telegram Download Questions Button -->
+            <a href="https://t.me/+-QNWvXKxCiwzZTU1" target="_blank" class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-1 rounded-lg font-medium transition shadow flex items-center space-x-1 text-xs sm:text-sm">
+                <i class="fa-brands fa-telegram"></i>
+                <span class="hidden md:inline">Telegram</span>
+            </a>
             <!-- Import Test Button -->
-            <button onclick="openImportModal()" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded-lg font-medium transition shadow flex items-center space-x-1">
+            <button onclick="openImportModal()" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded-lg font-medium transition shadow flex items-center space-x-1 text-xs sm:text-sm">
                 <i class="fa-solid fa-file-arrow-up"></i>
                 <span class="hidden md:inline">Import</span>
             </button>
@@ -225,7 +231,7 @@
             <div class="p-6 overflow-y-auto space-y-8 flex-1 bg-slate-50">
                 
                 <!-- Summary Cards Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 page-break-avoid">
                     <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
                         <div class="bg-blue-100 text-blue-600 p-3 rounded-lg"><i class="fa-solid fa-square-poll-vertical text-xl"></i></div>
                         <div>
@@ -257,7 +263,7 @@
                 </div>
 
                 <!-- Secondary Stats Row & Graphical Chart -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 page-break-avoid">
                     <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
                         <h4 class="font-bold text-slate-700 text-sm mb-4"><i class="fa-solid fa-chart-pie mr-2 text-blue-600"></i>Performance Breakdown</h4>
                         <div class="w-full h-48 flex justify-center items-center">
@@ -797,7 +803,7 @@
             document.getElementById('res-negative-marks').innerText = '-' + negativeDed.toFixed(2);
             document.getElementById('res-total-q').innerText = totalQ;
 
-            // Detailed Question Review List with Full Options & Explanations for PDF / Print
+            // Detailed Question Review List with Full Options & Explanations for PDF / Print (Avoiding Page Breaks)
             let reviewContainer = document.getElementById('detailed-review-list');
             reviewContainer.innerHTML = '';
             testData.questions.forEach((q, idx) => {
@@ -834,7 +840,7 @@
                 });
 
                 let div = document.createElement('div');
-                div.className = 'p-6 flex flex-col space-y-4 page-break-inside-avoid';
+                div.className = 'p-6 flex flex-col space-y-4 page-break-avoid';
                 div.innerHTML = `
                     <div class="flex justify-between items-start">
                         <span class="font-bold text-slate-700 text-sm">Q.${idx + 1}</span>
