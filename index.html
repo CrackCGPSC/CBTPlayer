@@ -16,18 +16,24 @@
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        @media print {
+            body { background: white !important; color: black !important; overflow: auto !important; height: auto !important; }
+            header, aside, #import-modal, #custom-modal, .no-print { display: none !important; }
+            #result-modal { position: static !important; background: none !important; backdrop-filter: none !important; overflow: visible !important; }
+            #result-modal > div { max-height: none !important; box-shadow: none !important; width: 100% !important; border: none !important; }
+        }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased h-screen flex flex-col overflow-hidden">
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
 
     <!-- TOP HEADER (Organized & Responsive) -->
-    <header class="bg-blue-900 text-white shadow-md px-4 py-2.5 flex flex-wrap justify-between items-center gap-2 shrink-0">
+    <header class="bg-blue-900 text-white shadow-md px-4 py-2.5 flex flex-wrap justify-between items-center gap-2 shrink-0 sticky top-0 z-40">
         <div class="flex items-center space-x-3">
             <div class="bg-blue-800 px-3 py-1.5 rounded-lg border border-blue-700 font-bold tracking-wider text-sm flex items-center">
                 <i class="fa-solid fa-graduation-cap mr-2 text-amber-400"></i>CBT PORTAL
             </div>
             <div>
-                <h1 id="header-test-title" class="font-semibold text-sm sm:text-base truncate max-w-[200px] sm:max-w-md">General Studies Mock Test</h1>
+                <h1 id="header-test-title" class="font-semibold text-sm sm:text-base truncate max-w-[180px] sm:max-w-md">CBT Test Player Guide</h1>
                 <p class="text-[11px] text-blue-200">Mode: <span id="header-mode-badge" class="font-bold uppercase bg-blue-800 px-1.5 py-0.5 rounded">Test Mode</span></p>
             </div>
         </div>
@@ -61,17 +67,17 @@
     </header>
 
     <!-- MAIN APP CONTAINER -->
-    <main class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+    <main class="flex-1 flex flex-col md:flex-row relative">
 
         <!-- LEFT/MAIN SECTION: Question Display & Normal Flow Controls -->
-        <section id="question-section" class="flex-1 flex flex-col bg-white border-r border-slate-200 overflow-y-auto">
+        <section id="question-section" class="flex-1 flex flex-col bg-white border-r border-slate-200">
             
             <!-- Question Top Bar (Metadata) -->
             <div class="bg-slate-50 border-b border-slate-200 px-4 sm:px-6 py-2.5 flex justify-between items-center shrink-0">
                 <div class="flex items-center space-x-2 sm:space-x-3">
-                    <span class="text-xs sm:text-sm font-bold text-slate-700">Q.<span id="current-q-num">1</span> of <span id="total-q-num">10</span></span>
+                    <span class="text-xs sm:text-sm font-bold text-slate-700">Q.<span id="current-q-num">1</span> of <span id="total-q-num">1</span></span>
                     <span id="q-status-badge" class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-slate-200 text-slate-700">Not Visited</span>
-                    <span id="subject-badge" class="hidden sm:inline-block text-[11px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-medium">General Studies</span>
+                    <span id="subject-badge" class="hidden sm:inline-block text-[11px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-medium">Guide</span>
                 </div>
                 <div class="flex items-center space-x-3 text-xs font-medium">
                     <span class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"><i class="fa-solid fa-check mr-1"></i>+<span id="marks-correct">1</span></span>
@@ -105,7 +111,7 @@
                     <p id="explanation-text" class="text-xs sm:text-sm text-blue-800 leading-relaxed"></p>
                 </div>
 
-                <!-- NAVIGATION BUTTONS (Placed naturally at the end of the question content) -->
+                <!-- NAVIGATION BUTTONS -->
                 <div class="pt-6 pb-4 border-t border-slate-200 mt-auto flex flex-wrap justify-between items-center gap-3">
                     <div class="flex flex-wrap gap-2">
                         <button onclick="markForReviewAndNext()" class="bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition shadow-sm flex items-center">
@@ -127,12 +133,12 @@
             </div>
         </section>
 
-        <!-- RIGHT SIDE: Candidate Pallet & Timer Panel (Real CBT Style) -->
+        <!-- RIGHT SIDE: Candidate Pallet & Timer Panel -->
         <aside id="pallet-section" class="w-full md:w-80 bg-white border-l border-slate-200 flex flex-col shrink-0">
             
             <!-- Candidate Info -->
-            <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center space-x-3 shrink-0">
-                <div class="w-10 h-10 rounded-full bg-blue-800 text-white flex items-center justify-center font-bold text-sm shadow-inner">
+            <div class="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center space-x-3 shrink-0">
+                <div class="w-9 h-9 rounded-full bg-blue-800 text-white flex items-center justify-center font-bold text-xs shadow-inner">
                     <i class="fa-solid fa-user-graduate"></i>
                 </div>
                 <div class="overflow-hidden">
@@ -142,45 +148,45 @@
             </div>
 
             <!-- Timer Box -->
-            <div class="p-3 bg-blue-900 text-white flex justify-between items-center shadow-inner shrink-0">
+            <div class="p-2.5 bg-blue-900 text-white flex justify-between items-center shadow-inner shrink-0">
                 <div class="text-[11px] uppercase tracking-wider text-blue-200 font-medium">
                     <i class="fa-regular fa-clock mr-1"></i> Time Left:
                 </div>
-                <div id="timer-display" class="font-mono text-base font-bold tracking-widest text-amber-300 bg-blue-950 px-2.5 py-1 rounded border border-blue-800">
+                <div id="timer-display" class="font-mono text-sm font-bold tracking-widest text-amber-300 bg-blue-950 px-2 py-0.5 rounded border border-blue-800">
                     00:00:00
                 </div>
             </div>
 
             <!-- Question Status Legend -->
-            <div class="p-2.5 bg-slate-50 border-b border-slate-200 text-[11px] grid grid-cols-2 gap-1.5 shrink-0">
-                <div class="flex items-center space-x-1.5">
-                    <span class="w-5 h-5 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-[10px]">0</span>
+            <div class="p-2 bg-slate-50 border-b border-slate-200 text-[10px] grid grid-cols-2 gap-1 shrink-0">
+                <div class="flex items-center space-x-1">
+                    <span class="w-4 h-4 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-[9px]">0</span>
                     <span class="text-slate-700">Answered</span>
                 </div>
-                <div class="flex items-center space-x-1.5">
-                    <span class="w-5 h-5 rounded-full bg-rose-500 text-white font-bold flex items-center justify-center text-[10px]">0</span>
+                <div class="flex items-center space-x-1">
+                    <span class="w-4 h-4 rounded-full bg-rose-500 text-white font-bold flex items-center justify-center text-[9px]">0</span>
                     <span class="text-slate-700">Not Answered</span>
                 </div>
-                <div class="flex items-center space-x-1.5">
-                    <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 font-bold flex items-center justify-center text-[10px]">0</span>
+                <div class="flex items-center space-x-1">
+                    <span class="w-4 h-4 rounded-full bg-slate-300 text-slate-700 font-bold flex items-center justify-center text-[9px]">0</span>
                     <span class="text-slate-700">Not Visited</span>
                 </div>
-                <div class="flex items-center space-x-1.5">
-                    <span class="w-5 h-5 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-[10px]">0</span>
+                <div class="flex items-center space-x-1">
+                    <span class="w-4 h-4 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-[9px]">0</span>
                     <span class="text-slate-700">Marked Review</span>
                 </div>
             </div>
 
             <!-- Question Palette Grid Container -->
-            <div class="flex-1 p-3 overflow-y-auto bg-slate-100/50">
-                <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Question Palette:</div>
+            <div class="p-2.5 bg-slate-100/50 max-h-36 md:max-h-56 overflow-y-auto">
+                <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Question Palette:</div>
                 <div id="palette-grid" class="grid grid-cols-5 gap-1.5">
                     <!-- Palette buttons injected dynamically -->
                 </div>
             </div>
 
-            <!-- Submit Exam Action Button -->
-            <div class="p-3 bg-white border-t border-slate-200 shrink-0">
+            <!-- Submit Exam Action Button (Always Visible & Properly Spaced) -->
+            <div class="p-3 bg-white border-t border-slate-200 mt-auto shrink-0">
                 <button onclick="submitTestConfirmation()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow transition flex items-center justify-center space-x-2 text-sm">
                     <i class="fa-solid fa-paper-plane"></i>
                     <span>Submit Test</span>
@@ -204,7 +210,7 @@
                         <p class="text-xs text-blue-200">Comprehensive examination summary and detailed solution review.</p>
                     </div>
                 </div>
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-2 no-print">
                     <button onclick="window.print()" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-1.5 shadow">
                         <i class="fa-solid fa-file-pdf"></i>
                         <span>Download PDF / Print</span>
@@ -284,8 +290,8 @@
                 <!-- Detailed Question Review List -->
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="bg-slate-100 px-6 py-3.5 border-b border-slate-200 flex justify-between items-center">
-                        <h4 class="font-bold text-slate-800"><i class="fa-solid fa-list-check mr-2 text-blue-600"></i>Question-wise Detailed Review & Explanations</h4>
-                        <span class="text-xs text-slate-500">Scroll down for full list</span>
+                        <h4 class="font-bold text-slate-800"><i class="fa-solid fa-list-check mr-2 text-blue-600"></i>Question-wise Detailed Review, Options & Explanations</h4>
+                        <span class="text-xs text-slate-500">Full structured report</span>
                     </div>
                     <div id="detailed-review-list" class="divide-y divide-slate-200">
                         <!-- Detailed review items injected dynamically -->
@@ -306,7 +312,7 @@
             <div class="p-6 space-y-4">
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-1">Upload JSON File (.json, .txt):</label>
-                    <input type="file" id="json-file-input" accept=".json,.txt" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer border border-slate-200 rounded-xl p-1">
+                    <input type="file" id="json-file-input" accept=".json,.txt,application/json,text/plain" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer border border-slate-200 rounded-xl p-1">
                 </div>
                 <div class="text-center text-xs text-slate-400 font-medium">OR PASTE ANY JSON OR TEST STRUCTURE BELOW</div>
                 <div>
@@ -337,44 +343,39 @@
 
     <!-- APPLICATION JAVASCRIPT LOGIC -->
     <script>
-        // Default Pre-loaded Sample Test (Triangle / General Studies Mock including Base64 Image support)
+        // Updated Default Sample Test featuring "How To Use CBT Test Player?"
         let defaultTest = {
-            "title": "Triangle & General Studies Mock Test",
+            "title": "CBT Test Player Guide",
             "durationMinutes": 60,
             "positiveMarks": 1,
             "negativeMarks": 0.25,
             "questions": [
                 {
                     "type": "standard",
-                    "subjectTag": "General Studies",
-                    "topicTag": "General Topic",
+                    "subjectTag": "Guide",
+                    "topicTag": "Instructions",
                     "question": {
-                        "en": "Total no. of literate urban unemployed people is –",
-                        "hi": "साक्षर शहरी बेरोजगार लोगों की कुल संख्या कितनी है?"
-                    },
-                    "image": "data:image/jpeg;base64,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",
-                    "options": {
-                        "en": ["8", "4", "12", "10"],
-                        "hi": ["8", "4", "12", "10"]
-                    },
-                    "correctAnswer": 0
-                },
-                {
-                    "type": "standard",
-                    "subjectTag": "General Studies",
-                    "topicTag": "General Topic",
-                    "question": {
-                        "en": "Which of the following articles of the Indian Constitution deals with the Right to Equality?",
-                        "hi": "भारतीय संविधान का निम्नलिखित में से कौन सा अनुच्छेद समानता के अधिकार से संबंधित है?"
+                        "en": "How To Use CBT Test Player?",
+                        "hi": "CBT टेस्ट प्लेयर का उपयोग कैसे करें?"
                     },
                     "options": {
-                        "en": ["Article 12-15", "Article 14-18", "Article 19-22", "Article 25-28"],
-                        "hi": ["अनुच्छेद 12-15", "अनुच्छेद 14-18", "अनुच्छेद 19-22", "अनुच्छेद 25-28"]
+                        "en": [
+                            "Import Questions in JSON File",
+                            "Paste the Jason Code in Box and Start Test",
+                            "Download Question File From Telegram",
+                            "Download Test Result with Explanation in PDF Form"
+                        ],
+                        "hi": [
+                            "JSON फ़ाइल में प्रश्न आयात करें",
+                            "बॉक्स में जेसन कोड पेस्ट करें और टेस्ट शुरू करें",
+                            "टेलीग्राम से प्रश्न फ़ाइल डाउनलोड करें",
+                            "PDF फॉर्म में स्पष्टीकरण के साथ टेस्ट परिणाम डाउनलोड करें"
+                        ]
                     },
                     "correctAnswer": 1,
                     "explanation": {
-                        "en": "Articles 14 to 18 of the Indian Constitution guarantee the Right to Equality.",
-                        "hi": "भारतीय संविधान के अनुच्छेद 14 से 18 तक समानता के अधिकार की गारंटी देते हैं।"
+                        "en": "Steps to use CBT Player:\n1. Download Json file of Tests from Telegram\n2. Import or Paste JSON File Code in Import Section.\n3. Give Test or Quiz\n4. Download PDF Of Result Which Includes Questions with Answer & Explanation for Revision",
+                        "hi": "CBT प्लेयर का उपयोग करने के चरण:\n1. टेलीग्राम से टेस्ट की Json फ़ाइल डाउनलोड करें\n2. इम्पोर्ट सेक्शन में JSON फ़ाइल कोड इम्पोर्ट या पेस्ट करें।\n3. टेस्ट या क्विज़ दें\n4. परिणाम का PDF डाउनलोड करें जिसमें संशोधन के लिए उत्तर और स्पष्टीकरण के साथ प्रश्न शामिल हैं"
                     }
                 }
             ]
@@ -428,7 +429,6 @@
                 throw new Error("Invalid test data provided.");
             }
 
-            // Normalize title & metadata
             let normalized = {
                 title: data.title || data.testName || data.name || "Imported Custom Mock Test",
                 durationMinutes: Number(data.durationMinutes || data.duration || data.time || 30),
@@ -437,7 +437,6 @@
                 questions: []
             };
 
-            // Locate questions array across any possible schema key
             let rawQuestions = data.questions || data.qList || data.itemBank || data.testItems || (Array.isArray(data) ? data : []);
             if (!Array.isArray(rawQuestions) || rawQuestions.length === 0) {
                 throw new Error("Could not find a valid 'questions' array in the imported data.");
@@ -452,7 +451,6 @@
                     optionImages: q.optionImages || q.optImages || null
                 };
 
-                // Normalize Question Text
                 let qTextEn = "Question " + (idx + 1);
                 let qTextHi = "प्रश्न " + (idx + 1);
 
@@ -469,7 +467,6 @@
                 }
                 nQ.question = { en: qTextEn, hi: qTextHi };
 
-                // Normalize Options
                 let rawOpts = q.options || q.choices || q.answers || q.optionList || ["Option A", "Option B", "Option C", "Option D"];
                 let optsEn = ["Option A", "Option B", "Option C", "Option D"];
                 let optsHi = ["विकल्प A", "विकल्प B", "विकल्प C", "विकल्प D"];
@@ -487,7 +484,6 @@
                 }
                 nQ.options = { en: optsEn, hi: optsHi };
 
-                // Normalize Correct Answer
                 let rawCorrect = q.correctAnswer !== undefined ? q.correctAnswer : (q.correct !== undefined ? q.correct : (q.ans !== undefined ? q.ans : 0));
                 let correctIdx = 0;
                 if (typeof rawCorrect === 'number') {
@@ -505,7 +501,6 @@
                 }
                 nQ.correct = correctIdx;
 
-                // Normalize Explanation
                 let expEn = q.explanation?.en || q.explanation || q.solution?.en || q.solution || "No explanation provided.";
                 let expHi = q.explanation?.hi || q.explanation?.en || q.explanation || q.solution?.hi || q.solution || "स्पष्टीकरण उपलब्ध नहीं है।";
                 nQ.explanation = {
@@ -573,7 +568,7 @@
             
             testData.questions.forEach((q, idx) => {
                 let status = userResponses[idx].status;
-                let btnClass = "w-9 h-9 rounded-lg font-bold text-xs transition shadow-sm flex items-center justify-center cursor-pointer border ";
+                let btnClass = "w-8 h-8 rounded-lg font-bold text-xs transition shadow-sm flex items-center justify-center cursor-pointer border ";
                 
                 if (status === 'answered') {
                     btnClass += "bg-emerald-500 text-white border-emerald-600 hover:bg-emerald-600";
@@ -606,7 +601,7 @@
                 else counts.not_visited++;
             });
             
-            const legendEls = document.querySelectorAll('#pallet-section .w-5.h-5');
+            const legendEls = document.querySelectorAll('#pallet-section .w-4.h-4');
             if(legendEls.length >= 4) {
                 legendEls[0].innerText = counts.answered;
                 legendEls[1].innerText = counts.not_answered;
@@ -652,7 +647,7 @@
                 imgContainer.classList.add('hidden');
             }
 
-            // Options Rendering (With Option Images Support)
+            // Options Rendering
             let optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = '';
             let optionsList = currentLanguage === 'hi' ? (q.options.hi || q.options.en) : q.options.en;
@@ -673,7 +668,7 @@
                     <div class="flex items-start sm:items-center flex-1">
                         <input type="radio" name="q_option" value="${optIdx}" ${isSelected ? 'checked' : ''} onchange="selectOption(${optIdx})" class="mt-1 sm:mt-0 w-4 h-4 text-blue-600 focus:ring-blue-500 cursor-pointer">
                         <span class="ml-3 font-semibold text-slate-500 mr-2">${String.fromCharCode(65 + optIdx)}.</span>
-                        <span class="text-slate-800 font-medium">${optText}</span>
+                        <span class="text-slate-800 font-medium whitespace-pre-line">${optText}</span>
                     </div>
                     ${imgMarkup}
                 `;
@@ -689,7 +684,7 @@
                 let correctOptChar = String.fromCharCode(65 + q.correct);
                 document.getElementById('explanation-text').innerHTML = `
                     <span class="font-bold ${isCorrect ? 'text-emerald-600' : 'text-rose-600'}">${isCorrect ? 'Correct!' : 'Incorrect.'}</span> 
-                    Correct Option is <span class="font-bold underline">${correctOptChar}</span>.<br>${expText}
+                    Correct Option is <span class="font-bold underline">${correctOptChar}</span>.<br><div class="whitespace-pre-line mt-1">${expText}</div>
                 `;
             } else {
                 expBox.classList.add('hidden');
@@ -802,7 +797,7 @@
             document.getElementById('res-negative-marks').innerText = '-' + negativeDed.toFixed(2);
             document.getElementById('res-total-q').innerText = totalQ;
 
-            // Detailed Review List
+            // Detailed Question Review List with Full Options & Explanations for PDF / Print
             let reviewContainer = document.getElementById('detailed-review-list');
             reviewContainer.innerHTML = '';
             testData.questions.forEach((q, idx) => {
@@ -810,16 +805,46 @@
                 let isCorrect = userAns === q.correct;
                 let statusColor = userAns === null ? 'text-amber-600 bg-amber-50' : (isCorrect ? 'text-emerald-600 bg-emerald-50' : 'text-rose-600 bg-rose-50');
                 let statusText = userAns === null ? 'Unattempted' : (isCorrect ? 'Correct' : 'Incorrect');
-                let opts = q.options.en;
+                let opts = currentLanguage === 'hi' ? (q.options.hi || q.options.en) : q.options.en;
+                let expText = currentLanguage === 'hi' ? (q.explanation.hi || q.explanation.en) : q.explanation.en;
+
+                let qImgMarkup = q.image ? `<div class="my-2"><img src="${q.image}" alt="Question Image" class="max-h-40 object-contain rounded border border-slate-200"></div>` : '';
+                
+                let optionsListHtml = '';
+                opts.forEach((optText, oIdx) => {
+                    let isOptCorrect = oIdx === q.correct;
+                    let isOptUser = oIdx === userAns;
+                    let optStyle = "p-2 rounded border text-xs ";
+                    if(isOptCorrect) {
+                        optStyle += "bg-emerald-50 border-emerald-300 text-emerald-900 font-semibold";
+                    } else if(isOptUser && !isOptCorrect) {
+                        optStyle += "bg-rose-50 border-rose-300 text-rose-900 font-semibold";
+                    } else {
+                        optStyle += "bg-slate-50 border-slate-200 text-slate-700";
+                    }
+                    let optImgMarkup = (q.optionImages && q.optionImages[oIdx]) ? `<div class="mt-1"><img src="${q.optionImages[oIdx]}" class="max-h-20 object-contain rounded"></div>` : '';
+                    optionsListHtml += `
+                        <div class="${optStyle}">
+                            <span class="font-bold mr-1">${String.fromCharCode(65 + oIdx)}.</span> ${optText}
+                            ${isOptCorrect ? ' <i class="fa-solid fa-check text-emerald-600 ml-1"></i>' : ''}
+                            ${isOptUser && !isOptCorrect ? ' <i class="fa-solid fa-xmark text-rose-600 ml-1"></i>' : ''}
+                            ${optImgMarkup}
+                        </div>
+                    `;
+                });
 
                 let div = document.createElement('div');
-                div.className = 'p-6 flex flex-col space-y-3';
+                div.className = 'p-6 flex flex-col space-y-4 page-break-inside-avoid';
                 div.innerHTML = `
                     <div class="flex justify-between items-start">
                         <span class="font-bold text-slate-700 text-sm">Q.${idx + 1}</span>
                         <span class="px-2.5 py-1 rounded-full text-xs font-bold ${statusColor}">${statusText}</span>
                     </div>
-                    <p class="font-medium text-slate-900 text-sm">${q.question.en}</p>
+                    <p class="font-semibold text-slate-900 text-sm">${q.question.en || q.question.hi}</p>
+                    ${qImgMarkup}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        ${optionsListHtml}
+                    </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                         <div class="p-2 rounded bg-slate-50 border border-slate-200">
                             <span class="font-bold text-slate-500">Your Answer:</span> 
@@ -833,7 +858,8 @@
                         </div>
                     </div>
                     <div class="p-3 rounded-lg bg-blue-50/50 border border-blue-100 text-xs text-blue-900">
-                        <span class="font-bold"><i class="fa-solid fa-circle-info mr-1"></i> Explanation:</span> ${q.explanation.en}
+                        <span class="font-bold block mb-1"><i class="fa-solid fa-circle-info mr-1"></i> Explanation / Solution:</span> 
+                        <div class="whitespace-pre-line">${expText}</div>
                     </div>
                 `;
                 reviewContainer.appendChild(div);
@@ -889,6 +915,9 @@
             reader.onload = function(evt) {
                 document.getElementById('json-textarea').value = evt.target.result;
             };
+            reader.onerror = function() {
+                showCustomModal("Error", "Could not read the selected file.");
+            };
             reader.readAsText(file);
         }
 
@@ -914,7 +943,7 @@
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-message').innerText = message;
             let actions = document.getElementById('modal-actions');
-            actions.innerHTML = `<button onclick="closeCustomModal(); ${callback ? '(' + callback.toString.name + ')()' : ''}" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold shadow">OK</button>`;
+            actions.innerHTML = `<button onclick="closeCustomModal(); ${callback ? '(' + callback.toString.name.trim() + ')()' : ''}" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold shadow">OK</button>`;
             document.getElementById('custom-modal').classList.remove('hidden');
         }
 
@@ -926,7 +955,7 @@
                 <button onclick="closeCustomModal()" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-sm font-medium transition">Cancel</button>
                 <button id="modal-confirm-btn" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow transition">Confirm</button>
             `;
-            document.getElementById('custom-modal').classList.add('hidden'); // ensure reset
+            document.getElementById('custom-modal').classList.add('hidden');
             document.getElementById('custom-modal').classList.remove('hidden');
             document.getElementById('modal-confirm-btn').onclick = function() {
                 closeCustomModal();
