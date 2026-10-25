@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,6 +10,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js for Graphical Representation -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- MathJax for Mathematical Symbols & Formulas Support -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -19,9 +32,10 @@
         @media print {
             body { background: white !important; color: black !important; overflow: auto !important; height: auto !important; }
             header, aside, #import-modal, #custom-modal, .no-print { display: none !important; }
-            #result-modal { position: static !important; background: none !important; backdrop-filter: none !important; overflow: visible !important; }
+            #result-modal { position: static !important; background: none !important; backdrop-filter: none !important; overflow: visible !important; display: block !important; }
             #result-modal > div { max-height: none !important; box-shadow: none !important; width: 100% !important; border: none !important; }
-            .page-break-avoid { break-inside: avoid !important; page-break-inside: avoid !important; }
+            .page-break-avoid { break-inside: avoid !important; page-break-inside: avoid !important; margin-bottom: 20px !important; }
+            .print-first-page { page-break-before: always !important; }
         }
     </style>
 </head>
@@ -34,7 +48,7 @@
                 <i class="fa-solid fa-graduation-cap mr-2 text-amber-400"></i>CBT PORTAL
             </div>
             <div>
-                <h1 id="header-test-title" class="font-semibold text-sm sm:text-base truncate max-w-[180px] sm:max-w-md">CBT Test Player Guide</h1>
+                <h1 id="header-test-title" class="font-semibold text-sm sm:text-base truncate max-w-[180px] sm:max-w-md">CBT Test Player</h1>
                 <p class="text-[11px] text-blue-200">Mode: <span id="header-mode-badge" class="font-bold uppercase bg-blue-800 px-1.5 py-0.5 rounded">Test Mode</span></p>
             </div>
         </div>
@@ -78,26 +92,57 @@
         <!-- LEFT/MAIN SECTION: Question Display & Normal Flow Controls -->
         <section id="question-section" class="flex-1 flex flex-col bg-white border-r border-slate-200">
             
-            <!-- Question Top Bar (Metadata) -->
-            <div class="bg-slate-50 border-b border-slate-200 px-4 sm:px-6 py-2.5 flex justify-between items-center shrink-0">
-                <div class="flex items-center space-x-2 sm:space-x-3">
+            <!-- Question Top Bar (Metadata: Q.No, Subject Name, Status & Individual PYQ Exam Tag on Right) -->
+            <div class="bg-slate-50 border-b border-slate-200 px-4 sm:px-6 py-2.5 flex justify-between items-center shrink-0 flex-wrap gap-2">
+                <div class="flex items-center space-x-2 sm:space-x-3 flex-wrap">
                     <span class="text-xs sm:text-sm font-bold text-slate-700">Q.<span id="current-q-num">1</span> of <span id="total-q-num">1</span></span>
+                    <!-- Subject Name right beside Question Number -->
+                    <span id="subject-badge" class="text-[11px] px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-800 font-semibold border border-blue-200">General</span>
                     <span id="q-status-badge" class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-slate-200 text-slate-700">Not Visited</span>
-                    <span id="subject-badge" class="hidden sm:inline-block text-[11px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-medium">Guide</span>
                 </div>
-                <div class="flex items-center space-x-3 text-xs font-medium">
-                    <span class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"><i class="fa-solid fa-check mr-1"></i>+<span id="marks-correct">1</span></span>
-                    <span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200"><i class="fa-solid fa-xmark mr-1"></i>-<span id="marks-negative">0.25</span></span>
+                <!-- Individual PYQ Exam Tag where Subject was previously -->
+                <div id="q-tag-display" class="flex items-center space-x-2 text-xs">
+                    <!-- Individual Exam Tag & Topics Injected Dynamically -->
                 </div>
             </div>
 
             <!-- Question Body & Scrollable Content -->
             <div class="p-4 sm:p-6 flex-1 flex flex-col space-y-4">
-                <!-- Question Statement -->
-                <div>
-                    <h2 id="question-text" class="text-base sm:text-lg font-medium text-slate-900 leading-relaxed mb-3">
+                <!-- Question Statement & Advanced Structures container -->
+                <div class="space-y-3">
+                    <!-- Passage / Context (if any) -->
+                    <div id="question-passage" class="hidden p-3 bg-slate-50 border-l-4 border-blue-600 text-xs sm:text-sm text-slate-700 italic"></div>
+
+                    <!-- Statement Data (Intro, List, Conclusion) -->
+                    <div id="question-statement-box" class="hidden space-y-2 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800">
+                        <div id="stmt-intro"></div>
+                        <div id="stmt-list" class="pl-4 space-y-1 font-medium"></div>
+                        <div id="stmt-conclusion"></div>
+                    </div>
+
+                    <!-- Direction Text Box (for Assertion & Reason) -->
+                    <div id="question-direction-box" class="hidden p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs sm:text-sm text-amber-900 font-medium italic"></div>
+
+                    <!-- Assertion & Reason Box -->
+                    <div id="question-assertion-box" class="hidden space-y-2 p-3 bg-indigo-50/50 border border-indigo-200 rounded-xl text-xs sm:text-sm text-indigo-950">
+                        <div><strong class="text-indigo-900">Assertion (A):</strong> <span id="assertion-text"></span></div>
+                        <div><strong class="text-indigo-900">Reason (R):</strong> <span id="reason-text"></span></div>
+                    </div>
+
+                    <!-- Table Data (Matrix / Matching) -->
+                    <div id="question-table-container" class="hidden overflow-x-auto my-2">
+                        <div id="table-intro" class="text-xs font-medium mb-2 text-slate-700"></div>
+                        <table id="question-matrix-table" class="min-w-full divide-y divide-slate-200 border border-slate-200 text-xs sm:text-sm">
+                            <thead class="bg-slate-100 text-slate-700"></thead>
+                            <tbody class="divide-y divide-slate-200 bg-white"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Main Question Statement -->
+                    <h2 id="question-text" class="hidden text-base sm:text-lg font-medium text-slate-900 leading-relaxed">
                         Loading Question...
                     </h2>
+
                     <!-- Optional Main Question Image -->
                     <div id="question-image-container" class="hidden mb-4 p-2 bg-slate-50 border border-slate-200 rounded-xl max-w-lg">
                         <img id="question-image" src="" alt="Question Illustration" class="max-h-56 mx-auto object-contain rounded">
@@ -163,6 +208,15 @@
                 </div>
             </div>
 
+            <!-- Marking Scheme Box -->
+            <div class="px-3 py-1.5 bg-slate-50 border-b border-slate-200 flex justify-between items-center text-xs shrink-0">
+                <span class="text-slate-500 font-medium"><i class="fa-solid fa-scale-balanced mr-1"></i> Marking:</span>
+                <div class="flex items-center space-x-2 font-medium">
+                    <span class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">+<span id="marks-correct">1</span></span>
+                    <span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">-<span id="marks-negative">0.25</span></span>
+                </div>
+            </div>
+
             <!-- Question Status Legend -->
             <div class="p-2 bg-slate-50 border-b border-slate-200 text-[10px] grid grid-cols-2 gap-1 shrink-0">
                 <div class="flex items-center space-x-1">
@@ -191,7 +245,7 @@
                 </div>
             </div>
 
-            <!-- Submit Exam Action Button (Always Visible & Properly Spaced) -->
+            <!-- Submit Exam Action Button -->
             <div class="p-3 bg-white border-t border-slate-200 mt-auto shrink-0">
                 <button onclick="submitTestConfirmation()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow transition flex items-center justify-center space-x-2 text-sm">
                     <i class="fa-solid fa-paper-plane"></i>
@@ -294,7 +348,7 @@
                 </div>
 
                 <!-- Detailed Question Review List -->
-                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden print-first-page">
                     <div class="bg-slate-100 px-6 py-3.5 border-b border-slate-200 flex justify-between items-center">
                         <h4 class="font-bold text-slate-800"><i class="fa-solid fa-list-check mr-2 text-blue-600"></i>Question-wise Detailed Review, Options & Explanations</h4>
                         <span class="text-xs text-slate-500">Full structured report</span>
@@ -318,7 +372,7 @@
             <div class="p-6 space-y-4">
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-1">Upload JSON File (.json, .txt):</label>
-                    <input type="file" id="json-file-input" accept=".json,.txt,application/json,text/plain" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer border border-slate-200 rounded-xl p-1">
+                    <input type="file" id="json-file-input" accept=".json,.txt,application/json,text/plain,application/octet-stream" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer border border-slate-200 rounded-xl p-1">
                 </div>
                 <div class="text-center text-xs text-slate-400 font-medium">OR PASTE ANY JSON OR TEST STRUCTURE BELOW</div>
                 <div>
@@ -349,7 +403,6 @@
 
     <!-- APPLICATION JAVASCRIPT LOGIC -->
     <script>
-        // Updated Default Sample Test featuring "How To Use CBT Test Player?"
         let defaultTest = {
             "title": "CBT Test Player Guide",
             "durationMinutes": 60,
@@ -360,20 +413,21 @@
                     "type": "standard",
                     "subjectTag": "Guide",
                     "topicTag": "Instructions",
+                    "pyqTag": "CBT Guide PYQ",
                     "question": {
-                        "en": "How To Use CBT Test Player?",
-                        "hi": "CBT टेस्ट प्लेयर का उपयोग कैसे करें?"
+                        "en": "How To Use CBT Test Portal Webapp?",
+                        "hi": "CBT टेस्ट पोर्टल वेबऐप का उपयोग कैसे करें?"
                     },
                     "options": {
                         "en": [
                             "Import Questions in JSON File",
-                            "Paste the Jason Code in Box and Start Test",
+                            "Paste the JSON Code in Box and Start Test",
                             "Download Question File From Telegram",
                             "Download Test Result with Explanation in PDF Form"
                         ],
                         "hi": [
                             "JSON फ़ाइल में प्रश्न आयात करें",
-                            "बॉक्स में जेसन कोड पेस्ट करें और टेस्ट शुरू करें",
+                            "बॉक्स में JSON कोड पेस्ट करें और टेस्ट शुरू करें",
                             "टेलीग्राम से प्रश्न फ़ाइल डाउनलोड करें",
                             "PDF फॉर्म में स्पष्टीकरण के साथ टेस्ट परिणाम डाउनलोड करें"
                         ]
@@ -387,7 +441,6 @@
             ]
         };
 
-        // Application State Variables
         let testData = null;
         let currentQuestionIndex = 0;
         let userResponses = {};
@@ -398,7 +451,6 @@
         let examStartTime = null;
         let performanceChartInstance = null;
 
-        // Initialize Application on Window Load
         window.onload = function() {
             initTest(defaultTest);
             
@@ -413,12 +465,11 @@
                 renderQuestion();
             });
 
-            document.getElementById('json-file-input').addEventListener('change', handleFileUpload);
+            const fileInput = document.getElementById('json-file-input');
+            fileInput.addEventListener('change', handleFileUpload);
+            fileInput.addEventListener('click', function() { this.value = null; });
         };
 
-        // ==========================================
-        // UNIVERSAL JSON & TEXT NORMALIZER PARSER
-        // ==========================================
         function normalizeTestJSON(rawInput) {
             let data;
             if (typeof rawInput === 'string') {
@@ -451,25 +502,33 @@
             rawQuestions.forEach((q, idx) => {
                 let nQ = {
                     id: q.id || (idx + 1),
+                    type: q.type || 'standard',
                     subjectTag: q.subjectTag || q.subject || q.category || "General",
                     topicTag: q.topicTag || q.topic || "General Topic",
+                    pyqTag: q.pyqTag || q.examTag || q.examName || q.exam || "General PYQ",
                     image: q.image || q.img || q.imageUrl || null,
-                    optionImages: q.optionImages || q.optImages || null
+                    optionImages: q.optionImages || q.optImages || null,
+                    passage: q.passage || null,
+                    statementData: q.statementData || null,
+                    direction: q.direction || null,
+                    assertion: q.assertion || null,
+                    reason: q.reason || null,
+                    tableData: (q.tableData && q.tableData.tableObj) ? q.tableData : null
                 };
 
-                let qTextEn = "Question " + (idx + 1);
-                let qTextHi = "प्रश्न " + (idx + 1);
+                let qTextEn = "";
+                let qTextHi = "";
 
                 if (typeof q.question === 'string') {
                     qTextEn = q.question;
                     qTextHi = q.question;
                 } else if (q.question && typeof q.question === 'object') {
-                    qTextEn = q.question.en || q.question.english || Object.values(q.question)[0] || qTextEn;
-                    qTextHi = q.question.hi || q.question.hindi || q.question.en || qTextEn;
+                    qTextEn = q.question.en || q.question.english || Object.values(q.question)[0] || "";
+                    qTextHi = q.question.hi || q.question.hindi || q.question.en || "";
                 } else if (q.text || q.prompt || q.statement) {
                     let st = q.text || q.prompt || q.statement;
                     if (typeof st === 'string') { qTextEn = st; qTextHi = st; }
-                    else { qTextEn = st.en || st.hindi || Object.values(st)[0]; qTextHi = st.hi || st.en || qTextEn; }
+                    else { qTextEn = st.en || st.hindi || Object.values(st)[0] || ""; qTextHi = st.hi || st.en || qTextEn; }
                 }
                 nQ.question = { en: qTextEn, hi: qTextHi };
 
@@ -478,7 +537,11 @@
                 let optsHi = ["विकल्प A", "विकल्प B", "विकल्प C", "विकल्प D"];
 
                 if (Array.isArray(rawOpts)) {
-                    optsEn = rawOpts.map(o => typeof o === 'object' ? (o.en || Object.values(o)[0]) : String(o));
+                    optsEn = rawOpts.map(o => {
+                        if (o === null || o === undefined) return "";
+                        if (typeof o === 'object') return o.en || Object.values(o)[0] || "";
+                        return String(o);
+                    });
                     optsHi = [...optsEn];
                 } else if (rawOpts && typeof rawOpts === 'object') {
                     if (rawOpts.en) optsEn = rawOpts.en.map(o => String(o));
@@ -548,7 +611,6 @@
             renderQuestion();
         }
 
-        // Timer Function
         function updateTimer() {
             if (totalSecondsRemaining <= 0) {
                 clearInterval(timerInterval);
@@ -567,7 +629,6 @@
                 String(seconds).padStart(2, '0');
         }
 
-        // Render Question Palette Grid
         function renderPalette() {
             const grid = document.getElementById('palette-grid');
             grid.innerHTML = '';
@@ -616,12 +677,32 @@
             }
         }
 
-        // Render Current Question
         function renderQuestion() {
             let q = testData.questions[currentQuestionIndex];
             document.getElementById('current-q-num').innerText = currentQuestionIndex + 1;
             document.getElementById('total-q-num').innerText = testData.questions.length;
-            document.getElementById('subject-badge').innerText = q.subjectTag || "General";
+            
+            // Subject Name beside Question Number
+            let subjectTag = q.subjectTag || "General";
+            document.getElementById('subject-badge').innerText = subjectTag;
+
+            // Individual PYQ Exam Tag where Subject was previously (Right side)
+            let tagDisplay = document.getElementById('q-tag-display');
+            let pyqTag = q.pyqTag || "General PYQ";
+            let topicTag = q.topicTag || "";
+            let subTopicTag = q.subTopicTag || "";
+
+            if (currentMode === 'quiz') {
+                tagDisplay.innerHTML = `
+                    <span class="bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full font-semibold border border-amber-200 shadow-sm"><i class="fa-solid fa-medal mr-1"></i>${pyqTag}</span>
+                    <span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-semibold border border-blue-200 shadow-sm"><i class="fa-solid fa-book-open mr-1"></i>${topicTag}</span>
+                    ${subTopicTag ? `<span class="bg-purple-100 text-purple-800 px-2.5 py-0.5 rounded-full font-semibold border border-purple-200 shadow-sm hidden sm:inline"><i class="fa-solid fa-tag mr-1"></i>${subTopicTag}</span>` : ''}
+                `;
+            } else {
+                tagDisplay.innerHTML = `
+                    <span class="bg-amber-100 text-amber-900 px-3 py-1 rounded-full font-semibold border border-amber-200 shadow-sm"><i class="fa-solid fa-medal mr-1"></i>${pyqTag}</span>
+                `;
+            }
             
             let statusBadge = document.getElementById('q-status-badge');
             let currentStatus = userResponses[currentQuestionIndex].status;
@@ -640,8 +721,91 @@
                 statusBadge.className = 'text-[11px] px-2 py-0.5 rounded-full font-medium bg-rose-100 text-rose-800';
             }
 
-            // Question Text
-            document.getElementById('question-text').innerText = currentLanguage === 'hi' ? (q.question.hi || q.question.en) : q.question.en;
+            // 1. Passage Section
+            let passageEl = document.getElementById('question-passage');
+            let passageData = q.passage ? (currentLanguage === 'hi' ? (q.passage.hi || q.passage.en) : q.passage.en) : "";
+            if (passageData && passageData.trim() !== "") {
+                passageEl.innerHTML = passageData;
+                passageEl.classList.remove('hidden');
+            } else {
+                passageEl.classList.add('hidden');
+            }
+
+            // 2. Statement / Multi-statement Box
+            let stmtBox = document.getElementById('question-statement-box');
+            if (q.statementData && (q.statementData.intro || q.statementData.list || q.statementData.conclusion)) {
+                let sData = q.statementData;
+                let intro = currentLanguage === 'hi' ? (sData.intro?.hi || sData.intro?.en) : sData.intro?.en;
+                let list = currentLanguage === 'hi' ? (sData.list?.hi || sData.list?.en) : sData.list?.en;
+                let conclusion = currentLanguage === 'hi' ? (sData.conclusion?.hi || sData.conclusion?.en) : sData.conclusion?.en;
+
+                document.getElementById('stmt-intro').innerHTML = intro || "";
+                let listEl = document.getElementById('stmt-list');
+                if (list) {
+                    listEl.innerHTML = typeof list === 'string' ? list.replace(/\n/g, '<br>') : "";
+                    listEl.classList.remove('hidden');
+                } else {
+                    listEl.classList.add('hidden');
+                }
+                document.getElementById('stmt-conclusion').innerHTML = conclusion || "";
+                stmtBox.classList.remove('hidden');
+            } else {
+                stmtBox.classList.add('hidden');
+            }
+
+            // 3. Direction Box (for Assertion & Reason)
+            let directionBox = document.getElementById('question-direction-box');
+            let directionText = q.direction ? (currentLanguage === 'hi' ? (q.direction.hi || q.direction.en) : q.direction.en) : "";
+            if (directionText && directionText.trim() !== "") {
+                directionBox.innerHTML = directionText;
+                directionBox.classList.remove('hidden');
+            } else {
+                directionBox.classList.add('hidden');
+            }
+
+            // 4. Assertion & Reason Box
+            let assertionBox = document.getElementById('question-assertion-box');
+            let assertionText = q.assertion ? (currentLanguage === 'hi' ? (q.assertion.hi || q.assertion.en) : q.assertion.en) : "";
+            let reasonText = q.reason ? (currentLanguage === 'hi' ? (q.reason.hi || q.reason.en) : q.reason.en) : "";
+            if (assertionText || reasonText) {
+                document.getElementById('assertion-text').innerHTML = assertionText;
+                document.getElementById('reason-text').innerHTML = reasonText;
+                assertionBox.classList.remove('hidden');
+            } else {
+                assertionBox.classList.add('hidden');
+            }
+
+            // 5. Table / Matrix Data
+            let tableContainer = document.getElementById('question-table-container');
+            if (q.tableData && q.tableData.tableObj) {
+                let tObj = currentLanguage === 'hi' ? (q.tableData.tableObj.hi || q.tableData.tableObj.en) : q.tableData.tableObj.en;
+                let tIntro = currentLanguage === 'hi' ? (q.tableData.intro?.hi || q.tableData.intro?.en) : q.tableData.intro?.en;
+                
+                document.getElementById('table-intro').innerHTML = tIntro || "";
+                if (tObj && tObj.headers && tObj.rows) {
+                    let thead = document.querySelector('#question-matrix-table thead');
+                    let tbody = document.querySelector('#question-matrix-table tbody');
+                    
+                    thead.innerHTML = `<tr>${tObj.headers.map(h => `<th class="px-3 py-2 border-b border-slate-200 text-left font-semibold">${h}</th>`).join('')}</tr>`;
+                    tbody.innerHTML = tObj.rows.map(row => `<tr>${row.map(cell => `<td class="px-3 py-2 border-b border-slate-100">${cell}</td>`).join('')}</tr>`).join('');
+                    tableContainer.classList.remove('hidden');
+                } else {
+                    tableContainer.classList.add('hidden');
+                }
+            } else {
+                tableContainer.classList.add('hidden');
+            }
+
+            // 6. Question Text
+            let qText = currentLanguage === 'hi' ? (q.question.hi || q.question.en) : q.question.en;
+            let qTextEl = document.getElementById('question-text');
+            if (qText && qText.trim() !== "") {
+                qTextEl.innerHTML = qText;
+                qTextEl.classList.remove('hidden');
+            } else {
+                qTextEl.innerHTML = "";
+                qTextEl.classList.add('hidden');
+            }
 
             // Optional Main Question Image
             let imgContainer = document.getElementById('question-image-container');
@@ -697,9 +861,13 @@
             }
 
             renderPalette();
+
+            // Trigger MathJax typeset to render mathematical symbols & formulas
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise([document.getElementById('question-section')]).catch((err) => console.log('MathJax error:', err));
+            }
         }
 
-        // Option Selection Handler
         function selectOption(optIdx) {
             userResponses[currentQuestionIndex].selectedOption = optIdx;
             userResponses[currentQuestionIndex].status = 'answered';
@@ -711,7 +879,6 @@
             }
         }
 
-        // Navigation Actions
         function goToQuestion(index) {
             currentQuestionIndex = index;
             renderQuestion();
@@ -755,7 +922,6 @@
             }
         }
 
-        // Test Submission & Result Processing
         function submitTestConfirmation() {
             showConfirmModal("Submit Test?", "Are you sure you want to submit the test? You will not be able to change answers after submission.", () => {
                 submitTest(false);
@@ -803,7 +969,7 @@
             document.getElementById('res-negative-marks').innerText = '-' + negativeDed.toFixed(2);
             document.getElementById('res-total-q').innerText = totalQ;
 
-            // Detailed Question Review List with Full Options & Explanations for PDF / Print (Avoiding Page Breaks)
+            // Detailed Question Review List
             let reviewContainer = document.getElementById('detailed-review-list');
             reviewContainer.innerHTML = '';
             testData.questions.forEach((q, idx) => {
@@ -816,6 +982,58 @@
 
                 let qImgMarkup = q.image ? `<div class="my-2"><img src="${q.image}" alt="Question Image" class="max-h-40 object-contain rounded border border-slate-200"></div>` : '';
                 
+                let revTableHtml = '';
+                if (q.tableData && q.tableData.tableObj) {
+                    let tObj = currentLanguage === 'hi' ? (q.tableData.tableObj.hi || q.tableData.tableObj.en) : q.tableData.tableObj.en;
+                    let tIntro = currentLanguage === 'hi' ? (q.tableData.intro?.hi || q.tableData.intro?.en) : q.tableData.intro?.en;
+                    if (tObj && tObj.headers && tObj.rows) {
+                        revTableHtml = `
+                            <div class="text-xs font-medium mb-1 text-slate-700">${tIntro || ''}</div>
+                            <div class="overflow-x-auto my-2">
+                                <table class="min-w-full divide-y divide-slate-200 border border-slate-200 text-xs">
+                                    <thead class="bg-slate-100 text-slate-700"><tr>${tObj.headers.map(h => `<th class="px-2 py-1 border-b text-left font-semibold">${h}</th>`).join('')}</tr></thead>
+                                    <tbody class="divide-y divide-slate-200 bg-white">${tObj.rows.map(row => `<tr>${row.map(cell => `<td class="px-2 py-1 border-b">${cell}</td>`).join('')}</tr>`).join('')}</tbody>
+                                </table>
+                            </div>
+                        `;
+                    }
+                }
+
+                let revPassageHtml = (q.passage && (q.passage.en || q.passage.hi)) ? `<div class="p-2 bg-slate-50 border-l-4 border-blue-600 text-xs italic">${currentLanguage === 'hi' ? (q.passage.hi || q.passage.en) : q.passage.en}</div>` : '';
+                
+                let revStmtHtml = '';
+                if (q.statementData) {
+                    let sData = q.statementData;
+                    let intro = currentLanguage === 'hi' ? (sData.intro?.hi || sData.intro?.en) : sData.intro?.en;
+                    let list = currentLanguage === 'hi' ? (sData.list?.hi || sData.list?.en) : sData.list?.en;
+                    let conclusion = currentLanguage === 'hi' ? (sData.conclusion?.hi || sData.conclusion?.en) : sData.conclusion?.en;
+                    revStmtHtml = `
+                        <div class="p-2 bg-slate-50 border border-slate-200 rounded text-xs space-y-1">
+                            <div>${intro || ''}</div>
+                            <div class="pl-3 font-medium">${list ? list.replace(/\n/g, '<br>') : ''}</div>
+                            <div>${conclusion || ''}</div>
+                        </div>
+                    `;
+                }
+
+                let revDirectionHtml = '';
+                let dText = q.direction ? (currentLanguage === 'hi' ? (q.direction.hi || q.direction.en) : q.direction.en) : "";
+                if (dText && dText.trim() !== "") {
+                    revDirectionHtml = `<div class="p-2 bg-amber-50 border border-amber-200 rounded text-xs font-medium italic text-amber-900">${dText}</div>`;
+                }
+
+                let revAssertionHtml = '';
+                if (q.assertion || q.reason) {
+                    let aText = currentLanguage === 'hi' ? (q.assertion?.hi || q.assertion?.en) : q.assertion?.en;
+                    let rText = currentLanguage === 'hi' ? (q.reason?.hi || q.reason?.en) : q.reason?.en;
+                    revAssertionHtml = `
+                        <div class="p-2 bg-indigo-50/50 border border-indigo-200 rounded text-xs space-y-1">
+                            <div><strong>Assertion (A):</strong> ${aText || ''}</div>
+                            <div><strong>Reason (R):</strong> ${rText || ''}</div>
+                        </div>
+                    `;
+                }
+
                 let optionsListHtml = '';
                 opts.forEach((optText, oIdx) => {
                     let isOptCorrect = oIdx === q.correct;
@@ -839,14 +1057,22 @@
                     `;
                 });
 
+                let qTextReview = q.question.en || q.question.hi;
+                let qTextReviewHtml = (qTextReview && qTextReview.trim() !== "") ? `<p class="font-semibold text-slate-900 text-sm">${qTextReview}</p>` : '';
+
                 let div = document.createElement('div');
                 div.className = 'p-6 flex flex-col space-y-4 page-break-avoid';
                 div.innerHTML = `
                     <div class="flex justify-between items-start">
-                        <span class="font-bold text-slate-700 text-sm">Q.${idx + 1}</span>
+                        <span class="font-bold text-slate-700 text-sm">Q.${idx + 1} (${q.subjectTag || 'General'})</span>
                         <span class="px-2.5 py-1 rounded-full text-xs font-bold ${statusColor}">${statusText}</span>
                     </div>
-                    <p class="font-semibold text-slate-900 text-sm">${q.question.en || q.question.hi}</p>
+                    ${revPassageHtml}
+                    ${revStmtHtml}
+                    ${revDirectionHtml}
+                    ${revAssertionHtml}
+                    ${revTableHtml}
+                    ${qTextReviewHtml}
                     ${qImgMarkup}
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         ${optionsListHtml}
@@ -873,6 +1099,10 @@
 
             document.getElementById('result-modal').classList.remove('hidden');
             renderPerformanceChart(correctCount, wrongCount, unattemptedCount);
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise([document.getElementById('result-modal')]).catch((err) => console.log('MathJax error:', err));
+            }
         }
 
         function closeResultModal() {
@@ -904,7 +1134,6 @@
             });
         }
 
-        // Import Test Functions
         function openImportModal() {
             document.getElementById('json-textarea').value = JSON.stringify(defaultTest, null, 2);
             document.getElementById('import-modal').classList.remove('hidden');
@@ -944,7 +1173,6 @@
             });
         }
 
-        // Custom Modal UI Helpers
         function showCustomModal(title, message, callback = null) {
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-message').innerText = message;
