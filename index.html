@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -30,17 +30,91 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         @media print {
-            body { background: white !important; color: black !important; overflow: auto !important; height: auto !important; }
-            header, aside, #import-modal, #custom-modal, .no-print { display: none !important; }
-            #result-modal { position: static !important; background: none !important; backdrop-filter: none !important; overflow: visible !important; display: block !important; }
-            #result-modal > div { max-height: none !important; box-shadow: none !important; width: 100% !important; border: none !important; }
-            .page-break-avoid { break-inside: avoid !important; page-break-inside: avoid !important; margin-bottom: 20px !important; }
-            .print-scorecard-page { page-break-before: always !important; page-break-after: always !important; break-before: page !important; break-after: page !important; }
-            .print-first-page { page-break-before: avoid !important; }
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+            body {
+                background: white !important;
+                color: #0f172a !important;
+                overflow: visible !important;
+                height: auto !important;
+                min-height: auto !important;
+                font-size: 12px;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            /* Strictly hide main test container, question display, side panel, header, and modals */
+            header,
+            aside,
+            main,
+            nav,
+            footer,
+            #question-section,
+            #pallet-section,
+            #import-modal,
+            #custom-modal,
+            .no-print {
+                display: none !important;
+            }
+            /* Render Result Modal cleanly as full page document */
+            #result-modal {
+                position: static !important;
+                display: block !important;
+                background: transparent !important;
+                backdrop-filter: none !important;
+                overflow: visible !important;
+                height: auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
+            #result-modal > div {
+                max-height: none !important;
+                height: auto !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                border: none !important;
+                overflow: visible !important;
+                border-radius: 0 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #result-modal .overflow-y-auto {
+                overflow: visible !important;
+                max-height: none !important;
+                height: auto !important;
+                padding: 0 !important;
+            }
+            /* 1st Page: strictly Score Card only */
+            .print-scorecard-page {
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                margin-bottom: 0 !important;
+                padding-bottom: 16px !important;
+            }
+            /* 2nd Page onwards: strictly Question Review in sequential order */
+            .print-review-container {
+                page-break-before: always !important;
+                break-before: page !important;
+                margin-top: 0 !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+            /* Prevent individual question review blocks from awkwardly splitting */
+            .page-break-avoid {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                margin-bottom: 14px !important;
+            }
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased h-screen flex flex-col overflow-hidden">
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col md:h-screen md:overflow-hidden">
 
     <!-- TOP HEADER (Organized & Responsive) -->
     <header class="bg-blue-900 text-white shadow-md px-4 py-2.5 flex flex-wrap justify-between items-center gap-2 shrink-0 z-40">
@@ -88,10 +162,10 @@
     </header>
 
     <!-- MAIN APP CONTAINER -->
-    <main class="flex-1 flex flex-col md:flex-row relative overflow-hidden">
+    <main class="flex-1 flex flex-col md:flex-row relative md:overflow-hidden">
 
         <!-- LEFT/MAIN SECTION: Question Display & Normal Flow Controls -->
-        <section id="question-section" class="flex-1 flex flex-col bg-white border-r border-slate-200 overflow-hidden">
+        <section id="question-section" class="flex-1 flex flex-col bg-white border-r border-slate-200 md:overflow-hidden">
             
             <!-- Question Top Bar (Sticky so it doesn't scroll up) -->
             <div class="bg-slate-50 border-b border-slate-200 px-4 sm:px-6 py-2.5 flex justify-between items-center shrink-0 flex-wrap gap-2 z-10">
@@ -108,7 +182,7 @@
             </div>
 
             <!-- Question Body & Scrollable Content -->
-            <div class="p-4 sm:p-6 flex-1 overflow-y-auto flex flex-col space-y-4">
+            <div class="p-4 sm:p-6 flex-1 md:overflow-y-auto flex flex-col space-y-4">
                 <!-- Question Statement & Advanced Structures container -->
                 <div class="space-y-3">
                     <!-- Passage / Context (if any) -->
@@ -164,7 +238,7 @@
                 </div>
             </div>
 
-            <!-- NAVIGATION BUTTONS (Fixed at bottom of left panel) -->
+            <!-- NAVIGATION BUTTONS -->
             <div class="px-4 sm:px-6 py-3 border-t border-slate-200 bg-white shrink-0 flex flex-wrap justify-between items-center gap-3 z-10">
                 <div class="flex flex-wrap gap-2">
                     <button onclick="markForReviewAndNext()" class="bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition shadow-sm flex items-center">
@@ -186,7 +260,7 @@
         </section>
 
         <!-- RIGHT SIDE: Candidate Pallet & Timer Panel -->
-        <aside id="pallet-section" class="w-full md:w-80 bg-white border-l border-slate-200 flex flex-col shrink-0 h-full overflow-hidden">
+        <aside id="pallet-section" class="w-full md:w-80 bg-white border-l border-slate-200 flex flex-col shrink-0 md:h-full md:overflow-hidden">
             
             <!-- Candidate Info -->
             <div class="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center space-x-3 shrink-0">
@@ -238,15 +312,15 @@
                 </div>
             </div>
 
-            <!-- Question Palette Grid Container (Scrollable with proper spacing & no cut items) -->
-            <div class="p-3 bg-slate-100/50 flex-1 overflow-y-auto">
+            <!-- Question Palette Grid Container (Scrollable box with fixed mobile height & desktop flex-1) -->
+            <div class="p-3 bg-slate-100/50 max-h-56 md:max-h-none md:flex-1 overflow-y-auto shrink-0">
                 <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Question Palette:</div>
                 <div id="palette-grid" class="grid grid-cols-5 gap-2 pb-2">
                     <!-- Palette buttons injected dynamically -->
                 </div>
             </div>
 
-            <!-- Submit Exam Action Button (Aligned cleanly at bottom) -->
+            <!-- Submit Exam Action Button -->
             <div class="p-3 bg-white border-t border-slate-200 shrink-0">
                 <button onclick="submitTestConfirmation()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow transition flex items-center justify-center space-x-2 text-sm">
                     <i class="fa-solid fa-paper-plane"></i>
@@ -272,7 +346,7 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-2 no-print">
-                    <button onclick="window.print()" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-1.5 shadow">
+                    <button onclick="triggerPdfDownload()" class="bg-blue-700 hover:bg-blue-800 text-white px-3.5 py-2 rounded-lg text-sm font-semibold transition flex items-center space-x-2 shadow cursor-pointer">
                         <i class="fa-solid fa-file-pdf"></i>
                         <span>Download PDF / Print</span>
                     </button>
@@ -286,7 +360,19 @@
             <div class="p-6 overflow-y-auto space-y-8 flex-1 bg-slate-50">
                 
                 <!-- SCORE CARD CONTAINER (Strictly on 1st Page during PDF Print) -->
-                <div class="print-scorecard-page space-y-8">
+                <div class="print-scorecard-page space-y-6">
+                    <!-- Candidate & Exam Info Card (Visible on 1st Page in PDF) -->
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-3 page-break-avoid">
+                        <div>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded border border-blue-200">Official Performance Score Card</span>
+                            <h3 id="res-test-title-scorecard" class="text-base sm:text-lg font-bold text-slate-800 mt-1">CBT Mock Test</h3>
+                            <p class="text-xs text-slate-500">Mode: <span id="res-mode-badge" class="font-semibold text-slate-700">Test Mode</span> &bull; Submitted: <span id="res-exam-date" class="font-medium"></span></p>
+                        </div>
+                        <div class="text-right text-xs bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                            <p class="font-bold text-slate-800"><i class="fa-solid fa-user-graduate mr-1 text-blue-700"></i>Candidate: Aspirant</p>
+                            <p class="text-slate-500">Roll No: <span class="font-mono font-semibold">CBT-2026-001</span></p>
+                        </div>
+                    </div>
                     <!-- Summary Cards Grid -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 page-break-avoid">
                         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
@@ -351,8 +437,8 @@
                     </div>
                 </div>
 
-                <!-- Detailed Question Review List (Starts sequentially on subsequent pages during PDF print) -->
-                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden print-first-page">
+                <!-- Detailed Question Review List (Starts on fresh page during PDF print) -->
+                <div class="print-review-container bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="bg-slate-100 px-6 py-3.5 border-b border-slate-200 flex justify-between items-center">
                         <h4 class="font-bold text-slate-800"><i class="fa-solid fa-list-check mr-2 text-blue-600"></i>Question-wise Detailed Review, Options & Explanations</h4>
                         <span class="text-xs text-slate-500">Full structured report</span>
@@ -998,6 +1084,17 @@
             document.getElementById('res-negative-marks').innerText = '-' + negativeDed.toFixed(2);
             document.getElementById('res-total-q').innerText = totalQ;
 
+            if (document.getElementById('res-test-title-scorecard')) {
+                document.getElementById('res-test-title-scorecard').innerText = testData.title;
+            }
+            if (document.getElementById('res-mode-badge')) {
+                document.getElementById('res-mode-badge').innerText = currentMode === 'quiz' ? 'Quiz Mode' : 'Test Mode';
+            }
+            if (document.getElementById('res-exam-date')) {
+                let now = new Date();
+                document.getElementById('res-exam-date').innerText = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
             // Detailed Question Review List
             let reviewContainer = document.getElementById('detailed-review-list');
             reviewContainer.innerHTML = '';
@@ -1131,6 +1228,14 @@
 
             if (window.MathJax && window.MathJax.typesetPromise) {
                 MathJax.typesetPromise([document.getElementById('result-modal')]).catch((err) => console.log('MathJax error:', err));
+            }
+        }
+
+        function triggerPdfDownload() {
+            if (window.AndroidBridge && typeof window.AndroidBridge.printPdf === 'function') {
+                window.AndroidBridge.printPdf();
+            } else {
+                window.print();
             }
         }
 
