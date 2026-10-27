@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,14 +35,15 @@
             #result-modal { position: static !important; background: none !important; backdrop-filter: none !important; overflow: visible !important; display: block !important; }
             #result-modal > div { max-height: none !important; box-shadow: none !important; width: 100% !important; border: none !important; }
             .page-break-avoid { break-inside: avoid !important; page-break-inside: avoid !important; margin-bottom: 20px !important; }
-            .print-first-page { page-break-before: always !important; }
+            .print-scorecard-page { page-break-before: always !important; page-break-after: always !important; break-before: page !important; break-after: page !important; }
+            .print-first-page { page-break-before: avoid !important; }
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-slate-100 text-slate-800 antialiased h-screen flex flex-col overflow-hidden">
 
     <!-- TOP HEADER (Organized & Responsive) -->
-    <header class="bg-blue-900 text-white shadow-md px-4 py-2.5 flex flex-wrap justify-between items-center gap-2 shrink-0 sticky top-0 z-40">
+    <header class="bg-blue-900 text-white shadow-md px-4 py-2.5 flex flex-wrap justify-between items-center gap-2 shrink-0 z-40">
         <div class="flex items-center space-x-3">
             <div class="bg-blue-800 px-3 py-1.5 rounded-lg border border-blue-700 font-bold tracking-wider text-sm flex items-center">
                 <i class="fa-solid fa-graduation-cap mr-2 text-amber-400"></i>CBT PORTAL
@@ -87,13 +88,13 @@
     </header>
 
     <!-- MAIN APP CONTAINER -->
-    <main class="flex-1 flex flex-col md:flex-row relative">
+    <main class="flex-1 flex flex-col md:flex-row relative overflow-hidden">
 
         <!-- LEFT/MAIN SECTION: Question Display & Normal Flow Controls -->
-        <section id="question-section" class="flex-1 flex flex-col bg-white border-r border-slate-200">
+        <section id="question-section" class="flex-1 flex flex-col bg-white border-r border-slate-200 overflow-hidden">
             
-            <!-- Question Top Bar (Metadata: Q.No, Subject Name, Status & Individual PYQ Exam Tag on Right) -->
-            <div class="bg-slate-50 border-b border-slate-200 px-4 sm:px-6 py-2.5 flex justify-between items-center shrink-0 flex-wrap gap-2">
+            <!-- Question Top Bar (Sticky so it doesn't scroll up) -->
+            <div class="bg-slate-50 border-b border-slate-200 px-4 sm:px-6 py-2.5 flex justify-between items-center shrink-0 flex-wrap gap-2 z-10">
                 <div class="flex items-center space-x-2 sm:space-x-3 flex-wrap">
                     <span class="text-xs sm:text-sm font-bold text-slate-700">Q.<span id="current-q-num">1</span> of <span id="total-q-num">1</span></span>
                     <!-- Subject Name right beside Question Number -->
@@ -107,7 +108,7 @@
             </div>
 
             <!-- Question Body & Scrollable Content -->
-            <div class="p-4 sm:p-6 flex-1 flex flex-col space-y-4">
+            <div class="p-4 sm:p-6 flex-1 overflow-y-auto flex flex-col space-y-4">
                 <!-- Question Statement & Advanced Structures container -->
                 <div class="space-y-3">
                     <!-- Passage / Context (if any) -->
@@ -161,31 +162,31 @@
                     </h4>
                     <p id="explanation-text" class="text-xs sm:text-sm text-blue-800 leading-relaxed"></p>
                 </div>
+            </div>
 
-                <!-- NAVIGATION BUTTONS -->
-                <div class="pt-6 pb-4 border-t border-slate-200 mt-auto flex flex-wrap justify-between items-center gap-3">
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="markForReviewAndNext()" class="bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition shadow-sm flex items-center">
-                            <i class="fa-solid fa-bookmark mr-1.5"></i> Mark for Review & Next
-                        </button>
-                        <button onclick="clearResponse()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition">
-                            <i class="fa-solid fa-rotate-left mr-1.5"></i> Clear
-                        </button>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="previousQuestion()" class="bg-slate-700 hover:bg-slate-800 text-white px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition">
-                            <i class="fa-solid fa-chevron-left mr-1"></i> Prev
-                        </button>
-                        <button onclick="saveAndNext()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition shadow">
-                            Save & Next <i class="fa-solid fa-chevron-right ml-1"></i>
-                        </button>
-                    </div>
+            <!-- NAVIGATION BUTTONS (Fixed at bottom of left panel) -->
+            <div class="px-4 sm:px-6 py-3 border-t border-slate-200 bg-white shrink-0 flex flex-wrap justify-between items-center gap-3 z-10">
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="markForReviewAndNext()" class="bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition shadow-sm flex items-center">
+                        <i class="fa-solid fa-bookmark mr-1.5"></i> Mark for Review & Next
+                    </button>
+                    <button onclick="clearResponse()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition">
+                        <i class="fa-solid fa-rotate-left mr-1.5"></i> Clear
+                    </button>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="previousQuestion()" class="bg-slate-700 hover:bg-slate-800 text-white px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition">
+                        <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+                    </button>
+                    <button onclick="saveAndNext()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition shadow">
+                        Save & Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                    </button>
                 </div>
             </div>
         </section>
 
         <!-- RIGHT SIDE: Candidate Pallet & Timer Panel -->
-        <aside id="pallet-section" class="w-full md:w-80 bg-white border-l border-slate-200 flex flex-col shrink-0">
+        <aside id="pallet-section" class="w-full md:w-80 bg-white border-l border-slate-200 flex flex-col shrink-0 h-full overflow-hidden">
             
             <!-- Candidate Info -->
             <div class="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center space-x-3 shrink-0">
@@ -237,16 +238,16 @@
                 </div>
             </div>
 
-            <!-- Question Palette Grid Container -->
-            <div class="p-2.5 bg-slate-100/50 max-h-36 md:max-h-56 overflow-y-auto">
-                <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Question Palette:</div>
-                <div id="palette-grid" class="grid grid-cols-5 gap-1.5">
+            <!-- Question Palette Grid Container (Scrollable with proper spacing & no cut items) -->
+            <div class="p-3 bg-slate-100/50 flex-1 overflow-y-auto">
+                <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Question Palette:</div>
+                <div id="palette-grid" class="grid grid-cols-5 gap-2 pb-2">
                     <!-- Palette buttons injected dynamically -->
                 </div>
             </div>
 
-            <!-- Submit Exam Action Button -->
-            <div class="p-3 bg-white border-t border-slate-200 mt-auto shrink-0">
+            <!-- Submit Exam Action Button (Aligned cleanly at bottom) -->
+            <div class="p-3 bg-white border-t border-slate-200 shrink-0">
                 <button onclick="submitTestConfirmation()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow transition flex items-center justify-center space-x-2 text-sm">
                     <i class="fa-solid fa-paper-plane"></i>
                     <span>Submit Test</span>
@@ -284,70 +285,73 @@
             <!-- Modal Content Body -->
             <div class="p-6 overflow-y-auto space-y-8 flex-1 bg-slate-50">
                 
-                <!-- Summary Cards Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 page-break-avoid">
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
-                        <div class="bg-blue-100 text-blue-600 p-3 rounded-lg"><i class="fa-solid fa-square-poll-vertical text-xl"></i></div>
-                        <div>
-                            <p class="text-xs text-slate-500 font-medium">Total Score</p>
-                            <h3 id="res-total-score" class="text-2xl font-bold text-slate-800">0 / 0</h3>
+                <!-- SCORE CARD CONTAINER (Strictly on 1st Page during PDF Print) -->
+                <div class="print-scorecard-page space-y-8">
+                    <!-- Summary Cards Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 page-break-avoid">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
+                            <div class="bg-blue-100 text-blue-600 p-3 rounded-lg"><i class="fa-solid fa-square-poll-vertical text-xl"></i></div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-medium">Total Score</p>
+                                <h3 id="res-total-score" class="text-2xl font-bold text-slate-800">0 / 0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
+                            <div class="bg-emerald-100 text-emerald-600 p-3 rounded-lg"><i class="fa-solid fa-circle-check text-xl"></i></div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-medium">Correct Answers</p>
+                                <h3 id="res-correct" class="text-2xl font-bold text-emerald-600">0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
+                            <div class="bg-rose-100 text-rose-600 p-3 rounded-lg"><i class="fa-solid fa-circle-xmark text-xl"></i></div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-medium">Wrong Answers</p>
+                                <h3 id="res-wrong" class="text-2xl font-bold text-rose-600">0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
+                            <div class="bg-amber-100 text-amber-600 p-3 rounded-lg"><i class="fa-solid fa-circle-question text-xl"></i></div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-medium">Unattempted</p>
+                                <h3 id="res-unattempted" class="text-2xl font-bold text-amber-600">0</h3>
+                            </div>
                         </div>
                     </div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
-                        <div class="bg-emerald-100 text-emerald-600 p-3 rounded-lg"><i class="fa-solid fa-circle-check text-xl"></i></div>
-                        <div>
-                            <p class="text-xs text-slate-500 font-medium">Correct Answers</p>
-                            <h3 id="res-correct" class="text-2xl font-bold text-emerald-600">0</h3>
+
+                    <!-- Secondary Stats Row & Graphical Chart -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 page-break-avoid">
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                            <h4 class="font-bold text-slate-700 text-sm mb-4"><i class="fa-solid fa-chart-pie mr-2 text-blue-600"></i>Performance Breakdown</h4>
+                            <div class="w-full h-48 flex justify-center items-center">
+                                <canvas id="performanceChart"></canvas>
+                            </div>
                         </div>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
-                        <div class="bg-rose-100 text-rose-600 p-3 rounded-lg"><i class="fa-solid fa-circle-xmark text-xl"></i></div>
-                        <div>
-                            <p class="text-xs text-slate-500 font-medium">Wrong Answers</p>
-                            <h3 id="res-wrong" class="text-2xl font-bold text-rose-600">0</h3>
-                        </div>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
-                        <div class="bg-amber-100 text-amber-600 p-3 rounded-lg"><i class="fa-solid fa-circle-question text-xl"></i></div>
-                        <div>
-                            <p class="text-xs text-slate-500 font-medium">Unattempted</p>
-                            <h3 id="res-unattempted" class="text-2xl font-bold text-amber-600">0</h3>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm md:col-span-2 flex flex-col justify-between">
+                            <h4 class="font-bold text-slate-700 text-sm mb-4"><i class="fa-solid fa-gauge-high mr-2 text-blue-600"></i>Detailed Metrics</h4>
+                            <div class="grid grid-cols-2 gap-4 my-auto">
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                    <span class="text-xs text-slate-500">Time Taken</span>
+                                    <h4 id="res-time-taken" class="text-lg font-bold text-slate-800 font-mono">00:00:00</h4>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                    <span class="text-xs text-slate-500">Accuracy Rate</span>
+                                    <h4 id="res-accuracy" class="text-lg font-bold text-blue-600">0%</h4>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                    <span class="text-xs text-slate-500">Negative Marking Ded.</span>
+                                    <h4 id="res-negative-marks" class="text-lg font-bold text-rose-600">0</h4>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                    <span class="text-xs text-slate-500">Total Questions</span>
+                                    <h4 id="res-total-q" class="text-lg font-bold text-slate-800">0</h4>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Secondary Stats Row & Graphical Chart -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 page-break-avoid">
-                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
-                        <h4 class="font-bold text-slate-700 text-sm mb-4"><i class="fa-solid fa-chart-pie mr-2 text-blue-600"></i>Performance Breakdown</h4>
-                        <div class="w-full h-48 flex justify-center items-center">
-                            <canvas id="performanceChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm md:col-span-2 flex flex-col justify-between">
-                        <h4 class="font-bold text-slate-700 text-sm mb-4"><i class="fa-solid fa-gauge-high mr-2 text-blue-600"></i>Detailed Metrics</h4>
-                        <div class="grid grid-cols-2 gap-4 my-auto">
-                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-xs text-slate-500">Time Taken</span>
-                                <h4 id="res-time-taken" class="text-lg font-bold text-slate-800 font-mono">00:00:00</h4>
-                            </div>
-                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-xs text-slate-500">Accuracy Rate</span>
-                                <h4 id="res-accuracy" class="text-lg font-bold text-blue-600">0%</h4>
-                            </div>
-                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-xs text-slate-500">Negative Marking Ded.</span>
-                                <h4 id="res-negative-marks" class="text-lg font-bold text-rose-600">0</h4>
-                            </div>
-                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <span class="text-xs text-slate-500">Total Questions</span>
-                                <h4 id="res-total-q" class="text-lg font-bold text-slate-800">0</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Detailed Question Review List -->
+                <!-- Detailed Question Review List (Starts sequentially on subsequent pages during PDF print) -->
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden print-first-page">
                     <div class="bg-slate-100 px-6 py-3.5 border-b border-slate-200 flex justify-between items-center">
                         <h4 class="font-bold text-slate-800"><i class="fa-solid fa-list-check mr-2 text-blue-600"></i>Question-wise Detailed Review, Options & Explanations</h4>
@@ -817,7 +821,7 @@
                 imgContainer.classList.add('hidden');
             }
 
-            // Options Rendering
+            // Options Rendering (With dynamic Green/Red color highlighting in Quiz Mode)
             let optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = '';
             let optionsList = currentLanguage === 'hi' ? (q.options.hi || q.options.en) : q.options.en;
@@ -828,24 +832,49 @@
                 let optImgSrc = (q.optionImages && q.optionImages[optIdx]) ? q.optionImages[optIdx] : null;
 
                 let div = document.createElement('label');
-                div.className = `flex flex-col sm:flex-row sm:items-center p-3.5 rounded-xl border transition cursor-pointer ${
-                    isSelected ? 'border-blue-600 bg-blue-50/70 shadow-sm' : 'border-slate-200 hover:bg-slate-50'
-                }`;
+                let divClass = "flex flex-col sm:flex-row sm:items-center p-3.5 rounded-xl border transition cursor-pointer ";
+                
+                if (currentMode === 'quiz' && selectedOpt !== null) {
+                    if (optIdx === q.correct) {
+                        divClass += "border-emerald-500 bg-emerald-50 text-emerald-900 shadow-sm";
+                    } else if (isSelected && optIdx !== q.correct) {
+                        divClass += "border-rose-500 bg-rose-50 text-rose-900 shadow-sm";
+                    } else {
+                        divClass += "border-slate-200 bg-white opacity-70";
+                    }
+                } else {
+                    if (isSelected) {
+                        divClass += "border-blue-600 bg-blue-50/70 shadow-sm";
+                    } else {
+                        divClass += "border-slate-200 hover:bg-slate-50 bg-white";
+                    }
+                }
+                div.className = divClass;
                 
                 let imgMarkup = optImgSrc ? `<div class="my-2 sm:my-0 sm:ml-4"><img src="${optImgSrc}" alt="Option ${optIdx+1}" class="max-h-24 object-contain rounded border border-slate-200 bg-white p-1"></div>` : '';
+
+                let iconMarkup = '';
+                if (currentMode === 'quiz' && selectedOpt !== null) {
+                    if (optIdx === q.correct) {
+                        iconMarkup = `<i class="fa-solid fa-circle-check text-emerald-600 ml-auto text-lg"></i>`;
+                    } else if (isSelected && optIdx !== q.correct) {
+                        iconMarkup = `<i class="fa-solid fa-circle-xmark text-rose-600 ml-auto text-lg"></i>`;
+                    }
+                }
 
                 div.innerHTML = `
                     <div class="flex items-start sm:items-center flex-1">
                         <input type="radio" name="q_option" value="${optIdx}" ${isSelected ? 'checked' : ''} onchange="selectOption(${optIdx})" class="mt-1 sm:mt-0 w-4 h-4 text-blue-600 focus:ring-blue-500 cursor-pointer">
                         <span class="ml-3 font-semibold text-slate-500 mr-2">${String.fromCharCode(65 + optIdx)}.</span>
-                        <span class="text-slate-800 font-medium whitespace-pre-line">${optText}</span>
+                        <span class="font-medium whitespace-pre-line">${optText}</span>
                     </div>
                     ${imgMarkup}
+                    ${iconMarkup}
                 `;
                 optionsContainer.appendChild(div);
             });
 
-            // Quiz mode instant explanation check
+            // Instant Explanation Box (Visible in Quiz Mode)
             let expBox = document.getElementById('explanation-box');
             if (currentMode === 'quiz' && selectedOpt !== null) {
                 expBox.classList.remove('hidden');
