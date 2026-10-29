@@ -151,7 +151,7 @@
                 <span class="hidden md:inline">Telegram</span>
             </button>
             <!-- Google Drive JSON Files Folder Button -->
-            <a href="https://drive.google.com/drive/folders/1PcsMe7gjjJa6DCOCR2PLoBpbDghXMUFx" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg font-medium transition shadow flex items-center space-x-1 text-xs sm:text-sm cursor-pointer" title="Open Google Drive Test Folder">
+            <a href="https://drive.google.com/drive/folders/1FG03qKC4xz9xfZ_5RvMfFecVCryP8Thl" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg font-medium transition shadow flex items-center space-x-1 text-xs sm:text-sm cursor-pointer" title="Open Google Drive Test Folder">
                 <i class="fa-brands fa-google-drive"></i>
                 <span class="hidden md:inline">Drive</span>
             </a>
@@ -1438,6 +1438,7 @@
 
         function openTelegramModal() {
             const modal = document.getElementById('telegram-modal');
+            if (modal) modal.classList.형식('hidden'); // hidden class logic preserved
             if (modal) modal.classList.remove('hidden');
         }
 
