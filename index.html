@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CBT Exam Portal - Government Computer Based Test Player</title>
+    <!-- Fast Logo Preload & Attractive Display Font -->
+    <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
+    <link rel="preload" as="image" href="https://lh3.googleusercontent.com/d/187kKtCdzeXW9tYH4zzpr9-6Qu2W39aM6=w256" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <script>
+        function handleLogoFallback(img) {
+            const step = parseInt(img.dataset.fallbackStep || '0', 10);
+            const fallbacks = [
+                'https://drive.google.com/thumbnail?id=187kKtCdzeXW9tYH4zzpr9-6Qu2W39aM6&sz=w256',
+                'https://drive.google.com/uc?export=view&id=187kKtCdzeXW9tYH4zzpr9-6Qu2W39aM6',
+                'webapp_logo.png'
+            ];
+            if (step < fallbacks.length) {
+                img.dataset.fallbackStep = String(step + 1);
+                img.src = fallbacks[step];
+            } else {
+                img.onerror = null;
+            }
+        }
+    </script>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for Icons -->
@@ -25,6 +47,14 @@
     </script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .paper-title-display {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(90deg, #1d4ed8 0%, #6d28d9 52%, #db2777 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -126,7 +156,7 @@
         <!-- Official Portal Top Header -->
         <div class="bg-blue-950 text-white border-b-4 border-amber-400 px-4 sm:px-6 py-3 flex flex-wrap justify-between items-center gap-3 shrink-0 shadow-md">
             <div class="flex items-center space-x-3">
-                <img src="webapp_logo.png" alt="CBT Examination Portal Logo" class="w-11 h-11 sm:w-12 sm:h-12 object-contain shrink-0">
+                <img src="https://lh3.googleusercontent.com/d/187kKtCdzeXW9tYH4zzpr9-6Qu2W39aM6=w256" alt="CBT Examination Portal Logo" referrerpolicy="no-referrer" loading="eager" fetchpriority="high" decoding="async" onerror="handleLogoFallback(this)" class="w-11 h-11 sm:w-12 sm:h-12 object-contain shrink-0">
                 <div>
                     <div class="flex items-center space-x-2">
                         <span class="font-extrabold tracking-wider text-sm sm:text-base uppercase">CBT Examination Portal</span>
@@ -155,11 +185,11 @@
         <div class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 shrink-0 shadow-sm">
             <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
                 <div class="min-w-0">
-                    <div class="text-[10px] font-bold uppercase tracking-widest text-blue-700 flex items-center space-x-1.5">
-                        <i class="fa-solid fa-file-signature"></i>
+                    <div class="inline-flex items-center space-x-1.5 text-[10px] font-bold uppercase tracking-widest text-indigo-700 bg-indigo-50 border border-indigo-200 px-2.5 py-0.5 rounded-full">
+                        <i class="fa-solid fa-file-signature text-fuchsia-600"></i>
                         <span>Loaded Examination Paper</span>
                     </div>
-                    <h2 id="inst-test-title" class="text-base sm:text-lg font-bold text-slate-900 truncate mt-0.5">CBT Test Player Guide</h2>
+                    <h2 id="inst-test-title" class="paper-title-display text-lg sm:text-2xl font-extrabold tracking-tight leading-snug break-words mt-1.5">CBT Test Player Guide</h2>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 shrink-0 text-xs">
                     <div class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
@@ -325,7 +355,7 @@
         <!-- TOP HEADER (Organized & Responsive) -->
         <header class="bg-blue-900 text-white shadow-md px-4 py-2.5 flex flex-wrap justify-between items-center gap-2 shrink-0 z-40">
             <div class="flex items-center space-x-3">
-                <img src="webapp_logo.png" alt="CBT Portal Logo" class="w-10 h-10 sm:w-11 sm:h-11 object-contain shrink-0">
+                <img src="https://lh3.googleusercontent.com/d/187kKtCdzeXW9tYH4zzpr9-6Qu2W39aM6=w256" alt="CBT Portal Logo" referrerpolicy="no-referrer" loading="eager" fetchpriority="high" decoding="async" onerror="handleLogoFallback(this)" class="w-10 h-10 sm:w-11 sm:h-11 object-contain shrink-0">
                 <div>
                     <h1 id="header-test-title" class="font-semibold text-sm sm:text-base truncate max-w-[180px] sm:max-w-md">CBT Test Player</h1>
                     <p class="text-[11px] text-blue-200">Mode: <span id="header-mode-badge" class="font-bold uppercase bg-blue-800 px-1.5 py-0.5 rounded">Test Mode</span></p>
@@ -421,9 +451,9 @@
                             Loading Question...
                         </h2>
 
-                        <!-- Optional Main Question Image -->
-                        <div id="question-image-container" class="hidden mb-4 p-2 bg-slate-50 border border-slate-200 rounded-xl max-w-lg">
-                            <img id="question-image" src="" alt="Question Illustration" class="max-h-56 mx-auto object-contain rounded">
+                        <!-- Optional Main Question Image (Clean, No Background Box) -->
+                        <div id="question-image-container" class="hidden my-2 max-w-lg">
+                            <img id="question-image" src="" alt="Question Illustration" class="max-h-64 mx-auto object-contain">
                         </div>
                     </div>
 
@@ -1956,7 +1986,7 @@
                 }
                 div.className = divClass;
                 
-                let imgMarkup = optImgSrc ? `<div class="my-2 sm:my-0 sm:ml-4"><img src="${optImgSrc}" alt="Option ${optIdx+1}" class="max-h-24 object-contain rounded border border-slate-200 bg-white p-1"></div>` : '';
+                let imgMarkup = optImgSrc ? `<div class="my-2 sm:my-0 sm:ml-4"><img src="${optImgSrc}" alt="Option ${optIdx+1}" class="max-h-24 object-contain"></div>` : '';
 
                 let iconMarkup = '';
                 if (currentMode === 'quiz' && selectedOpt !== null) {
@@ -2127,7 +2157,7 @@
                 let opts = getLocalizedOptions(q.options, currentLanguage);
                 let expText = pickLocalizedText(q.explanation, currentLanguage);
 
-                let qImgMarkup = (q.image && String(q.image).trim() !== "") ? `<div class="my-2"><img src="${String(q.image).trim()}" alt="Question Image" class="max-h-40 object-contain rounded border border-slate-200"></div>` : '';
+                let qImgMarkup = (q.image && String(q.image).trim() !== "") ? `<div class="my-2"><img src="${String(q.image).trim()}" alt="Question Image" class="max-h-44 object-contain"></div>` : '';
                 
                 let revTableHtml = '';
                 let revResolvedTable = resolveTableData(q.tableData, currentLanguage);
@@ -2199,7 +2229,7 @@
                     } else {
                         optStyle += "bg-slate-50 border-slate-200 text-slate-700";
                     }
-                    let optImgMarkup = (q.optionImages && q.optionImages[oIdx]) ? `<div class="mt-1"><img src="${q.optionImages[oIdx]}" class="max-h-20 object-contain rounded"></div>` : '';
+                    let optImgMarkup = (q.optionImages && q.optionImages[oIdx]) ? `<div class="mt-1"><img src="${q.optionImages[oIdx]}" class="max-h-20 object-contain"></div>` : '';
                     optionsListHtml += `
                         <div class="${optStyle}">
                             <span class="font-bold mr-1">${String.fromCharCode(65 + oIdx)}.</span> ${optText}
