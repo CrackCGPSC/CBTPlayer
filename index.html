@@ -418,37 +418,37 @@
                     <!-- Question Statement & Advanced Structures container -->
                     <div class="space-y-3">
                         <!-- Passage / Context (if any) -->
-                        <div id="question-passage" class="hidden p-3 bg-slate-50 border-l-4 border-blue-600 text-xs sm:text-sm text-slate-700 italic"></div>
+                        <div id="question-passage" class="hidden p-3 bg-slate-50 border-l-4 border-blue-600 text-xs sm:text-sm text-slate-700 italic leading-relaxed whitespace-pre-line"></div>
 
                         <!-- Statement Data (Intro, List, Conclusion) -->
                         <div id="question-statement-box" class="hidden space-y-2 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800">
-                            <div id="stmt-intro"></div>
+                            <div id="stmt-intro" class="whitespace-pre-line"></div>
                             <div id="stmt-list" class="pl-4 space-y-1 font-medium"></div>
-                            <div id="stmt-conclusion"></div>
+                            <div id="stmt-conclusion" class="whitespace-pre-line"></div>
                         </div>
 
                         <!-- Direction Text Box (for Assertion & Reason) -->
-                        <div id="question-direction-box" class="hidden p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs sm:text-sm text-amber-900 font-medium italic"></div>
+                        <div id="question-direction-box" class="hidden p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs sm:text-sm text-amber-900 font-medium italic whitespace-pre-line"></div>
 
                         <!-- Assertion & Reason Box -->
                         <div id="question-assertion-box" class="hidden space-y-2 p-3 bg-indigo-50/50 border border-indigo-200 rounded-xl text-xs sm:text-sm text-indigo-950">
-                            <div id="assertion-row"><strong class="text-indigo-900">Assertion (A):</strong> <span id="assertion-text"></span></div>
-                            <div id="reason-row"><strong class="text-indigo-900">Reason (R):</strong> <span id="reason-text"></span></div>
+                            <div id="assertion-row"><strong class="text-indigo-900">Assertion (A):</strong> <span id="assertion-text" class="whitespace-pre-line"></span></div>
+                            <div id="reason-row"><strong class="text-indigo-900">Reason (R):</strong> <span id="reason-text" class="whitespace-pre-line"></span></div>
                         </div>
 
                         <!-- Table Data (Matrix / Matching) -->
                         <div id="question-table-container" class="hidden overflow-x-auto my-2">
-                            <div id="table-intro" class="text-xs sm:text-sm font-medium mb-2 text-slate-700"></div>
+                            <div id="table-intro" class="text-xs sm:text-sm font-medium mb-2 text-slate-700 whitespace-pre-line"></div>
                             <div id="table-html-wrapper" class="hidden"></div>
                             <table id="question-matrix-table" class="min-w-full divide-y divide-slate-200 border border-slate-200 text-xs sm:text-sm">
                                 <thead class="bg-slate-100 text-slate-700"></thead>
                                 <tbody class="divide-y divide-slate-200 bg-white"></tbody>
                             </table>
-                            <div id="table-conclusion" class="hidden text-xs sm:text-sm font-medium mt-2 text-slate-700"></div>
+                            <div id="table-conclusion" class="hidden text-xs sm:text-sm font-medium mt-2 text-slate-700 whitespace-pre-line"></div>
                         </div>
 
                         <!-- Main Question Statement -->
-                        <h2 id="question-text" class="hidden text-base sm:text-lg font-medium text-slate-900 leading-relaxed">
+                        <h2 id="question-text" class="hidden text-base sm:text-lg font-medium text-slate-900 leading-relaxed whitespace-pre-line">
                             Loading Question...
                         </h2>
 
@@ -1911,7 +1911,7 @@
                     let tbody = matrixTable.querySelector('tbody');
 
                     if (Array.isArray(tObj.headers) && tObj.headers.some(hasVisibleContent)) {
-                        thead.innerHTML = `<tr>${tObj.headers.map(h => `<th class="px-3 py-2 border-b border-slate-200 text-left font-semibold">${h}</th>`).join('')}</tr>`;
+                        thead.innerHTML = `<tr>${tObj.headers.map(h => `<th class="px-3 py-2 border-b border-slate-200 text-left font-semibold whitespace-pre-line">${h}</th>`).join('')}</tr>`;
                         thead.classList.remove('hidden');
                     } else {
                         thead.innerHTML = '';
@@ -1919,7 +1919,7 @@
                     }
 
                     if (Array.isArray(tObj.rows) && tObj.rows.length > 0) {
-                        tbody.innerHTML = tObj.rows.map(row => `<tr>${row.map(cell => `<td class="px-3 py-2 border-b border-slate-100">${cell}</td>`).join('')}</tr>`).join('');
+                        tbody.innerHTML = tObj.rows.map(row => `<tr>${row.map(cell => `<td class="px-3 py-2 border-b border-slate-100 whitespace-pre-line">${cell}</td>`).join('')}</tr>`).join('');
                     } else {
                         tbody.innerHTML = '';
                     }
@@ -2164,16 +2164,16 @@
                 let revResolvedTable = resolveTableData(q.tableData, currentLanguage);
                 if (revResolvedTable && revResolvedTable.table) {
                     let tObj = revResolvedTable.table;
-                    let introMarkup = hasVisibleContent(revResolvedTable.intro) ? `<div class="text-xs font-medium mb-1 text-slate-700">${revResolvedTable.intro}</div>` : '';
-                    let conclMarkup = hasVisibleContent(revResolvedTable.conclusion) ? `<div class="text-xs font-medium mt-1 text-slate-700">${revResolvedTable.conclusion}</div>` : '';
+                    let introMarkup = hasVisibleContent(revResolvedTable.intro) ? `<div class="text-xs font-medium mb-1 text-slate-700 whitespace-pre-line">${revResolvedTable.intro}</div>` : '';
+                    let conclMarkup = hasVisibleContent(revResolvedTable.conclusion) ? `<div class="text-xs font-medium mt-1 text-slate-700 whitespace-pre-line">${revResolvedTable.conclusion}</div>` : '';
                     if (tObj.html) {
                         revTableHtml = `${introMarkup}<div class="overflow-x-auto my-2">${tObj.html}</div>${conclMarkup}`;
                     } else {
                         let headMarkup = (Array.isArray(tObj.headers) && tObj.headers.some(hasVisibleContent))
-                            ? `<thead class="bg-slate-100 text-slate-700"><tr>${tObj.headers.map(h => `<th class="px-2 py-1 border-b text-left font-semibold">${h}</th>`).join('')}</tr></thead>`
+                            ? `<thead class="bg-slate-100 text-slate-700"><tr>${tObj.headers.map(h => `<th class="px-2 py-1 border-b text-left font-semibold whitespace-pre-line">${h}</th>`).join('')}</tr></thead>`
                             : '';
                         let bodyMarkup = (Array.isArray(tObj.rows) && tObj.rows.length > 0)
-                            ? `<tbody class="divide-y divide-slate-200 bg-white">${tObj.rows.map(row => `<tr>${row.map(cell => `<td class="px-2 py-1 border-b">${cell}</td>`).join('')}</tr>`).join('')}</tbody>`
+                            ? `<tbody class="divide-y divide-slate-200 bg-white">${tObj.rows.map(row => `<tr>${row.map(cell => `<td class="px-2 py-1 border-b whitespace-pre-line">${cell}</td>`).join('')}</tr>`).join('')}</tbody>`
                             : '';
                         revTableHtml = `
                             ${introMarkup}
@@ -2189,31 +2189,31 @@
                 }
 
                 let revPassageText = pickLocalizedText(q.passage, currentLanguage);
-                let revPassageHtml = hasVisibleContent(revPassageText) ? `<div class="p-2 bg-slate-50 border-l-4 border-blue-600 text-xs italic">${revPassageText}</div>` : '';
+                let revPassageHtml = hasVisibleContent(revPassageText) ? `<div class="p-2 bg-slate-50 border-l-4 border-blue-600 text-xs italic leading-relaxed whitespace-pre-line">${revPassageText}</div>` : '';
                 
                 let revStmtHtml = '';
                 let revStmt = resolveStatementData(q.statementData, currentLanguage);
                 if (revStmt) {
                     revStmtHtml = `
                         <div class="p-2 bg-slate-50 border border-slate-200 rounded text-xs space-y-1">
-                            ${hasVisibleContent(revStmt.intro) ? `<div>${revStmt.intro}</div>` : ''}
+                            ${hasVisibleContent(revStmt.intro) ? `<div class="whitespace-pre-line">${revStmt.intro}</div>` : ''}
                             ${hasVisibleContent(revStmt.listHtml) ? `<div class="pl-3 font-medium">${revStmt.listHtml}</div>` : ''}
-                            ${hasVisibleContent(revStmt.conclusion) ? `<div>${revStmt.conclusion}</div>` : ''}
+                            ${hasVisibleContent(revStmt.conclusion) ? `<div class="whitespace-pre-line">${revStmt.conclusion}</div>` : ''}
                         </div>
                     `;
                 }
 
                 let revAr = resolveAssertionReason(q, currentLanguage);
                 let revDirectionHtml = hasVisibleContent(revAr.direction)
-                    ? `<div class="p-2 bg-amber-50 border border-amber-200 rounded text-xs font-medium italic text-amber-900">${revAr.direction}</div>`
+                    ? `<div class="p-2 bg-amber-50 border border-amber-200 rounded text-xs font-medium italic text-amber-900 whitespace-pre-line">${revAr.direction}</div>`
                     : '';
 
                 let revAssertionHtml = '';
                 if (hasVisibleContent(revAr.assertion) || hasVisibleContent(revAr.reason)) {
                     revAssertionHtml = `
                         <div class="p-2 bg-indigo-50/50 border border-indigo-200 rounded text-xs space-y-1">
-                            ${hasVisibleContent(revAr.assertion) ? `<div><strong>Assertion (A):</strong> ${revAr.assertion}</div>` : ''}
-                            ${hasVisibleContent(revAr.reason) ? `<div><strong>Reason (R):</strong> ${revAr.reason}</div>` : ''}
+                            ${hasVisibleContent(revAr.assertion) ? `<div><strong>Assertion (A):</strong> <span class="whitespace-pre-line">${revAr.assertion}</span></div>` : ''}
+                            ${hasVisibleContent(revAr.reason) ? `<div><strong>Reason (R):</strong> <span class="whitespace-pre-line">${revAr.reason}</span></div>` : ''}
                         </div>
                     `;
                 }
@@ -2233,7 +2233,7 @@
                     let optImgMarkup = (q.optionImages && q.optionImages[oIdx]) ? `<div class="mt-1"><img src="${q.optionImages[oIdx]}" class="max-h-20 object-contain"></div>` : '';
                     optionsListHtml += `
                         <div class="${optStyle}">
-                            <span class="font-bold mr-1">${String.fromCharCode(65 + oIdx)}.</span> ${optText}
+                            <span class="font-bold mr-1">${String.fromCharCode(65 + oIdx)}.</span> <span class="whitespace-pre-line">${optText}</span>
                             ${isOptCorrect ? ' <i class="fa-solid fa-check text-emerald-600 ml-1"></i>' : ''}
                             ${isOptUser && !isOptCorrect ? ' <i class="fa-solid fa-xmark text-rose-600 ml-1"></i>' : ''}
                             ${optImgMarkup}
@@ -2242,7 +2242,7 @@
                 });
 
                 let qTextReview = pickLocalizedText(q.question, currentLanguage);
-                let qTextReviewHtml = (qTextReview && qTextReview.trim() !== "") ? `<p class="font-semibold text-slate-900 text-sm">${qTextReview}</p>` : '';
+                let qTextReviewHtml = (qTextReview && qTextReview.trim() !== "") ? `<p class="font-semibold text-slate-900 text-sm leading-relaxed whitespace-pre-line">${qTextReview}</p>` : '';
 
                 let div = document.createElement('div');
                 div.className = 'p-6 flex flex-col space-y-4 page-break-avoid';
