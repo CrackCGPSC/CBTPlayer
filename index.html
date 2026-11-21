@@ -44,12 +44,14 @@
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-            /* Strictly hide main test container, question display, side panel, header, and modals */
+            /* Strictly hide main test container, instructions screen, question display, side panel, header, and modals */
             header,
             aside,
             main,
             nav,
             footer,
+            #instructions-screen,
+            #exam-player-wrapper,
             #question-section,
             #pallet-section,
             #import-modal,
@@ -117,225 +119,481 @@
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col md:h-screen md:overflow-hidden">
 
-    <!-- TOP HEADER (Organized & Responsive) -->
-    <header class="bg-blue-900 text-white shadow-md px-4 py-2.5 flex flex-wrap justify-between items-center gap-2 shrink-0 z-40">
-        <div class="flex items-center space-x-3">
-            <div class="bg-blue-800 px-3 py-1.5 rounded-lg border border-blue-700 font-bold tracking-wider text-sm flex items-center">
-                <i class="fa-solid fa-graduation-cap mr-2 text-amber-400"></i>CBT PORTAL
-            </div>
-            <div>
-                <h1 id="header-test-title" class="font-semibold text-sm sm:text-base truncate max-w-[180px] sm:max-w-md">CBT Test Player</h1>
-                <p class="text-[11px] text-blue-200">Mode: <span id="header-mode-badge" class="font-bold uppercase bg-blue-800 px-1.5 py-0.5 rounded">Test Mode</span></p>
-            </div>
-        </div>
-        <div class="flex items-center flex-wrap gap-2 text-xs sm:text-sm">
-            <!-- Mode Toggle -->
-            <div class="flex items-center bg-blue-800 px-2.5 py-1 rounded-lg border border-blue-700">
-                <span class="text-[11px] text-blue-200 mr-1.5 hidden sm:inline"><i class="fa-solid fa-sliders"></i></span>
-                <select id="mode-select" class="bg-blue-900 text-white font-medium focus:outline-none cursor-pointer">
-                    <option value="test">Test Mode</option>
-                    <option value="quiz">Quiz Mode</option>
-                </select>
-            </div>
-            <!-- Language Toggle -->
-            <div class="flex items-center bg-blue-800 px-2.5 py-1 rounded-lg border border-blue-700">
-                <span class="text-[11px] text-blue-200 mr-1.5 hidden sm:inline"><i class="fa-solid fa-language"></i></span>
-                <select id="language-select" class="bg-blue-900 text-white font-medium focus:outline-none cursor-pointer">
-                    <option value="en">English</option>
-                    <option value="hi">हिंदी</option>
-                </select>
-            </div>
-            <!-- Telegram Download Questions Button -->
-            <button onclick="handleTelegramClick(event)" class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-1 rounded-lg font-medium transition shadow flex items-center space-x-1 text-xs sm:text-sm cursor-pointer" title="Download Questions from Telegram">
-                <i class="fa-brands fa-telegram"></i>
-                <span class="hidden md:inline">Telegram</span>
-            </button>
-            <!-- Google Drive JSON Files Folder Button -->
-            <a href="https://drive.google.com/drive/folders/1FG03qKC4xz9xfZ_5RvMfFecVCryP8Thl" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg font-medium transition shadow flex items-center space-x-1 text-xs sm:text-sm cursor-pointer" title="Open Google Drive Test Folder">
-                <i class="fa-brands fa-google-drive"></i>
-                <span class="hidden md:inline">Drive</span>
-            </a>
-            <!-- Import Test Button -->
-            <button onclick="openImportModal()" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded-lg font-medium transition shadow flex items-center space-x-1 text-xs sm:text-sm">
-                <i class="fa-solid fa-file-arrow-up"></i>
-                <span class="hidden md:inline">Import</span>
-            </button>
-            <!-- Exit Button -->
-            <button onclick="confirmExit()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg font-medium transition shadow">
-                <i class="fa-solid fa-power-off"></i>
-            </button>
-        </div>
-    </header>
-
-    <!-- MAIN APP CONTAINER -->
-    <main class="flex-1 flex flex-col md:flex-row relative md:overflow-hidden">
-
-        <!-- LEFT/MAIN SECTION: Question Display & Normal Flow Controls -->
-        <section id="question-section" class="flex-1 flex flex-col bg-white border-r border-slate-200 md:overflow-hidden">
-            
-            <!-- Question Top Bar (Sticky so it doesn't scroll up) -->
-            <div class="bg-slate-50 border-b border-slate-200 px-4 sm:px-6 py-2.5 flex justify-between items-center shrink-0 flex-wrap gap-2 z-10">
-                <div class="flex items-center space-x-2 sm:space-x-3 flex-wrap">
-                    <span class="text-xs sm:text-sm font-bold text-slate-700">Q.<span id="current-q-num">1</span> of <span id="total-q-num">1</span></span>
-                    <!-- Subject Name right beside Question Number -->
-                    <span id="subject-badge" class="text-[11px] px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-800 font-semibold border border-blue-200">General</span>
-                    <span id="q-status-badge" class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-slate-200 text-slate-700">Not Visited</span>
+    <!-- ===================================================================== -->
+    <!-- OFFICIAL GOVERNMENT CBT PRE-EXAM INSTRUCTIONS & CANDIDATE SETUP PORTAL -->
+    <!-- ===================================================================== -->
+    <div id="instructions-screen" class="flex-1 flex flex-col min-h-screen md:h-screen md:overflow-hidden bg-slate-100 z-30">
+        <!-- Official Portal Top Header -->
+        <div class="bg-blue-950 text-white border-b-4 border-amber-400 px-4 sm:px-6 py-3 flex flex-wrap justify-between items-center gap-3 shrink-0 shadow-md">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-900 border border-blue-700 flex items-center justify-center shadow-inner shrink-0">
+                    <i class="fa-solid fa-landmark text-amber-400 text-lg"></i>
                 </div>
-                <!-- Individual PYQ Exam Tag where Subject was previously -->
-                <div id="q-tag-display" class="flex items-center space-x-2 text-xs">
-                    <!-- Individual Exam Tag & Topics Injected Dynamically -->
-                </div>
-            </div>
-
-            <!-- Question Body & Scrollable Content -->
-            <div class="p-4 sm:p-6 flex-1 md:overflow-y-auto flex flex-col space-y-4">
-                <!-- Question Statement & Advanced Structures container -->
-                <div class="space-y-3">
-                    <!-- Passage / Context (if any) -->
-                    <div id="question-passage" class="hidden p-3 bg-slate-50 border-l-4 border-blue-600 text-xs sm:text-sm text-slate-700 italic"></div>
-
-                    <!-- Statement Data (Intro, List, Conclusion) -->
-                    <div id="question-statement-box" class="hidden space-y-2 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800">
-                        <div id="stmt-intro"></div>
-                        <div id="stmt-list" class="pl-4 space-y-1 font-medium"></div>
-                        <div id="stmt-conclusion"></div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-extrabold tracking-wider text-sm sm:text-base uppercase">CBT Examination Portal</span>
+                        <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-widest bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded">Official CBT Interface</span>
                     </div>
-
-                    <!-- Direction Text Box (for Assertion & Reason) -->
-                    <div id="question-direction-box" class="hidden p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs sm:text-sm text-amber-900 font-medium italic"></div>
-
-                    <!-- Assertion & Reason Box -->
-                    <div id="question-assertion-box" class="hidden space-y-2 p-3 bg-indigo-50/50 border border-indigo-200 rounded-xl text-xs sm:text-sm text-indigo-950">
-                        <div><strong class="text-indigo-900">Assertion (A):</strong> <span id="assertion-text"></span></div>
-                        <div><strong class="text-indigo-900">Reason (R):</strong> <span id="reason-text"></span></div>
-                    </div>
-
-                    <!-- Table Data (Matrix / Matching) -->
-                    <div id="question-table-container" class="hidden overflow-x-auto my-2">
-                        <div id="table-intro" class="text-xs font-medium mb-2 text-slate-700"></div>
-                        <table id="question-matrix-table" class="min-w-full divide-y divide-slate-200 border border-slate-200 text-xs sm:text-sm">
-                            <thead class="bg-slate-100 text-slate-700"></thead>
-                            <tbody class="divide-y divide-slate-200 bg-white"></tbody>
-                        </table>
-                    </div>
-
-                    <!-- Main Question Statement -->
-                    <h2 id="question-text" class="hidden text-base sm:text-lg font-medium text-slate-900 leading-relaxed">
-                        Loading Question...
-                    </h2>
-
-                    <!-- Optional Main Question Image -->
-                    <div id="question-image-container" class="hidden mb-4 p-2 bg-slate-50 border border-slate-200 rounded-xl max-w-lg">
-                        <img id="question-image" src="" alt="Question Illustration" class="max-h-56 mx-auto object-contain rounded">
-                    </div>
-                </div>
-
-                <!-- Options List (With Option Images Support) -->
-                <div id="options-container" class="space-y-3">
-                    <!-- Options injected dynamically -->
-                </div>
-
-                <!-- Instant Explanation Box (Visible in Quiz Mode) -->
-                <div id="explanation-box" class="hidden p-4 rounded-xl border border-blue-200 bg-blue-50/60">
-                    <h4 class="font-bold text-blue-900 mb-1 flex items-center text-sm">
-                        <i class="fa-solid fa-circle-info mr-2 text-blue-600"></i> Explanation / Solution:
-                    </h4>
-                    <p id="explanation-text" class="text-xs sm:text-sm text-blue-800 leading-relaxed"></p>
+                    <p class="text-[11px] text-blue-200">Computer Based Test &bull; Candidate Verification & General Instructions</p>
                 </div>
             </div>
-
-            <!-- NAVIGATION BUTTONS -->
-            <div class="px-4 sm:px-6 py-3 border-t border-slate-200 bg-white shrink-0 flex flex-wrap justify-between items-center gap-3 z-10">
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="markForReviewAndNext()" class="bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition shadow-sm flex items-center">
-                        <i class="fa-solid fa-bookmark mr-1.5"></i> Mark for Review & Next
-                    </button>
-                    <button onclick="clearResponse()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition">
-                        <i class="fa-solid fa-rotate-left mr-1.5"></i> Clear
-                    </button>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="previousQuestion()" class="bg-slate-700 hover:bg-slate-800 text-white px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition">
-                        <i class="fa-solid fa-chevron-left mr-1"></i> Prev
-                    </button>
-                    <button onclick="saveAndNext()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition shadow">
-                        Save & Next <i class="fa-solid fa-chevron-right ml-1"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- RIGHT SIDE: Candidate Pallet & Timer Panel -->
-        <aside id="pallet-section" class="w-full md:w-80 bg-white border-l border-slate-200 flex flex-col shrink-0 md:h-full md:overflow-hidden">
-            
-            <!-- Candidate Info -->
-            <div class="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center space-x-3 shrink-0">
-                <div class="w-9 h-9 rounded-full bg-blue-800 text-white flex items-center justify-center font-bold text-xs shadow-inner">
-                    <i class="fa-solid fa-user-graduate"></i>
-                </div>
-                <div class="overflow-hidden">
-                    <h3 class="font-bold text-slate-800 text-xs truncate">Candidate: Aspirant</h3>
-                    <p class="text-[11px] text-slate-500">Roll No: CBT-2026-001</p>
-                </div>
-            </div>
-
-            <!-- Timer Box -->
-            <div class="p-2.5 bg-blue-900 text-white flex justify-between items-center shadow-inner shrink-0">
-                <div class="text-[11px] uppercase tracking-wider text-blue-200 font-medium">
-                    <i class="fa-regular fa-clock mr-1"></i> Time Left:
-                </div>
-                <div id="timer-display" class="font-mono text-sm font-bold tracking-widest text-amber-300 bg-blue-950 px-2 py-0.5 rounded border border-blue-800">
-                    00:00:00
-                </div>
-            </div>
-
-            <!-- Marking Scheme Box -->
-            <div class="px-3 py-1.5 bg-slate-50 border-b border-slate-200 flex justify-between items-center text-xs shrink-0">
-                <span class="text-slate-500 font-medium"><i class="fa-solid fa-scale-balanced mr-1"></i> Marking:</span>
-                <div class="flex items-center space-x-2 font-medium">
-                    <span class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">+<span id="marks-correct">1</span></span>
-                    <span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">-<span id="marks-negative">0.25</span></span>
-                </div>
-            </div>
-
-            <!-- Question Status Legend -->
-            <div class="p-2 bg-slate-50 border-b border-slate-200 text-[10px] grid grid-cols-2 gap-1 shrink-0">
-                <div class="flex items-center space-x-1">
-                    <span class="w-4 h-4 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-[9px]">0</span>
-                    <span class="text-slate-700">Answered</span>
-                </div>
-                <div class="flex items-center space-x-1">
-                    <span class="w-4 h-4 rounded-full bg-rose-500 text-white font-bold flex items-center justify-center text-[9px]">0</span>
-                    <span class="text-slate-700">Not Answered</span>
-                </div>
-                <div class="flex items-center space-x-1">
-                    <span class="w-4 h-4 rounded-full bg-slate-300 text-slate-700 font-bold flex items-center justify-center text-[9px]">0</span>
-                    <span class="text-slate-700">Not Visited</span>
-                </div>
-                <div class="flex items-center space-x-1">
-                    <span class="w-4 h-4 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-[9px]">0</span>
-                    <span class="text-slate-700">Marked Review</span>
-                </div>
-            </div>
-
-            <!-- Question Palette Grid Container (Scrollable box with fixed mobile height & desktop flex-1) -->
-            <div class="p-3 bg-slate-100/50 max-h-56 md:max-h-none md:flex-1 overflow-y-auto shrink-0">
-                <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Question Palette:</div>
-                <div id="palette-grid" class="grid grid-cols-5 gap-2 pb-2">
-                    <!-- Palette buttons injected dynamically -->
-                </div>
-            </div>
-
-            <!-- Submit Exam Action Button -->
-            <div class="p-3 bg-white border-t border-slate-200 shrink-0">
-                <button onclick="submitTestConfirmation()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow transition flex items-center justify-center space-x-2 text-sm">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    <span>Submit Test</span>
+            <div class="flex items-center flex-wrap gap-2 text-xs sm:text-sm">
+                <button onclick="handleTelegramClick(event)" class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-lg font-medium transition shadow flex items-center space-x-1.5 cursor-pointer" title="Download Questions from Telegram">
+                    <i class="fa-brands fa-telegram"></i>
+                    <span class="hidden sm:inline">Telegram</span>
+                </button>
+                <a href="https://drive.google.com/drive/folders/1FG03qKC4xz9xfZ_5RvMfFecVCryP8Thl" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-medium transition shadow flex items-center space-x-1.5 cursor-pointer" title="Open Google Drive Test Folder">
+                    <i class="fa-brands fa-google-drive"></i>
+                    <span class="hidden sm:inline">Drive</span>
+                </a>
+                <button onclick="openImportModal()" class="bg-amber-500 hover:bg-amber-600 text-blue-950 px-3.5 py-1.5 rounded-lg font-bold transition shadow flex items-center space-x-1.5 cursor-pointer">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                    <span>Import Test File</span>
                 </button>
             </div>
-        </aside>
+        </div>
 
-    </main>
+        <!-- Examination Summary Strip -->
+        <div class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 shrink-0 shadow-sm">
+            <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+                <div class="min-w-0">
+                    <div class="text-[10px] font-bold uppercase tracking-widest text-blue-700 flex items-center space-x-1.5">
+                        <i class="fa-solid fa-file-signature"></i>
+                        <span>Loaded Examination Paper</span>
+                    </div>
+                    <h2 id="inst-test-title" class="text-base sm:text-lg font-bold text-slate-900 truncate mt-0.5">CBT Test Player Guide</h2>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 shrink-0 text-xs">
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
+                        <span class="block text-[10px] uppercase font-semibold text-slate-500">Questions</span>
+                        <span id="inst-total-q" class="font-bold text-slate-900 text-sm">1</span>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
+                        <span class="block text-[10px] uppercase font-semibold text-slate-500">Duration</span>
+                        <span class="font-bold text-slate-900 text-sm"><span id="inst-duration">60</span> Mins</span>
+                    </div>
+                    <div class="bg-emerald-50/70 border border-emerald-200 rounded-lg px-3 py-1.5">
+                        <span class="block text-[10px] uppercase font-semibold text-emerald-700">Correct Marks</span>
+                        <span class="font-bold text-emerald-700 text-sm">+<span id="inst-pos-marks">1</span></span>
+                    </div>
+                    <div class="bg-rose-50/70 border border-rose-200 rounded-lg px-3 py-1.5">
+                        <span class="block text-[10px] uppercase font-semibold text-rose-700">Negative Marks</span>
+                        <span class="font-bold text-rose-700 text-sm">-<span id="inst-neg-marks">0.25</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two-Column Official CBT Portal Body -->
+        <div class="flex-1 md:overflow-hidden flex flex-col lg:flex-row max-w-7xl w-full mx-auto p-3 sm:p-5 gap-4 sm:gap-5">
+            
+            <!-- LEFT COLUMN: Official General Instructions -->
+            <div class="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col md:overflow-hidden">
+                <div class="bg-slate-50 border-b border-slate-200 px-4 sm:px-5 py-3 flex items-center justify-between shrink-0">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-7 h-7 rounded-md bg-blue-900 text-white flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-clipboard-list"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base">General Instructions</h3>
+                            <p class="text-[11px] text-slate-500">Please read all examination rules carefully before proceeding</p>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-800 border border-blue-200 px-2.5 py-1 rounded-full">Mandatory</span>
+                </div>
+
+                <div class="p-4 sm:p-6 md:overflow-y-auto flex-1 space-y-5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <!-- Section 1: Duration & Clock -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2">1</span>
+                            Examination Timing & Auto-Submission
+                        </h4>
+                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
+                            <li>Total duration of this examination is <strong class="text-slate-800"><span id="inst-rule-duration">60</span> minutes</strong> and maximum marks are <strong class="text-slate-800"><span id="inst-rule-maxmarks">1</span></strong>.</li>
+                            <li>The countdown timer displayed in the right-hand panel shows the remaining examination time.</li>
+                            <li>When the timer reaches <span class="font-mono font-semibold text-slate-800">00:00:00</span>, the examination will end and submit automatically.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 2: Question Palette Symbols -->
+                    <div class="space-y-2.5">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2">2</span>
+                            Question Palette Status Indicators
+                        </h4>
+                        <p class="text-slate-600">The Question Palette on the right side of the exam screen displays the status of each question using the following symbols:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                                <span class="w-7 h-7 rounded-lg bg-slate-200 text-slate-700 border border-slate-300 font-bold text-xs flex items-center justify-center shrink-0">1</span>
+                                <span class="text-xs text-slate-700"><strong>Not Visited</strong> — You have not visited the question yet.</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-rose-50/50 border border-rose-200">
+                                <span class="w-7 h-7 rounded-lg bg-rose-500 text-white border border-rose-600 font-bold text-xs flex items-center justify-center shrink-0">2</span>
+                                <span class="text-xs text-slate-700"><strong>Not Answered</strong> — You have viewed but not answered the question.</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-emerald-50/50 border border-emerald-200">
+                                <span class="w-7 h-7 rounded-lg bg-emerald-500 text-white border border-emerald-600 font-bold text-xs flex items-center justify-center shrink-0">3</span>
+                                <span class="text-xs text-slate-700"><strong>Answered</strong> — You have selected and saved your response.</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-purple-50/50 border border-purple-200">
+                                <span class="w-7 h-7 rounded-lg bg-purple-600 text-white border border-purple-700 font-bold text-xs flex items-center justify-center shrink-0">4</span>
+                                <span class="text-xs text-slate-700"><strong>Marked for Review</strong> — Flagged to revisit before submission.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Answering & Navigation -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2">3</span>
+                            Navigating & Answering Questions
+                        </h4>
+                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
+                            <li>Click on any question number in the Question Palette to jump directly to that question.</li>
+                            <li>Click <strong class="text-blue-700">Save & Next</strong> to save your answer and proceed to the next question, or <strong class="text-purple-700">Mark for Review & Next</strong> to flag a question for later review.</li>
+                            <li>To deselect a chosen option, click the <strong class="text-slate-800">Clear</strong> button.</li>
+                            <li>You can switch between <strong>English</strong> and <strong>हिंदी</strong> anytime using the top language selector. Single-language questions will automatically remain visible in their available language.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 4: Marking & Exam Mode Policy -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2">4</span>
+                            Marking Scheme & Mode Integrity Policy
+                        </h4>
+                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
+                            <li>Each correct response awards <strong class="text-emerald-700">+<span id="inst-rule-pos">1</span> mark(s)</strong>. Each incorrect response incurs a penalty of <strong class="text-rose-700">-<span id="inst-rule-neg">0.25</span> mark(s)</strong>. Unattempted questions carry 0 marks.</li>
+                            <li><strong>Test Mode (Exam Lock):</strong> Simulates an official Government CBT exam. Correct answers and solutions remain hidden until final submission, and mode switching is strictly locked during the exam.</li>
+                            <li><strong>Quiz Mode (Practice):</strong> Displays instant answer verification and detailed explanation immediately after selecting an option.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Candidate Verification & Mode Selection Form -->
+            <div class="w-full lg:w-[410px] shrink-0 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col md:overflow-hidden">
+                <!-- Candidate Banner Preview -->
+                <div class="bg-gradient-to-r from-blue-900 to-blue-800 text-white p-4 flex items-center space-x-3.5 shrink-0">
+                    <div class="w-12 h-12 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center text-amber-300 text-xl shadow-inner shrink-0">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <span class="text-[10px] uppercase tracking-widest text-blue-200 font-semibold block">Candidate Profile</span>
+                        <h3 id="inst-preview-name" class="font-bold text-base text-white truncate">Aspirant</h3>
+                        <p class="text-[11px] text-blue-200 font-mono">Roll No: CBT-2026-001</p>
+                    </div>
+                </div>
+
+                <!-- Scrollable Configuration Form -->
+                <div class="p-4 sm:p-5 md:overflow-y-auto flex-1 space-y-4">
+                    <!-- Field 1: Candidate Name -->
+                    <div>
+                        <label for="candidate-name-input" class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1.5">
+                            <i class="fa-solid fa-id-card mr-1.5 text-blue-700"></i>Candidate Full Name
+                        </label>
+                        <input
+                            type="text"
+                            id="candidate-name-input"
+                            maxlength="50"
+                            placeholder="Enter your full name (e.g., Rahul Sharma)"
+                            class="w-full px-3.5 py-2.5 text-sm font-medium text-slate-900 bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition"
+                        />
+                        <p class="text-[11px] text-slate-500 mt-1">This name will appear on the CBT Player and Official Result Score Card.</p>
+                    </div>
+
+                    <!-- Field 2: Select Exam Mode -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">
+                                <i class="fa-solid fa-sliders mr-1.5 text-blue-700"></i>Select Examination Mode
+                            </label>
+                            <span class="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+                                <i class="fa-solid fa-lock mr-1"></i>Locked After Start
+                            </span>
+                        </div>
+
+                        <div class="space-y-2.5">
+                            <!-- Test Mode Radio Card -->
+                            <label id="mode-card-test" class="flex items-start space-x-3 p-3 rounded-xl border-2 border-blue-600 bg-blue-50/60 cursor-pointer transition">
+                                <input type="radio" name="pre_exam_mode" value="test" checked class="mt-0.5 w-4 h-4 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <span class="font-bold text-sm text-slate-900">Test Mode</span>
+                                        <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-blue-900 text-white">Exam Simulation</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5 leading-snug">Official timed CBT exam. Solutions stay hidden until final submission; cannot switch to Quiz Mode mid-test.</p>
+                                </div>
+                            </label>
+
+                            <!-- Quiz Mode Radio Card -->
+                            <label id="mode-card-quiz" class="flex items-start space-x-3 p-3 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 cursor-pointer transition">
+                                <input type="radio" name="pre_exam_mode" value="quiz" class="mt-0.5 w-4 h-4 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <span class="font-bold text-sm text-slate-900">Quiz Mode</span>
+                                        <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">Instant Practice</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5 leading-snug">Shows immediate right/wrong indicator and full explanation after each option selection.</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Field 3: Default Question Language -->
+                    <div>
+                        <label for="inst-language-select" class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1.5">
+                            <i class="fa-solid fa-language mr-1.5 text-blue-700"></i>Choose Default Language
+                        </label>
+                        <select id="inst-language-select" class="w-full px-3.5 py-2.5 text-sm font-medium text-slate-900 bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none cursor-pointer">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी (Hindi)</option>
+                        </select>
+                        <p class="text-[11px] text-slate-500 mt-1">You may toggle language anytime during the exam for bilingual questions.</p>
+                    </div>
+
+                    <!-- Official Declaration Box -->
+                    <div id="inst-declaration-box" class="p-3 rounded-xl bg-amber-50/80 border border-amber-200 transition">
+                        <label class="flex items-start space-x-2.5 cursor-pointer">
+                            <input type="checkbox" id="inst-declaration-checkbox" class="mt-0.5 w-4 h-4 text-blue-700 rounded border-slate-400 focus:ring-blue-600 cursor-pointer shrink-0">
+                            <span class="text-[11px] text-slate-700 leading-relaxed font-medium">
+                                I have read and understood all the instructions. I confirm my candidate details and selected mode, and understand that the exam mode cannot be changed once the test begins.
+                            </span>
+                        </label>
+                        <p id="inst-declaration-error" class="hidden text-[11px] font-bold text-rose-600 mt-2 flex items-center">
+                            <i class="fa-solid fa-circle-exclamation mr-1.5"></i> Please accept the declaration above to begin the examination.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Sticky Start Examination Footer -->
+                <div class="p-4 bg-slate-50 border-t border-slate-200 shrink-0">
+                    <button id="start-exam-btn" onclick="startExamSession()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-sm cursor-pointer">
+                        <span>I am ready to begin</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- ACTIVE CBT EXAM PLAYER CONTAINER (Hidden until user begins test)       -->
+    <!-- ===================================================================== -->
+    <div id="exam-player-wrapper" class="hidden flex-1 flex flex-col min-h-screen md:h-screen md:overflow-hidden">
+        <!-- TOP HEADER (Organized & Responsive) -->
+        <header class="bg-blue-900 text-white shadow-md px-4 py-2.5 flex flex-wrap justify-between items-center gap-2 shrink-0 z-40">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-800 px-3 py-1.5 rounded-lg border border-blue-700 font-bold tracking-wider text-sm flex items-center">
+                    <i class="fa-solid fa-graduation-cap mr-2 text-amber-400"></i>CBT PORTAL
+                </div>
+                <div>
+                    <h1 id="header-test-title" class="font-semibold text-sm sm:text-base truncate max-w-[180px] sm:max-w-md">CBT Test Player</h1>
+                    <p class="text-[11px] text-blue-200">Mode: <span id="header-mode-badge" class="font-bold uppercase bg-blue-800 px-1.5 py-0.5 rounded">Test Mode</span></p>
+                </div>
+            </div>
+            <div class="flex items-center flex-wrap gap-2 text-xs sm:text-sm">
+                <!-- Language Toggle -->
+                <div class="flex items-center bg-blue-800 px-2.5 py-1 rounded-lg border border-blue-700">
+                    <span class="text-[11px] text-blue-200 mr-1.5 hidden sm:inline"><i class="fa-solid fa-language"></i></span>
+                    <select id="language-select" class="bg-blue-900 text-white font-medium focus:outline-none cursor-pointer">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                    </select>
+                </div>
+                <!-- Telegram Download Questions Button -->
+                <button onclick="handleTelegramClick(event)" class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-1 rounded-lg font-medium transition shadow flex items-center space-x-1 text-xs sm:text-sm cursor-pointer" title="Download Questions from Telegram">
+                    <i class="fa-brands fa-telegram"></i>
+                    <span class="hidden md:inline">Telegram</span>
+                </button>
+                <!-- Google Drive JSON Files Folder Button -->
+                <a href="https://drive.google.com/drive/folders/1FG03qKC4xz9xfZ_5RvMfFecVCryP8Thl" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg font-medium transition shadow flex items-center space-x-1 text-xs sm:text-sm cursor-pointer" title="Open Google Drive Test Folder">
+                    <i class="fa-brands fa-google-drive"></i>
+                    <span class="hidden md:inline">Drive</span>
+                </a>
+                <!-- Import Test Button -->
+                <button onclick="openImportModal()" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded-lg font-medium transition shadow flex items-center space-x-1 text-xs sm:text-sm">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                    <span class="hidden md:inline">Import</span>
+                </button>
+                <!-- Exit Button -->
+                <button onclick="confirmExit()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg font-medium transition shadow">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN APP CONTAINER -->
+        <main class="flex-1 flex flex-col md:flex-row relative md:overflow-hidden">
+
+            <!-- LEFT/MAIN SECTION: Question Display & Normal Flow Controls -->
+            <section id="question-section" class="flex-1 flex flex-col bg-white border-r border-slate-200 md:overflow-hidden">
+                
+                <!-- Question Top Bar (Sticky so it doesn't scroll up) -->
+                <div class="bg-slate-50 border-b border-slate-200 px-4 sm:px-6 py-2.5 flex justify-between items-center shrink-0 flex-wrap gap-2 z-10">
+                    <div class="flex items-center space-x-2 sm:space-x-3 flex-wrap">
+                        <span class="text-xs sm:text-sm font-bold text-slate-700">Q.<span id="current-q-num">1</span> of <span id="total-q-num">1</span></span>
+                        <!-- Subject Name right beside Question Number -->
+                        <span id="subject-badge" class="text-[11px] px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-800 font-semibold border border-blue-200">General</span>
+                        <span id="q-status-badge" class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-slate-200 text-slate-700">Not Visited</span>
+                    </div>
+                    <!-- Individual PYQ Exam Tag where Subject was previously -->
+                    <div id="q-tag-display" class="flex items-center space-x-2 text-xs">
+                        <!-- Individual Exam Tag & Topics Injected Dynamically -->
+                    </div>
+                </div>
+
+                <!-- Question Body & Scrollable Content -->
+                <div class="p-4 sm:p-6 flex-1 md:overflow-y-auto flex flex-col space-y-4">
+                    <!-- Question Statement & Advanced Structures container -->
+                    <div class="space-y-3">
+                        <!-- Passage / Context (if any) -->
+                        <div id="question-passage" class="hidden p-3 bg-slate-50 border-l-4 border-blue-600 text-xs sm:text-sm text-slate-700 italic"></div>
+
+                        <!-- Statement Data (Intro, List, Conclusion) -->
+                        <div id="question-statement-box" class="hidden space-y-2 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800">
+                            <div id="stmt-intro"></div>
+                            <div id="stmt-list" class="pl-4 space-y-1 font-medium"></div>
+                            <div id="stmt-conclusion"></div>
+                        </div>
+
+                        <!-- Direction Text Box (for Assertion & Reason) -->
+                        <div id="question-direction-box" class="hidden p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs sm:text-sm text-amber-900 font-medium italic"></div>
+
+                        <!-- Assertion & Reason Box -->
+                        <div id="question-assertion-box" class="hidden space-y-2 p-3 bg-indigo-50/50 border border-indigo-200 rounded-xl text-xs sm:text-sm text-indigo-950">
+                            <div><strong class="text-indigo-900">Assertion (A):</strong> <span id="assertion-text"></span></div>
+                            <div><strong class="text-indigo-900">Reason (R):</strong> <span id="reason-text"></span></div>
+                        </div>
+
+                        <!-- Table Data (Matrix / Matching) -->
+                        <div id="question-table-container" class="hidden overflow-x-auto my-2">
+                            <div id="table-intro" class="text-xs font-medium mb-2 text-slate-700"></div>
+                            <table id="question-matrix-table" class="min-w-full divide-y divide-slate-200 border border-slate-200 text-xs sm:text-sm">
+                                <thead class="bg-slate-100 text-slate-700"></thead>
+                                <tbody class="divide-y divide-slate-200 bg-white"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- Main Question Statement -->
+                        <h2 id="question-text" class="hidden text-base sm:text-lg font-medium text-slate-900 leading-relaxed">
+                            Loading Question...
+                        </h2>
+
+                        <!-- Optional Main Question Image -->
+                        <div id="question-image-container" class="hidden mb-4 p-2 bg-slate-50 border border-slate-200 rounded-xl max-w-lg">
+                            <img id="question-image" src="" alt="Question Illustration" class="max-h-56 mx-auto object-contain rounded">
+                        </div>
+                    </div>
+
+                    <!-- Options List (With Option Images Support) -->
+                    <div id="options-container" class="space-y-3">
+                        <!-- Options injected dynamically -->
+                    </div>
+
+                    <!-- Instant Explanation Box (Visible in Quiz Mode) -->
+                    <div id="explanation-box" class="hidden p-4 rounded-xl border border-blue-200 bg-blue-50/60">
+                        <h4 class="font-bold text-blue-900 mb-1 flex items-center text-sm">
+                            <i class="fa-solid fa-circle-info mr-2 text-blue-600"></i> Explanation / Solution:
+                        </h4>
+                        <p id="explanation-text" class="text-xs sm:text-sm text-blue-800 leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <!-- NAVIGATION BUTTONS -->
+                <div class="px-4 sm:px-6 py-3 border-t border-slate-200 bg-white shrink-0 flex flex-wrap justify-between items-center gap-3 z-10">
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="markForReviewAndNext()" class="bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition shadow-sm flex items-center">
+                            <i class="fa-solid fa-bookmark mr-1.5"></i> Mark for Review & Next
+                        </button>
+                        <button onclick="clearResponse()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition">
+                            <i class="fa-solid fa-rotate-left mr-1.5"></i> Clear
+                        </button>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="previousQuestion()" class="bg-slate-700 hover:bg-slate-800 text-white px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+                        </button>
+                        <button onclick="saveAndNext()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition shadow">
+                            Save & Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT SIDE: Candidate Pallet & Timer Panel -->
+            <aside id="pallet-section" class="w-full md:w-80 bg-white border-l border-slate-200 flex flex-col shrink-0 md:h-full md:overflow-hidden">
+                
+                <!-- Candidate Info -->
+                <div class="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center space-x-3 shrink-0">
+                    <div class="w-9 h-9 rounded-full bg-blue-800 text-white flex items-center justify-center font-bold text-xs shadow-inner">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <h3 class="font-bold text-slate-800 text-xs truncate">Candidate: <span id="player-candidate-name">Aspirant</span></h3>
+                        <p class="text-[11px] text-slate-500">Roll No: CBT-2026-001</p>
+                    </div>
+                </div>
+
+                <!-- Timer Box -->
+                <div class="p-2.5 bg-blue-900 text-white flex justify-between items-center shadow-inner shrink-0">
+                    <div class="text-[11px] uppercase tracking-wider text-blue-200 font-medium">
+                        <i class="fa-regular fa-clock mr-1"></i> Time Left:
+                    </div>
+                    <div id="timer-display" class="font-mono text-sm font-bold tracking-widest text-amber-300 bg-blue-950 px-2 py-0.5 rounded border border-blue-800">
+                        00:00:00
+                    </div>
+                </div>
+
+                <!-- Marking Scheme Box -->
+                <div class="px-3 py-1.5 bg-slate-50 border-b border-slate-200 flex justify-between items-center text-xs shrink-0">
+                    <span class="text-slate-500 font-medium"><i class="fa-solid fa-scale-balanced mr-1"></i> Marking:</span>
+                    <div class="flex items-center space-x-2 font-medium">
+                        <span class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">+<span id="marks-correct">1</span></span>
+                        <span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">-<span id="marks-negative">0.25</span></span>
+                    </div>
+                </div>
+
+                <!-- Question Status Legend -->
+                <div class="p-2 bg-slate-50 border-b border-slate-200 text-[10px] grid grid-cols-2 gap-1 shrink-0">
+                    <div class="flex items-center space-x-1">
+                        <span class="w-4 h-4 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-[9px]">0</span>
+                        <span class="text-slate-700">Answered</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <span class="w-4 h-4 rounded-full bg-rose-500 text-white font-bold flex items-center justify-center text-[9px]">0</span>
+                        <span class="text-slate-700">Not Answered</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <span class="w-4 h-4 rounded-full bg-slate-300 text-slate-700 font-bold flex items-center justify-center text-[9px]">0</span>
+                        <span class="text-slate-700">Not Visited</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <span class="w-4 h-4 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-[9px]">0</span>
+                        <span class="text-slate-700">Marked Review</span>
+                    </div>
+                </div>
+
+                <!-- Question Palette Grid Container (Scrollable box with fixed mobile height & desktop flex-1) -->
+                <div class="p-3 bg-slate-100/50 max-h-56 md:max-h-none md:flex-1 overflow-y-auto shrink-0">
+                    <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Question Palette:</div>
+                    <div id="palette-grid" class="grid grid-cols-5 gap-2 pb-2">
+                        <!-- Palette buttons injected dynamically -->
+                    </div>
+                </div>
+
+                <!-- Submit Exam Action Button -->
+                <div class="p-3 bg-white border-t border-slate-200 shrink-0">
+                    <button onclick="submitTestConfirmation()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow transition flex items-center justify-center space-x-2 text-sm">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Submit Test</span>
+                    </button>
+                </div>
+            </aside>
+
+        </main>
+    </div>
 
     <!-- RESULT & REPORT SECTION -->
     <div id="result-modal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center overflow-y-auto p-4">
@@ -375,7 +633,7 @@
                             <p class="text-xs text-slate-500">Mode: <span id="res-mode-badge" class="font-semibold text-slate-700">Test Mode</span> &bull; Submitted: <span id="res-exam-date" class="font-medium"></span></p>
                         </div>
                         <div class="text-right text-xs bg-slate-50 p-2.5 rounded-lg border border-slate-200">
-                            <p class="font-bold text-slate-800"><i class="fa-solid fa-user-graduate mr-1 text-blue-700"></i>Candidate: Aspirant</p>
+                            <p class="font-bold text-slate-800"><i class="fa-solid fa-user-graduate mr-1 text-blue-700"></i>Candidate: <span id="res-candidate-name">Aspirant</span></p>
                             <p class="text-slate-500">Roll No: <span class="font-mono font-semibold">CBT-2026-001</span></p>
                         </div>
                     </div>
@@ -477,7 +735,7 @@
                 </div>
                 <div class="flex justify-end space-x-3 pt-2">
                     <button onclick="closeImportModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-sm font-medium transition">Cancel</button>
-                    <button onclick="processTestImport()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold shadow transition">Normalize & Start Test</button>
+                    <button onclick="processTestImport()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold shadow transition">Import & Proceed to Instructions</button>
                 </div>
             </div>
         </div>
@@ -580,33 +838,182 @@
             ]
         };
 
+        let pendingTestData = null;
         let testData = null;
         let currentQuestionIndex = 0;
         let userResponses = {};
         let currentMode = 'test';
         let currentLanguage = 'en';
+        let candidateName = 'Aspirant';
         let timerInterval = null;
         let totalSecondsRemaining = 0;
         let examStartTime = null;
         let performanceChartInstance = null;
 
+        // =========================================================================
+        // SINGLE-LANGUAGE & BILINGUAL FALLBACK HELPERS (Prevents Blank Options/Text)
+        // =========================================================================
+        function isNonEmptyText(val) {
+            return val !== null && val !== undefined && String(val).trim().length > 0;
+        }
+
+        function pickLocalizedText(obj, lang) {
+            if (obj === null || obj === undefined) return "";
+            if (typeof obj === 'string') return obj.trim();
+            if (typeof obj !== 'object') return String(obj).trim();
+
+            const enVal = isNonEmptyText(obj.en) ? String(obj.en) : (isNonEmptyText(obj.english) ? String(obj.english) : "");
+            const hiVal = isNonEmptyText(obj.hi) ? String(obj.hi) : (isNonEmptyText(obj.hindi) ? String(obj.hindi) : "");
+
+            if (lang === 'hi') {
+                if (isNonEmptyText(hiVal)) return hiVal;
+                if (isNonEmptyText(enVal)) return enVal;
+            } else {
+                if (isNonEmptyText(enVal)) return enVal;
+                if (isNonEmptyText(hiVal)) return hiVal;
+            }
+
+            const anyVal = Object.values(obj).find(v => typeof v === 'string' && v.trim().length > 0);
+            return anyVal || "";
+        }
+
+        function hasValidOptionsArray(arr) {
+            return Array.isArray(arr) && arr.length > 0 && arr.some(o => isNonEmptyText(o));
+        }
+
+        function getLocalizedOptions(optionsObj, lang) {
+            if (!optionsObj) return [];
+            if (Array.isArray(optionsObj)) {
+                return optionsObj.map(o => pickLocalizedText(o, lang));
+            }
+
+            const primary = lang === 'hi' ? optionsObj.hi : optionsObj.en;
+            const fallback = lang === 'hi' ? optionsObj.en : optionsObj.hi;
+
+            const primaryValid = hasValidOptionsArray(primary);
+            const fallbackValid = hasValidOptionsArray(fallback);
+
+            if (!primaryValid && fallbackValid) {
+                return fallback;
+            }
+            if (primaryValid && !fallbackValid) {
+                return primary;
+            }
+            if (primaryValid && fallbackValid) {
+                const maxLen = Math.max(primary.length, fallback.length);
+                const resolved = [];
+                for (let i = 0; i < maxLen; i++) {
+                    const pVal = (primary[i] !== undefined && primary[i] !== null) ? String(primary[i]) : "";
+                    const fVal = (fallback[i] !== undefined && fallback[i] !== null) ? String(fallback[i]) : "";
+                    resolved.push(pVal.trim() !== "" ? pVal : fVal);
+                }
+                return resolved;
+            }
+
+            const anyArr = Object.values(optionsObj).find(v => hasValidOptionsArray(v));
+            return anyArr ? anyArr.map(o => String(o)) : [];
+        }
+
+        function isValidTableObj(tObj) {
+            return tObj && Array.isArray(tObj.headers) && tObj.headers.length > 0 && Array.isArray(tObj.rows) && tObj.rows.length > 0;
+        }
+
+        function pickLocalizedTableObj(tableObjWrapper, lang) {
+            if (!tableObjWrapper) return null;
+            if (isValidTableObj(tableObjWrapper)) return tableObjWrapper;
+            const primary = lang === 'hi' ? tableObjWrapper.hi : tableObjWrapper.en;
+            const fallback = lang === 'hi' ? tableObjWrapper.en : tableObjWrapper.hi;
+            if (isValidTableObj(primary)) return primary;
+            if (isValidTableObj(fallback)) return fallback;
+            const anyTable = Object.values(tableObjWrapper).find(v => isValidTableObj(v));
+            return anyTable || null;
+        }
+
+        function loadSavedCandidateName() {
+            try {
+                const saved = localStorage.getItem('cbt_candidate_name');
+                if (saved && saved.trim() !== '') {
+                    candidateName = saved.trim();
+                }
+            } catch (e) {}
+        }
+
+        function saveCandidateName(name) {
+            const clean = (name || '').trim();
+            candidateName = clean !== '' ? clean : 'Aspirant';
+            try {
+                if (clean !== '') {
+                    localStorage.setItem('cbt_candidate_name', clean);
+                }
+            } catch (e) {}
+            updateCandidateNameDisplays();
+        }
+
+        function updateCandidateNameDisplays() {
+            const playerNameEl = document.getElementById('player-candidate-name');
+            const resNameEl = document.getElementById('res-candidate-name');
+            const previewNameEl = document.getElementById('inst-preview-name');
+            if (playerNameEl) playerNameEl.innerText = candidateName;
+            if (resNameEl) resNameEl.innerText = candidateName;
+            if (previewNameEl) previewNameEl.innerText = candidateName;
+        }
+
+        function updateModeCardStyles(selectedMode) {
+            const testCard = document.getElementById('mode-card-test');
+            const quizCard = document.getElementById('mode-card-quiz');
+            if (!testCard || !quizCard) return;
+
+            if (selectedMode === 'quiz') {
+                quizCard.className = "flex items-start space-x-3 p-3 rounded-xl border-2 border-emerald-600 bg-emerald-50/60 cursor-pointer transition";
+                testCard.className = "flex items-start space-x-3 p-3 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 cursor-pointer transition";
+            } else {
+                testCard.className = "flex items-start space-x-3 p-3 rounded-xl border-2 border-blue-600 bg-blue-50/60 cursor-pointer transition";
+                quizCard.className = "flex items-start space-x-3 p-3 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 cursor-pointer transition";
+            }
+        }
+
         window.onload = function() {
-            initTest(defaultTest);
-            
-            document.getElementById('language-select').addEventListener('change', (e) => {
-                currentLanguage = e.target.value;
-                renderQuestion();
+            loadSavedCandidateName();
+
+            const nameInput = document.getElementById('candidate-name-input');
+            if (nameInput) {
+                nameInput.value = candidateName !== 'Aspirant' ? candidateName : '';
+                nameInput.addEventListener('input', (e) => {
+                    const val = e.target.value.trim();
+                    const previewEl = document.getElementById('inst-preview-name');
+                    if (previewEl) previewEl.innerText = val !== '' ? val : 'Aspirant';
+                });
+            }
+
+            const modeRadios = document.querySelectorAll('input[name="pre_exam_mode"]');
+            modeRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    updateModeCardStyles(e.target.value);
+                });
             });
 
-            document.getElementById('mode-select').addEventListener('change', (e) => {
-                currentMode = e.target.value;
-                document.getElementById('header-mode-badge').innerText = currentMode === 'quiz' ? 'Quiz Mode' : 'Test Mode';
+            const declCheckbox = document.getElementById('inst-declaration-checkbox');
+            if (declCheckbox) {
+                declCheckbox.addEventListener('change', () => {
+                    if (declCheckbox.checked) {
+                        document.getElementById('inst-declaration-error').classList.add('hidden');
+                        document.getElementById('inst-declaration-box').classList.remove('border-rose-500', 'bg-rose-50');
+                        document.getElementById('inst-declaration-box').classList.add('border-amber-200', 'bg-amber-50/80');
+                    }
+                });
+            }
+
+            document.getElementById('language-select').addEventListener('change', (e) => {
+                currentLanguage = e.target.value;
                 renderQuestion();
             });
 
             const fileInput = document.getElementById('json-file-input');
             fileInput.addEventListener('change', handleFileUpload);
             fileInput.addEventListener('click', function() { this.value = null; });
+
+            updateCandidateNameDisplays();
+            prepareTestInstructions(defaultTest);
         };
 
         function normalizeTestJSON(rawInput) {
@@ -629,7 +1036,7 @@
                 title: data.title || data.testName || data.name || "Imported Custom Mock Test",
                 durationMinutes: Number(data.durationMinutes || data.duration || data.time || 30),
                 marksCorrect: Number(data.positiveMarks || data.marksCorrect || data.correctMarks || 1),
-                marksNegative: Number(data.negativeMarks || data.marksNegative || data.negativeMarksDed || 0.25),
+                marksNegative: Number(data.negativeMarks !== undefined ? data.negativeMarks : (data.marksNegative !== undefined ? data.marksNegative : (data.negativeMarksDed !== undefined ? data.negativeMarksDed : 0.25))),
                 questions: []
             };
 
@@ -644,6 +1051,7 @@
                     type: q.type || 'standard',
                     subjectTag: q.subjectTag || q.subject || q.category || "General",
                     topicTag: q.topicTag || q.topic || "General Topic",
+                    subTopicTag: q.subTopicTag || q.subTopic || "",
                     pyqTag: q.pyqTag || q.examTag || q.examName || q.exam || "General PYQ",
                     image: q.image || q.img || q.imageUrl || null,
                     optionImages: q.optionImages || q.optImages || null,
@@ -655,43 +1063,57 @@
                     tableData: (q.tableData && q.tableData.tableObj) ? q.tableData : null
                 };
 
-                let qTextEn = "";
-                let qTextHi = "";
-
-                if (typeof q.question === 'string') {
-                    qTextEn = q.question;
-                    qTextHi = q.question;
-                } else if (q.question && typeof q.question === 'object') {
-                    qTextEn = q.question.en || q.question.english || Object.values(q.question)[0] || "";
-                    qTextHi = q.question.hi || q.question.hindi || q.question.en || "";
-                } else if (q.text || q.prompt || q.statement) {
-                    let st = q.text || q.prompt || q.statement;
-                    if (typeof st === 'string') { qTextEn = st; qTextHi = st; }
-                    else { qTextEn = st.en || st.hindi || Object.values(st)[0] || ""; qTextHi = st.hi || st.en || qTextEn; }
-                }
+                // Question text normalization with clean single-language fallback
+                let qSource = q.question !== undefined ? q.question : (q.text || q.prompt || q.statement || "");
+                let qTextEn = pickLocalizedText(qSource, 'en');
+                let qTextHi = pickLocalizedText(qSource, 'hi');
                 nQ.question = { en: qTextEn, hi: qTextHi };
 
+                // Options normalization with clean single-language & per-option fallback
                 let rawOpts = q.options || q.choices || q.answers || q.optionList || ["Option A", "Option B", "Option C", "Option D"];
-                let optsEn = ["Option A", "Option B", "Option C", "Option D"];
-                let optsHi = ["विकल्प A", "विकल्प B", "विकल्प C", "विकल्प D"];
+                let optsEn = [];
+                let optsHi = [];
 
                 if (Array.isArray(rawOpts)) {
-                    optsEn = rawOpts.map(o => {
-                        if (o === null || o === undefined) return "";
-                        if (typeof o === 'object') return o.en || Object.values(o)[0] || "";
-                        return String(o);
-                    });
-                    optsHi = [...optsEn];
+                    optsEn = rawOpts.map(o => pickLocalizedText(o, 'en'));
+                    optsHi = rawOpts.map(o => pickLocalizedText(o, 'hi'));
                 } else if (rawOpts && typeof rawOpts === 'object') {
-                    if (rawOpts.en) optsEn = rawOpts.en.map(o => String(o));
-                    if (rawOpts.hi) optsHi = rawOpts.hi.map(o => String(o));
-                    else if (Object.values(rawOpts)[0] && Array.isArray(Object.values(rawOpts)[0])) {
-                        optsEn = Object.values(rawOpts)[0].map(o => String(o));
+                    const rawEn = rawOpts.en || rawOpts.english;
+                    const rawHi = rawOpts.hi || rawOpts.hindi;
+                    const enValid = hasValidOptionsArray(rawEn);
+                    const hiValid = hasValidOptionsArray(rawHi);
+
+                    if (enValid && hiValid) {
+                        const maxLen = Math.max(rawEn.length, rawHi.length);
+                        for (let i = 0; i < maxLen; i++) {
+                            const eStr = (rawEn[i] !== undefined && rawEn[i] !== null) ? String(rawEn[i]) : "";
+                            const hStr = (rawHi[i] !== undefined && rawHi[i] !== null) ? String(rawHi[i]) : "";
+                            optsEn.push(eStr.trim() !== "" ? eStr : hStr);
+                            optsHi.push(hStr.trim() !== "" ? hStr : eStr);
+                        }
+                    } else if (enValid) {
+                        optsEn = rawEn.map(o => (o !== undefined && o !== null) ? String(o) : "");
                         optsHi = [...optsEn];
+                    } else if (hiValid) {
+                        optsHi = rawHi.map(o => (o !== undefined && o !== null) ? String(o) : "");
+                        optsEn = [...optsHi];
+                    } else {
+                        const firstValidArr = Object.values(rawOpts).find(v => hasValidOptionsArray(v));
+                        if (firstValidArr) {
+                            optsEn = firstValidArr.map(o => (o !== undefined && o !== null) ? String(o) : "");
+                            optsHi = [...optsEn];
+                        } else {
+                            optsEn = ["Option A", "Option B", "Option C", "Option D"];
+                            optsHi = [...optsEn];
+                        }
                     }
+                } else {
+                    optsEn = ["Option A", "Option B", "Option C", "Option D"];
+                    optsHi = [...optsEn];
                 }
                 nQ.options = { en: optsEn, hi: optsHi };
 
+                // Correct answer normalization
                 let rawCorrect = q.correctAnswer !== undefined ? q.correctAnswer : (q.correct !== undefined ? q.correct : (q.ans !== undefined ? q.ans : 0));
                 let correctIdx = 0;
                 if (typeof rawCorrect === 'number') {
@@ -704,17 +1126,19 @@
                     else if (upper === 'D' || upper === '3') correctIdx = 3;
                     else {
                         let matchIdx = optsEn.findIndex(o => o.toLowerCase() === rawCorrect.toLowerCase());
+                        if (matchIdx === -1) {
+                            matchIdx = optsHi.findIndex(o => o.toLowerCase() === rawCorrect.toLowerCase());
+                        }
                         correctIdx = matchIdx !== -1 ? matchIdx : 0;
                     }
                 }
                 nQ.correct = correctIdx;
 
-                let expEn = q.explanation?.en || q.explanation || q.solution?.en || q.solution || "No explanation provided.";
-                let expHi = q.explanation?.hi || q.explanation?.en || q.explanation || q.solution?.hi || q.solution || "स्पष्टीकरण उपलब्ध नहीं है।";
-                nQ.explanation = {
-                    en: typeof expEn === 'object' ? (expEn.en || Object.values(expEn)[0]) : String(expEn),
-                    hi: typeof expHi === 'object' ? (expHi.hi || expHi.en || Object.values(expHi)[0]) : String(expHi)
-                };
+                // Explanation normalization with clean single-language fallback
+                let expSource = q.explanation !== undefined ? q.explanation : (q.solution !== undefined ? q.solution : null);
+                let expEn = pickLocalizedText(expSource, 'en') || "No explanation provided.";
+                let expHi = pickLocalizedText(expSource, 'hi') || "स्पष्टीकरण उपलब्ध नहीं है।";
+                nQ.explanation = { en: expEn, hi: expHi };
 
                 normalized.questions.push(nQ);
             });
@@ -722,9 +1146,116 @@
             return normalized;
         }
 
+        // Prepare Official Instructions & Candidate Form before starting any test
+        function prepareTestInstructions(rawData) {
+            let normalized;
+            try {
+                normalized = normalizeTestJSON(rawData);
+            } catch (err) {
+                showCustomModal("Import Error", err.message);
+                return false;
+            }
+
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+
+            pendingTestData = normalized;
+
+            // Populate official exam overview details
+            const totalQ = normalized.questions.length;
+            const duration = normalized.durationMinutes || 30;
+            const posMarks = normalized.marksCorrect;
+            const negMarks = normalized.marksNegative;
+            const maxMarks = totalQ * posMarks;
+
+            document.getElementById('inst-test-title').innerText = normalized.title;
+            document.getElementById('inst-total-q').innerText = totalQ;
+            document.getElementById('inst-duration').innerText = duration;
+            document.getElementById('inst-pos-marks').innerText = posMarks;
+            document.getElementById('inst-neg-marks').innerText = negMarks;
+
+            document.getElementById('inst-rule-duration').innerText = duration;
+            document.getElementById('inst-rule-maxmarks').innerText = maxMarks;
+            document.getElementById('inst-rule-pos').innerText = posMarks;
+            document.getElementById('inst-rule-neg').innerText = negMarks;
+
+            // Sync candidate name input & preview
+            const nameInput = document.getElementById('candidate-name-input');
+            if (nameInput) {
+                if (candidateName !== 'Aspirant' && nameInput.value.trim() === '') {
+                    nameInput.value = candidateName;
+                }
+                const liveName = nameInput.value.trim() !== '' ? nameInput.value.trim() : candidateName;
+                document.getElementById('inst-preview-name').innerText = liveName || 'Aspirant';
+            }
+
+            // Reset mode selector to Test Mode by default
+            const testRadio = document.querySelector('input[name="pre_exam_mode"][value="test"]');
+            if (testRadio) testRadio.checked = true;
+            updateModeCardStyles('test');
+
+            // Sync language selector
+            const instLang = document.getElementById('inst-language-select');
+            if (instLang) instLang.value = currentLanguage;
+
+            // Reset declaration checkbox & error state
+            const declCheckbox = document.getElementById('inst-declaration-checkbox');
+            if (declCheckbox) declCheckbox.checked = false;
+            document.getElementById('inst-declaration-error').classList.add('hidden');
+            document.getElementById('inst-declaration-box').classList.remove('border-rose-500', 'bg-rose-50');
+            document.getElementById('inst-declaration-box').classList.add('border-amber-200', 'bg-amber-50/80');
+
+            // Hide result modal & active exam player, show official instructions screen
+            document.getElementById('result-modal').classList.add('hidden');
+            document.getElementById('exam-player-wrapper').classList.add('hidden');
+            document.getElementById('instructions-screen').classList.remove('hidden');
+
+            return true;
+        }
+
+        // Launch the CBT Player after Candidate fills Name, selects Mode, and accepts Declaration
+        function startExamSession() {
+            const declCheckbox = document.getElementById('inst-declaration-checkbox');
+            if (declCheckbox && !declCheckbox.checked) {
+                const errEl = document.getElementById('inst-declaration-error');
+                const boxEl = document.getElementById('inst-declaration-box');
+                errEl.classList.remove('hidden');
+                boxEl.classList.remove('border-amber-200', 'bg-amber-50/80');
+                boxEl.classList.add('border-rose-500', 'bg-rose-50');
+                boxEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            const nameInput = document.getElementById('candidate-name-input');
+            saveCandidateName(nameInput ? nameInput.value : '');
+
+            const selectedModeRadio = document.querySelector('input[name="pre_exam_mode"]:checked');
+            currentMode = selectedModeRadio ? selectedModeRadio.value : 'test';
+
+            const instLang = document.getElementById('inst-language-select');
+            currentLanguage = instLang ? instLang.value : 'en';
+            const playerLangSelect = document.getElementById('language-select');
+            if (playerLangSelect) playerLangSelect.value = currentLanguage;
+
+            // Update read-only mode badge in player header (no switcher allowed during exam)
+            const modeBadge = document.getElementById('header-mode-badge');
+            if (modeBadge) {
+                modeBadge.innerHTML = currentMode === 'quiz'
+                    ? '<i class="fa-solid fa-bolt mr-1 text-emerald-300"></i>Quiz Mode'
+                    : '<i class="fa-solid fa-lock mr-1 text-amber-300"></i>Test Mode';
+            }
+
+            document.getElementById('instructions-screen').classList.add('hidden');
+            document.getElementById('exam-player-wrapper').classList.remove('hidden');
+
+            initTest(pendingTestData || defaultTest);
+        }
+
         function initTest(data) {
             try {
-                testData = normalizeTestJSON(data);
+                testData = (data && data.questions && data.marksCorrect !== undefined) ? data : normalizeTestJSON(data);
             } catch (err) {
                 showCustomModal("Import Error", err.message);
                 return;
@@ -740,14 +1271,26 @@
             document.getElementById('header-test-title').innerText = testData.title;
             document.getElementById('marks-correct').innerText = testData.marksCorrect;
             document.getElementById('marks-negative').innerText = testData.marksNegative;
+            updateCandidateNameDisplays();
 
             totalSecondsRemaining = (testData.durationMinutes || 30) * 60;
             examStartTime = new Date();
             if(timerInterval) clearInterval(timerInterval);
+            updateTimerDisplay();
             timerInterval = setInterval(updateTimer, 1000);
 
             renderPalette();
             renderQuestion();
+        }
+
+        function updateTimerDisplay() {
+            let hours = Math.floor(totalSecondsRemaining / 3600);
+            let minutes = Math.floor((totalSecondsRemaining % 3600) / 60);
+            let seconds = totalSecondsRemaining % 60;
+            document.getElementById('timer-display').innerText = 
+                String(hours).padStart(2, '0') + ":" + 
+                String(minutes).padStart(2, '0') + ":" + 
+                String(seconds).padStart(2, '0');
         }
 
         function updateTimer() {
@@ -759,13 +1302,7 @@
                 return;
             }
             totalSecondsRemaining--;
-            let hours = Math.floor(totalSecondsRemaining / 3600);
-            let minutes = Math.floor((totalSecondsRemaining % 3600) / 60);
-            let seconds = totalSecondsRemaining % 60;
-            document.getElementById('timer-display').innerText = 
-                String(hours).padStart(2, '0') + ":" + 
-                String(minutes).padStart(2, '0') + ":" + 
-                String(seconds).padStart(2, '0');
+            updateTimerDisplay();
         }
 
         function renderPalette() {
@@ -817,6 +1354,8 @@
         }
 
         function renderQuestion() {
+            if (!testData || !testData.questions || !testData.questions[currentQuestionIndex]) return;
+
             let q = testData.questions[currentQuestionIndex];
             document.getElementById('current-q-num').innerText = currentQuestionIndex + 1;
             document.getElementById('total-q-num').innerText = testData.questions.length;
@@ -862,7 +1401,7 @@
 
             // 1. Passage Section
             let passageEl = document.getElementById('question-passage');
-            let passageData = q.passage ? (currentLanguage === 'hi' ? (q.passage.hi || q.passage.en) : q.passage.en) : "";
+            let passageData = pickLocalizedText(q.passage, currentLanguage);
             if (passageData && passageData.trim() !== "") {
                 passageEl.innerHTML = passageData;
                 passageEl.classList.remove('hidden');
@@ -874,9 +1413,9 @@
             let stmtBox = document.getElementById('question-statement-box');
             if (q.statementData && (q.statementData.intro || q.statementData.list || q.statementData.conclusion)) {
                 let sData = q.statementData;
-                let intro = currentLanguage === 'hi' ? (sData.intro?.hi || sData.intro?.en) : sData.intro?.en;
-                let list = currentLanguage === 'hi' ? (sData.list?.hi || sData.list?.en) : sData.list?.en;
-                let conclusion = currentLanguage === 'hi' ? (sData.conclusion?.hi || sData.conclusion?.en) : sData.conclusion?.en;
+                let intro = pickLocalizedText(sData.intro, currentLanguage);
+                let list = pickLocalizedText(sData.list, currentLanguage);
+                let conclusion = pickLocalizedText(sData.conclusion, currentLanguage);
 
                 document.getElementById('stmt-intro').innerHTML = intro || "";
                 let listEl = document.getElementById('stmt-list');
@@ -894,7 +1433,7 @@
 
             // 3. Direction Box (for Assertion & Reason)
             let directionBox = document.getElementById('question-direction-box');
-            let directionText = q.direction ? (currentLanguage === 'hi' ? (q.direction.hi || q.direction.en) : q.direction.en) : "";
+            let directionText = pickLocalizedText(q.direction, currentLanguage);
             if (directionText && directionText.trim() !== "") {
                 directionBox.innerHTML = directionText;
                 directionBox.classList.remove('hidden');
@@ -904,8 +1443,8 @@
 
             // 4. Assertion & Reason Box
             let assertionBox = document.getElementById('question-assertion-box');
-            let assertionText = q.assertion ? (currentLanguage === 'hi' ? (q.assertion.hi || q.assertion.en) : q.assertion.en) : "";
-            let reasonText = q.reason ? (currentLanguage === 'hi' ? (q.reason.hi || q.reason.en) : q.reason.en) : "";
+            let assertionText = pickLocalizedText(q.assertion, currentLanguage);
+            let reasonText = pickLocalizedText(q.reason, currentLanguage);
             if (assertionText || reasonText) {
                 document.getElementById('assertion-text').innerHTML = assertionText;
                 document.getElementById('reason-text').innerHTML = reasonText;
@@ -917,8 +1456,8 @@
             // 5. Table / Matrix Data
             let tableContainer = document.getElementById('question-table-container');
             if (q.tableData && q.tableData.tableObj) {
-                let tObj = currentLanguage === 'hi' ? (q.tableData.tableObj.hi || q.tableData.tableObj.en) : q.tableData.tableObj.en;
-                let tIntro = currentLanguage === 'hi' ? (q.tableData.intro?.hi || q.tableData.intro?.en) : q.tableData.intro?.en;
+                let tObj = pickLocalizedTableObj(q.tableData.tableObj, currentLanguage);
+                let tIntro = pickLocalizedText(q.tableData.intro, currentLanguage);
                 
                 document.getElementById('table-intro').innerHTML = tIntro || "";
                 if (tObj && tObj.headers && tObj.rows) {
@@ -935,8 +1474,8 @@
                 tableContainer.classList.add('hidden');
             }
 
-            // 6. Question Text
-            let qText = currentLanguage === 'hi' ? (q.question.hi || q.question.en) : q.question.en;
+            // 6. Question Text (Single-language safe)
+            let qText = pickLocalizedText(q.question, currentLanguage);
             let qTextEl = document.getElementById('question-text');
             if (qText && qText.trim() !== "") {
                 qTextEl.innerHTML = qText;
@@ -956,10 +1495,10 @@
                 imgContainer.classList.add('hidden');
             }
 
-            // Options Rendering (With dynamic Green/Red color highlighting in Quiz Mode)
+            // Options Rendering (Single-language safe + Green/Red highlighting in Quiz Mode)
             let optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = '';
-            let optionsList = currentLanguage === 'hi' ? (q.options.hi || q.options.en) : q.options.en;
+            let optionsList = getLocalizedOptions(q.options, currentLanguage);
             let selectedOpt = userResponses[currentQuestionIndex].selectedOption;
 
             optionsList.forEach((optText, optIdx) => {
@@ -1014,7 +1553,7 @@
             if (currentMode === 'quiz' && selectedOpt !== null) {
                 expBox.classList.remove('hidden');
                 let isCorrect = selectedOpt === q.correct;
-                let expText = currentLanguage === 'hi' ? (q.explanation.hi || q.explanation.en) : q.explanation.en;
+                let expText = pickLocalizedText(q.explanation, currentLanguage);
                 let correctOptChar = String.fromCharCode(65 + q.correct);
                 document.getElementById('explanation-text').innerHTML = `
                     <span class="font-bold ${isCorrect ? 'text-emerald-600' : 'text-rose-600'}">${isCorrect ? 'Correct!' : 'Incorrect.'}</span> 
@@ -1109,7 +1648,7 @@
                     correctCount++;
                 } else {
                     wrongCount++;
-                    negativeDed += (testData.marksNegative || 0.25);
+                    negativeDed += (testData.marksNegative || 0);
                 }
             });
 
@@ -1133,6 +1672,8 @@
             document.getElementById('res-negative-marks').innerText = '-' + negativeDed.toFixed(2);
             document.getElementById('res-total-q').innerText = totalQ;
 
+            updateCandidateNameDisplays();
+
             if (document.getElementById('res-test-title-scorecard')) {
                 document.getElementById('res-test-title-scorecard').innerText = testData.title;
             }
@@ -1152,15 +1693,15 @@
                 let isCorrect = userAns === q.correct;
                 let statusColor = userAns === null ? 'text-amber-600 bg-amber-50' : (isCorrect ? 'text-emerald-600 bg-emerald-50' : 'text-rose-600 bg-rose-50');
                 let statusText = userAns === null ? 'Unattempted' : (isCorrect ? 'Correct' : 'Incorrect');
-                let opts = currentLanguage === 'hi' ? (q.options.hi || q.options.en) : q.options.en;
-                let expText = currentLanguage === 'hi' ? (q.explanation.hi || q.explanation.en) : q.explanation.en;
+                let opts = getLocalizedOptions(q.options, currentLanguage);
+                let expText = pickLocalizedText(q.explanation, currentLanguage);
 
                 let qImgMarkup = q.image ? `<div class="my-2"><img src="${q.image}" alt="Question Image" class="max-h-40 object-contain rounded border border-slate-200"></div>` : '';
                 
                 let revTableHtml = '';
                 if (q.tableData && q.tableData.tableObj) {
-                    let tObj = currentLanguage === 'hi' ? (q.tableData.tableObj.hi || q.tableData.tableObj.en) : q.tableData.tableObj.en;
-                    let tIntro = currentLanguage === 'hi' ? (q.tableData.intro?.hi || q.tableData.intro?.en) : q.tableData.intro?.en;
+                    let tObj = pickLocalizedTableObj(q.tableData.tableObj, currentLanguage);
+                    let tIntro = pickLocalizedText(q.tableData.intro, currentLanguage);
                     if (tObj && tObj.headers && tObj.rows) {
                         revTableHtml = `
                             <div class="text-xs font-medium mb-1 text-slate-700">${tIntro || ''}</div>
@@ -1174,14 +1715,15 @@
                     }
                 }
 
-                let revPassageHtml = (q.passage && (q.passage.en || q.passage.hi)) ? `<div class="p-2 bg-slate-50 border-l-4 border-blue-600 text-xs italic">${currentLanguage === 'hi' ? (q.passage.hi || q.passage.en) : q.passage.en}</div>` : '';
+                let revPassageText = pickLocalizedText(q.passage, currentLanguage);
+                let revPassageHtml = revPassageText ? `<div class="p-2 bg-slate-50 border-l-4 border-blue-600 text-xs italic">${revPassageText}</div>` : '';
                 
                 let revStmtHtml = '';
                 if (q.statementData) {
                     let sData = q.statementData;
-                    let intro = currentLanguage === 'hi' ? (sData.intro?.hi || sData.intro?.en) : sData.intro?.en;
-                    let list = currentLanguage === 'hi' ? (sData.list?.hi || sData.list?.en) : sData.list?.en;
-                    let conclusion = currentLanguage === 'hi' ? (sData.conclusion?.hi || sData.conclusion?.en) : sData.conclusion?.en;
+                    let intro = pickLocalizedText(sData.intro, currentLanguage);
+                    let list = pickLocalizedText(sData.list, currentLanguage);
+                    let conclusion = pickLocalizedText(sData.conclusion, currentLanguage);
                     revStmtHtml = `
                         <div class="p-2 bg-slate-50 border border-slate-200 rounded text-xs space-y-1">
                             <div>${intro || ''}</div>
@@ -1192,15 +1734,15 @@
                 }
 
                 let revDirectionHtml = '';
-                let dText = q.direction ? (currentLanguage === 'hi' ? (q.direction.hi || q.direction.en) : q.direction.en) : "";
+                let dText = pickLocalizedText(q.direction, currentLanguage);
                 if (dText && dText.trim() !== "") {
                     revDirectionHtml = `<div class="p-2 bg-amber-50 border border-amber-200 rounded text-xs font-medium italic text-amber-900">${dText}</div>`;
                 }
 
                 let revAssertionHtml = '';
                 if (q.assertion || q.reason) {
-                    let aText = currentLanguage === 'hi' ? (q.assertion?.hi || q.assertion?.en) : q.assertion?.en;
-                    let rText = currentLanguage === 'hi' ? (q.reason?.hi || q.reason?.en) : q.reason?.en;
+                    let aText = pickLocalizedText(q.assertion, currentLanguage);
+                    let rText = pickLocalizedText(q.reason, currentLanguage);
                     revAssertionHtml = `
                         <div class="p-2 bg-indigo-50/50 border border-indigo-200 rounded text-xs space-y-1">
                             <div><strong>Assertion (A):</strong> ${aText || ''}</div>
@@ -1232,7 +1774,7 @@
                     `;
                 });
 
-                let qTextReview = q.question.en || q.question.hi;
+                let qTextReview = pickLocalizedText(q.question, currentLanguage);
                 let qTextReviewHtml = (qTextReview && qTextReview.trim() !== "") ? `<p class="font-semibold text-slate-900 text-sm">${qTextReview}</p>` : '';
 
                 let div = document.createElement('div');
@@ -1256,12 +1798,12 @@
                         <div class="p-2 rounded bg-slate-50 border border-slate-200">
                             <span class="font-bold text-slate-500">Your Answer:</span> 
                             <span class="font-semibold ${userAns === null ? 'text-slate-400' : (isCorrect ? 'text-emerald-600' : 'text-rose-600')}">
-                                ${userAns !== null ? String.fromCharCode(65 + userAns) + '. ' + opts[userAns] : 'Not Answered'}
+                                ${userAns !== null ? String.fromCharCode(65 + userAns) + '. ' + (opts[userAns] || '') : 'Not Answered'}
                             </span>
                         </div>
                         <div class="p-2 rounded bg-emerald-50/50 border border-emerald-200">
                             <span class="font-bold text-emerald-700">Correct Answer:</span> 
-                            <span class="font-semibold text-emerald-800">${String.fromCharCode(65 + q.correct)}. ${opts[q.correct]}</span>
+                            <span class="font-semibold text-emerald-800">${String.fromCharCode(65 + q.correct)}. ${opts[q.correct] || ''}</span>
                         </div>
                     </div>
                     <div class="p-3 rounded-lg bg-blue-50/50 border border-blue-100 text-xs text-blue-900">
@@ -1342,9 +1884,10 @@
         function processTestImport() {
             let jsonText = document.getElementById('json-textarea').value;
             try {
-                initTest(jsonText);
-                closeImportModal();
-                showCustomModal("Success!", "Test successfully imported and normalized!");
+                const ok = prepareTestInstructions(jsonText);
+                if (ok) {
+                    closeImportModal();
+                }
             } catch (err) {
                 showCustomModal("Import Error", "Failed to process input structure: " + err.message);
             }
@@ -1360,7 +1903,11 @@
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-message').innerText = message;
             let actions = document.getElementById('modal-actions');
-            actions.innerHTML = `<button onclick="closeCustomModal(); ${callback ? '(' + callback.toString.name.trim() + ')()' : ''}" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold shadow">OK</button>`;
+            actions.innerHTML = `<button id="modal-dynamic-ok-btn" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold shadow">OK</button>`;
+            document.getElementById('modal-dynamic-ok-btn').onclick = function() {
+                closeCustomModal();
+                if (typeof callback === 'function') callback();
+            };
             document.getElementById('custom-modal').classList.remove('hidden');
         }
 
@@ -1438,7 +1985,6 @@
 
         function openTelegramModal() {
             const modal = document.getElementById('telegram-modal');
-            if (modal) modal.classList.형식('hidden'); // hidden class logic preserved
             if (modal) modal.classList.remove('hidden');
         }
 
