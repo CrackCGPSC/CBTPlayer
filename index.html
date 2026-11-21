@@ -6,7 +6,7 @@
     <title>CBT Exam Portal - Government Computer Based Test Player</title>
     <!-- Fast Logo Preload & Attractive Display Font -->
     <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
-    <link rel="preload" as="image" href="https://lh3.googleusercontent.com/d/187kKtCdzeXW9tYH4zzpr9-6Qu2W39aM6=w256" referrerpolicy="no-referrer">
+    <link rel="preload" as="image" href="https://lh3.googleusercontent.com/d/10pzHqHPIUvOuZTXjB15wlVBW9bnUASKK=s0" referrerpolicy="no-referrer">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -14,8 +14,9 @@
         function handleLogoFallback(img) {
             const step = parseInt(img.dataset.fallbackStep || '0', 10);
             const fallbacks = [
-                'https://drive.google.com/thumbnail?id=187kKtCdzeXW9tYH4zzpr9-6Qu2W39aM6&sz=w256',
-                'https://drive.google.com/uc?export=view&id=187kKtCdzeXW9tYH4zzpr9-6Qu2W39aM6',
+                'https://lh3.googleusercontent.com/d/10pzHqHPIUvOuZTXjB15wlVBW9bnUASKK=s256-rw',
+                'https://drive.google.com/thumbnail?id=10pzHqHPIUvOuZTXjB15wlVBW9bnUASKK&sz=w256',
+                'https://drive.google.com/uc?export=view&id=10pzHqHPIUvOuZTXjB15wlVBW9bnUASKK',
                 'webapp_logo.png'
             ];
             if (step < fallbacks.length) {
@@ -156,7 +157,7 @@
         <!-- Official Portal Top Header -->
         <div class="bg-blue-950 text-white border-b-4 border-amber-400 px-4 sm:px-6 py-3 flex flex-wrap justify-between items-center gap-3 shrink-0 shadow-md">
             <div class="flex items-center space-x-3">
-                <img src="https://lh3.googleusercontent.com/d/187kKtCdzeXW9tYH4zzpr9-6Qu2W39aM6=w256" alt="CBT Examination Portal Logo" referrerpolicy="no-referrer" loading="eager" fetchpriority="high" decoding="async" onerror="handleLogoFallback(this)" class="w-11 h-11 sm:w-12 sm:h-12 object-contain shrink-0">
+                <img src="https://lh3.googleusercontent.com/d/10pzHqHPIUvOuZTXjB15wlVBW9bnUASKK=s0" alt="CBT Examination Portal Logo" referrerpolicy="no-referrer" loading="eager" fetchpriority="high" decoding="async" onerror="handleLogoFallback(this)" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full object-cover object-center bg-transparent shrink-0">
                 <div>
                     <div class="flex items-center space-x-2">
                         <span class="font-extrabold tracking-wider text-sm sm:text-base uppercase">CBT Examination Portal</span>
@@ -355,7 +356,7 @@
         <!-- TOP HEADER (Organized & Responsive) -->
         <header class="bg-blue-900 text-white shadow-md px-4 py-2.5 flex flex-wrap justify-between items-center gap-2 shrink-0 z-40">
             <div class="flex items-center space-x-3">
-                <img src="https://lh3.googleusercontent.com/d/187kKtCdzeXW9tYH4zzpr9-6Qu2W39aM6=w256" alt="CBT Portal Logo" referrerpolicy="no-referrer" loading="eager" fetchpriority="high" decoding="async" onerror="handleLogoFallback(this)" class="w-10 h-10 sm:w-11 sm:h-11 object-contain shrink-0">
+                <img src="https://lh3.googleusercontent.com/d/10pzHqHPIUvOuZTXjB15wlVBW9bnUASKK=s0" alt="CBT Portal Logo" referrerpolicy="no-referrer" loading="eager" fetchpriority="high" decoding="async" onerror="handleLogoFallback(this)" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover object-center bg-transparent shrink-0">
                 <div>
                     <h1 id="header-test-title" class="font-semibold text-sm sm:text-base truncate max-w-[180px] sm:max-w-md">CBT Test Player</h1>
                     <p class="text-[11px] text-blue-200">Mode: <span id="header-mode-badge" class="font-bold uppercase bg-blue-800 px-1.5 py-0.5 rounded">Test Mode</span></p>
