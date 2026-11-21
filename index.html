@@ -126,15 +126,13 @@
         <!-- Official Portal Top Header -->
         <div class="bg-blue-950 text-white border-b-4 border-amber-400 px-4 sm:px-6 py-3 flex flex-wrap justify-between items-center gap-3 shrink-0 shadow-md">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-lg bg-blue-900 border border-blue-700 flex items-center justify-center shadow-inner shrink-0">
-                    <i class="fa-solid fa-landmark text-amber-400 text-lg"></i>
-                </div>
+                <img src="webapp_logo.png" alt="CBT Examination Portal Logo" class="w-11 h-11 sm:w-12 sm:h-12 object-contain shrink-0">
                 <div>
                     <div class="flex items-center space-x-2">
                         <span class="font-extrabold tracking-wider text-sm sm:text-base uppercase">CBT Examination Portal</span>
                         <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-widest bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded">Official CBT Interface</span>
                     </div>
-                    <p class="text-[11px] text-blue-200">Computer Based Test &bull; Candidate Verification & General Instructions</p>
+                    <p class="text-[11px] text-blue-200">Computer Based Test</p>
                 </div>
             </div>
             <div class="flex items-center flex-wrap gap-2 text-xs sm:text-sm">
@@ -189,86 +187,28 @@
             
             <!-- LEFT COLUMN: Official General Instructions -->
             <div class="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col md:overflow-hidden">
-                <div class="bg-slate-50 border-b border-slate-200 px-4 sm:px-5 py-3 flex items-center justify-between shrink-0">
-                    <div class="flex items-center space-x-2">
-                        <span class="w-7 h-7 rounded-md bg-blue-900 text-white flex items-center justify-center text-xs">
+                <div class="bg-slate-50 border-b border-slate-200 px-4 sm:px-5 py-3 flex items-center justify-between gap-2 shrink-0">
+                    <div class="flex items-center space-x-2 min-w-0">
+                        <span class="w-7 h-7 rounded-md bg-blue-900 text-white flex items-center justify-center text-xs shrink-0">
                             <i class="fa-solid fa-clipboard-list"></i>
                         </span>
-                        <div>
-                            <h3 class="font-bold text-slate-900 text-sm sm:text-base">General Instructions</h3>
-                            <p class="text-[11px] text-slate-500">Please read all examination rules carefully before proceeding</p>
+                        <div class="min-w-0">
+                            <h3 id="inst-card-title" class="font-bold text-slate-900 text-sm sm:text-base truncate">General Instructions</h3>
+                            <p id="inst-card-subtitle" class="text-[11px] text-slate-500">Please read all examination rules carefully before proceeding</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-800 border border-blue-200 px-2.5 py-1 rounded-full">Mandatory</span>
+                    <!-- General Instructions Language Toggle (Matching Test & Quiz Player) -->
+                    <div class="flex items-center bg-blue-800 text-white px-2.5 py-1 rounded-lg border border-blue-700 text-xs sm:text-sm shrink-0 shadow-sm">
+                        <span class="text-[11px] text-blue-200 mr-1.5"><i class="fa-solid fa-language"></i></span>
+                        <select id="inst-doc-language-select" aria-label="Select General Instructions Language" class="bg-blue-900 text-white font-medium focus:outline-none cursor-pointer">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="p-4 sm:p-6 md:overflow-y-auto flex-1 space-y-5 text-xs sm:text-sm text-slate-700 leading-relaxed">
-                    <!-- Section 1: Duration & Clock -->
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
-                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2">1</span>
-                            Examination Timing & Auto-Submission
-                        </h4>
-                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
-                            <li>Total duration of this examination is <strong class="text-slate-800"><span id="inst-rule-duration">60</span> minutes</strong> and maximum marks are <strong class="text-slate-800"><span id="inst-rule-maxmarks">1</span></strong>.</li>
-                            <li>The countdown timer displayed in the right-hand panel shows the remaining examination time.</li>
-                            <li>When the timer reaches <span class="font-mono font-semibold text-slate-800">00:00:00</span>, the examination will end and submit automatically.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Section 2: Question Palette Symbols -->
-                    <div class="space-y-2.5">
-                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
-                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2">2</span>
-                            Question Palette Status Indicators
-                        </h4>
-                        <p class="text-slate-600">The Question Palette on the right side of the exam screen displays the status of each question using the following symbols:</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-                                <span class="w-7 h-7 rounded-lg bg-slate-200 text-slate-700 border border-slate-300 font-bold text-xs flex items-center justify-center shrink-0">1</span>
-                                <span class="text-xs text-slate-700"><strong>Not Visited</strong> — You have not visited the question yet.</span>
-                            </div>
-                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-rose-50/50 border border-rose-200">
-                                <span class="w-7 h-7 rounded-lg bg-rose-500 text-white border border-rose-600 font-bold text-xs flex items-center justify-center shrink-0">2</span>
-                                <span class="text-xs text-slate-700"><strong>Not Answered</strong> — You have viewed but not answered the question.</span>
-                            </div>
-                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-emerald-50/50 border border-emerald-200">
-                                <span class="w-7 h-7 rounded-lg bg-emerald-500 text-white border border-emerald-600 font-bold text-xs flex items-center justify-center shrink-0">3</span>
-                                <span class="text-xs text-slate-700"><strong>Answered</strong> — You have selected and saved your response.</span>
-                            </div>
-                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-purple-50/50 border border-purple-200">
-                                <span class="w-7 h-7 rounded-lg bg-purple-600 text-white border border-purple-700 font-bold text-xs flex items-center justify-center shrink-0">4</span>
-                                <span class="text-xs text-slate-700"><strong>Marked for Review</strong> — Flagged to revisit before submission.</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section 3: Answering & Navigation -->
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
-                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2">3</span>
-                            Navigating & Answering Questions
-                        </h4>
-                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
-                            <li>Click on any question number in the Question Palette to jump directly to that question.</li>
-                            <li>Click <strong class="text-blue-700">Save & Next</strong> to save your answer and proceed to the next question, or <strong class="text-purple-700">Mark for Review & Next</strong> to flag a question for later review.</li>
-                            <li>To deselect a chosen option, click the <strong class="text-slate-800">Clear</strong> button.</li>
-                            <li>You can switch between <strong>English</strong> and <strong>हिंदी</strong> anytime using the top language selector. Single-language questions will automatically remain visible in their available language.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Section 4: Marking & Exam Mode Policy -->
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
-                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2">4</span>
-                            Marking Scheme & Mode Integrity Policy
-                        </h4>
-                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
-                            <li>Each correct response awards <strong class="text-emerald-700">+<span id="inst-rule-pos">1</span> mark(s)</strong>. Each incorrect response incurs a penalty of <strong class="text-rose-700">-<span id="inst-rule-neg">0.25</span> mark(s)</strong>. Unattempted questions carry 0 marks.</li>
-                            <li><strong>Test Mode (Exam Lock):</strong> Simulates an official Government CBT exam. Correct answers and solutions remain hidden until final submission, and mode switching is strictly locked during the exam.</li>
-                            <li><strong>Quiz Mode (Practice):</strong> Displays instant answer verification and detailed explanation immediately after selecting an option.</li>
-                        </ul>
-                    </div>
+                <div id="inst-general-body" class="p-4 sm:p-6 md:overflow-y-auto flex-1 space-y-5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <!-- Dynamically rendered in English or Hindi by renderGeneralInstructions() -->
                 </div>
             </div>
 
@@ -385,9 +325,7 @@
         <!-- TOP HEADER (Organized & Responsive) -->
         <header class="bg-blue-900 text-white shadow-md px-4 py-2.5 flex flex-wrap justify-between items-center gap-2 shrink-0 z-40">
             <div class="flex items-center space-x-3">
-                <div class="bg-blue-800 px-3 py-1.5 rounded-lg border border-blue-700 font-bold tracking-wider text-sm flex items-center">
-                    <i class="fa-solid fa-graduation-cap mr-2 text-amber-400"></i>CBT PORTAL
-                </div>
+                <img src="webapp_logo.png" alt="CBT Portal Logo" class="w-10 h-10 sm:w-11 sm:h-11 object-contain shrink-0">
                 <div>
                     <h1 id="header-test-title" class="font-semibold text-sm sm:text-base truncate max-w-[180px] sm:max-w-md">CBT Test Player</h1>
                     <p class="text-[11px] text-blue-200">Mode: <span id="header-mode-badge" class="font-bold uppercase bg-blue-800 px-1.5 py-0.5 rounded">Test Mode</span></p>
@@ -463,17 +401,19 @@
 
                         <!-- Assertion & Reason Box -->
                         <div id="question-assertion-box" class="hidden space-y-2 p-3 bg-indigo-50/50 border border-indigo-200 rounded-xl text-xs sm:text-sm text-indigo-950">
-                            <div><strong class="text-indigo-900">Assertion (A):</strong> <span id="assertion-text"></span></div>
-                            <div><strong class="text-indigo-900">Reason (R):</strong> <span id="reason-text"></span></div>
+                            <div id="assertion-row"><strong class="text-indigo-900">Assertion (A):</strong> <span id="assertion-text"></span></div>
+                            <div id="reason-row"><strong class="text-indigo-900">Reason (R):</strong> <span id="reason-text"></span></div>
                         </div>
 
                         <!-- Table Data (Matrix / Matching) -->
                         <div id="question-table-container" class="hidden overflow-x-auto my-2">
-                            <div id="table-intro" class="text-xs font-medium mb-2 text-slate-700"></div>
+                            <div id="table-intro" class="text-xs sm:text-sm font-medium mb-2 text-slate-700"></div>
+                            <div id="table-html-wrapper" class="hidden"></div>
                             <table id="question-matrix-table" class="min-w-full divide-y divide-slate-200 border border-slate-200 text-xs sm:text-sm">
                                 <thead class="bg-slate-100 text-slate-700"></thead>
                                 <tbody class="divide-y divide-slate-200 bg-white"></tbody>
                             </table>
+                            <div id="table-conclusion" class="hidden text-xs sm:text-sm font-medium mt-2 text-slate-700"></div>
                         </div>
 
                         <!-- Main Question Statement -->
@@ -844,6 +784,8 @@
         let userResponses = {};
         let currentMode = 'test';
         let currentLanguage = 'en';
+        let currentInstructionsLanguage = 'en';
+        let currentExamStats = { duration: 60, maxMarks: 1, posMarks: 1, negMarks: 0.25 };
         let candidateName = 'Aspirant';
         let timerInterval = null;
         let totalSecondsRemaining = 0;
@@ -851,34 +793,228 @@
         let performanceChartInstance = null;
 
         // =========================================================================
-        // SINGLE-LANGUAGE & BILINGUAL FALLBACK HELPERS (Prevents Blank Options/Text)
+        // GENERAL INSTRUCTIONS BILINGUAL RENDERER (ENGLISH & OFFICIAL HINDI)
         // =========================================================================
+        function renderGeneralInstructions(lang) {
+            const activeLang = lang || currentInstructionsLanguage || 'en';
+            currentInstructionsLanguage = activeLang;
+
+            const titleEl = document.getElementById('inst-card-title');
+            const subEl = document.getElementById('inst-card-subtitle');
+            const bodyEl = document.getElementById('inst-general-body');
+            const langSelect = document.getElementById('inst-doc-language-select');
+            if (langSelect && langSelect.value !== activeLang) {
+                langSelect.value = activeLang;
+            }
+            if (!bodyEl) return;
+
+            const { duration, maxMarks, posMarks, negMarks } = currentExamStats;
+
+            if (activeLang === 'hi') {
+                if (titleEl) titleEl.innerText = 'सामान्य निर्देश';
+                if (subEl) subEl.innerText = 'कृपया आगे बढ़ने से पहले परीक्षा के सभी नियमों को ध्यानपूर्वक पढ़ें';
+                bodyEl.innerHTML = `
+                    <!-- अनुभाग 1: परीक्षा समय एवं स्वतः सबमिशन -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2 shrink-0">1</span>
+                            परीक्षा समय एवं स्वतः सबमिशन
+                        </h4>
+                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
+                            <li>इस परीक्षा की कुल अवधि <strong class="text-slate-800">${duration} मिनट</strong> है तथा अधिकतम अंक <strong class="text-slate-800">${maxMarks}</strong> हैं।</li>
+                            <li>दाईं ओर के पैनल में प्रदर्शित काउंटडाउन टाइमर परीक्षा का शेष समय दर्शाता है।</li>
+                            <li>जब टाइमर <span class="font-mono font-semibold text-slate-800">00:00:00</span> पर पहुँच जाएगा, तो परीक्षा स्वतः समाप्त होकर जमा (सबमिट) हो जाएगी।</li>
+                        </ul>
+                    </div>
+
+                    <!-- अनुभाग 2: प्रश्न पैलेट के स्थिति संकेतक -->
+                    <div class="space-y-2.5">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2 shrink-0">2</span>
+                            प्रश्न पैलेट के स्थिति संकेतक
+                        </h4>
+                        <p class="text-slate-600">परीक्षा स्क्रीन के दाईं ओर स्थित प्रश्न पैलेट निम्नलिखित प्रतीकों के माध्यम से प्रत्येक प्रश्न की स्थिति दर्शाता है:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                                <span class="w-7 h-7 rounded-lg bg-slate-200 text-slate-700 border border-slate-300 font-bold text-xs flex items-center justify-center shrink-0">1</span>
+                                <span class="text-xs text-slate-700"><strong>अभी तक देखा नहीं गया (Not Visited)</strong> — आपने अभी तक इस प्रश्न को नहीं देखा है।</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-rose-50/50 border border-rose-200">
+                                <span class="w-7 h-7 rounded-lg bg-rose-500 text-white border border-rose-600 font-bold text-xs flex items-center justify-center shrink-0">2</span>
+                                <span class="text-xs text-slate-700"><strong>उत्तर नहीं दिया गया (Not Answered)</strong> — आपने प्रश्न देख लिया है, लेकिन इसका उत्तर नहीं दिया है।</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-emerald-50/50 border border-emerald-200">
+                                <span class="w-7 h-7 rounded-lg bg-emerald-500 text-white border border-emerald-600 font-bold text-xs flex items-center justify-center shrink-0">3</span>
+                                <span class="text-xs text-slate-700"><strong>उत्तर दिया गया (Answered)</strong> — आपने विकल्प चुनकर अपना उत्तर सुरक्षित कर दिया है।</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-purple-50/50 border border-purple-200">
+                                <span class="w-7 h-7 rounded-lg bg-purple-600 text-white border border-purple-700 font-bold text-xs flex items-center justify-center shrink-0">4</span>
+                                <span class="text-xs text-slate-700"><strong>समीक्षा के लिए चिह्नित (Marked for Review)</strong> — सबमिट करने से पहले पुनः जाँचने के लिए चिह्नित किया गया है।</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- अनुभाग 3: प्रश्नों पर जाना एवं उत्तर देना -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2 shrink-0">3</span>
+                            प्रश्नों पर जाना एवं उत्तर देना
+                        </h4>
+                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
+                            <li>सीधे किसी भी प्रश्न पर जाने के लिए प्रश्न पैलेट में उसकी प्रश्न संख्या पर क्लिक करें।</li>
+                            <li>अपना उत्तर सुरक्षित कर अगले प्रश्न पर जाने के लिए <strong class="text-blue-700">Save &amp; Next</strong> पर क्लिक करें, या किसी प्रश्न को बाद में समीक्षा हेतु चिह्नित करने के लिए <strong class="text-purple-700">Mark for Review &amp; Next</strong> पर क्लिक करें।</li>
+                            <li>चुने हुए विकल्प को हटाने के लिए <strong class="text-slate-800">Clear</strong> बटन पर क्लिक करें।</li>
+                            <li>आप ऊपर दिए गए भाषा विकल्प (Language Selector) का उपयोग करके कभी भी <strong>English</strong> और <strong>हिंदी</strong> के बीच भाषा बदल सकते हैं। केवल एक भाषा में उपलब्ध प्रश्न स्वतः उसी उपलब्ध भाषा में दिखाई देते रहेंगे।</li>
+                        </ul>
+                    </div>
+
+                    <!-- अनुभाग 4: अंकन योजना एवं परीक्षा मोड के नियम -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2 shrink-0">4</span>
+                            अंकन योजना एवं परीक्षा मोड के नियम
+                        </h4>
+                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
+                            <li>प्रत्येक सही उत्तर के लिए <strong class="text-emerald-700">+${posMarks} अंक</strong> प्रदान किए जाएँगे। प्रत्येक गलत उत्तर के लिए <strong class="text-rose-700">-${negMarks} अंक</strong> काटे जाएँगे। अनुत्तरित (छोड़े गए) प्रश्नों के लिए 0 अंक दिए जाएँगे।</li>
+                            <li><strong>टेस्ट मोड (Test Mode - परीक्षा लॉक):</strong> यह वास्तविक सरकारी CBT परीक्षा के समान है। अंतिम सबमिशन तक सही उत्तर और व्याख्या छिपी रहेगी, तथा परीक्षा के दौरान मोड बदलना पूर्णतः प्रतिबंधित रहेगा।</li>
+                            <li><strong>क्विज़ मोड (Quiz Mode - अभ्यास):</strong> इसमें विकल्प चुनते ही तुरंत सही/गलत उत्तर की पुष्टि, PYQ टैग और विस्तृत व्याख्या दिखाई जाती है।</li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                if (titleEl) titleEl.innerText = 'General Instructions';
+                if (subEl) subEl.innerText = 'Please read all examination rules carefully before proceeding';
+                bodyEl.innerHTML = `
+                    <!-- Section 1: Duration & Clock -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2 shrink-0">1</span>
+                            Examination Timing &amp; Auto-Submission
+                        </h4>
+                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
+                            <li>Total duration of this examination is <strong class="text-slate-800">${duration} minutes</strong> and maximum marks are <strong class="text-slate-800">${maxMarks}</strong>.</li>
+                            <li>The countdown timer displayed in the right-hand panel shows the remaining examination time.</li>
+                            <li>When the timer reaches <span class="font-mono font-semibold text-slate-800">00:00:00</span>, the examination will end and submit automatically.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 2: Question Palette Symbols -->
+                    <div class="space-y-2.5">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2 shrink-0">2</span>
+                            Question Palette Status Indicators
+                        </h4>
+                        <p class="text-slate-600">The Question Palette on the right side of the exam screen displays the status of each question using the following symbols:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                                <span class="w-7 h-7 rounded-lg bg-slate-200 text-slate-700 border border-slate-300 font-bold text-xs flex items-center justify-center shrink-0">1</span>
+                                <span class="text-xs text-slate-700"><strong>Not Visited</strong> — You have not visited the question yet.</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-rose-50/50 border border-rose-200">
+                                <span class="w-7 h-7 rounded-lg bg-rose-500 text-white border border-rose-600 font-bold text-xs flex items-center justify-center shrink-0">2</span>
+                                <span class="text-xs text-slate-700"><strong>Not Answered</strong> — You have viewed but not answered the question.</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-emerald-50/50 border border-emerald-200">
+                                <span class="w-7 h-7 rounded-lg bg-emerald-500 text-white border border-emerald-600 font-bold text-xs flex items-center justify-center shrink-0">3</span>
+                                <span class="text-xs text-slate-700"><strong>Answered</strong> — You have selected and saved your response.</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-2.5 rounded-lg bg-purple-50/50 border border-purple-200">
+                                <span class="w-7 h-7 rounded-lg bg-purple-600 text-white border border-purple-700 font-bold text-xs flex items-center justify-center shrink-0">4</span>
+                                <span class="text-xs text-slate-700"><strong>Marked for Review</strong> — Flagged to revisit before submission.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Answering & Navigation -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2 shrink-0">3</span>
+                            Navigating &amp; Answering Questions
+                        </h4>
+                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
+                            <li>Click on any question number in the Question Palette to jump directly to that question.</li>
+                            <li>Click <strong class="text-blue-700">Save &amp; Next</strong> to save your answer and proceed to the next question, or <strong class="text-purple-700">Mark for Review &amp; Next</strong> to flag a question for later review.</li>
+                            <li>To deselect a chosen option, click the <strong class="text-slate-800">Clear</strong> button.</li>
+                            <li>You can switch between <strong>English</strong> and <strong>हिंदी</strong> anytime using the top language selector. Single-language questions will automatically remain visible in their available language.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 4: Marking & Exam Mode Policy -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide border-b border-slate-100 pb-1.5 flex items-center">
+                            <span class="w-5 h-5 rounded bg-blue-100 text-blue-800 font-bold text-[11px] flex items-center justify-center mr-2 shrink-0">4</span>
+                            Marking Scheme &amp; Mode Integrity Policy
+                        </h4>
+                        <ul class="list-disc pl-6 space-y-1.5 text-slate-600">
+                            <li>Each correct response awards <strong class="text-emerald-700">+${posMarks} mark(s)</strong>. Each incorrect response incurs a penalty of <strong class="text-rose-700">-${negMarks} mark(s)</strong>. Unattempted questions carry 0 marks.</li>
+                            <li><strong>Test Mode (Exam Lock):</strong> Simulates an official Government CBT exam. Correct answers and solutions remain hidden until final submission, and mode switching is strictly locked during the exam.</li>
+                            <li><strong>Quiz Mode (Practice):</strong> Displays instant answer verification, PYQ tags, and detailed explanation immediately after selecting an option.</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        // =========================================================================
+        // SINGLE-LANGUAGE & BILINGUAL FALLBACK HELPERS (All Question Types Safe)
+        // =========================================================================
+        function hasVisibleContent(val) {
+            if (val === null || val === undefined) return false;
+            const raw = String(val).trim();
+            if (!raw) return false;
+            if (/<img\b|<svg\b|<table\b/i.test(raw)) return true;
+            const stripped = raw.replace(/<[^>]*>/g, '').replace(/&nbsp;/gi, ' ').trim();
+            return stripped.length > 0;
+        }
+
         function isNonEmptyText(val) {
-            return val !== null && val !== undefined && String(val).trim().length > 0;
+            return hasVisibleContent(val);
         }
 
         function pickLocalizedText(obj, lang) {
             if (obj === null || obj === undefined) return "";
-            if (typeof obj === 'string') return obj.trim();
+            if (typeof obj === 'string') return hasVisibleContent(obj) ? obj.trim() : "";
+            if (Array.isArray(obj)) {
+                const lines = obj.map(item => pickLocalizedText(item, lang)).filter(s => hasVisibleContent(s));
+                return lines.join('\n');
+            }
             if (typeof obj !== 'object') return String(obj).trim();
 
-            const enVal = isNonEmptyText(obj.en) ? String(obj.en) : (isNonEmptyText(obj.english) ? String(obj.english) : "");
-            const hiVal = isNonEmptyText(obj.hi) ? String(obj.hi) : (isNonEmptyText(obj.hindi) ? String(obj.hindi) : "");
+            const enVal = hasVisibleContent(obj.en) ? String(obj.en).trim() : (hasVisibleContent(obj.english) ? String(obj.english).trim() : "");
+            const hiVal = hasVisibleContent(obj.hi) ? String(obj.hi).trim() : (hasVisibleContent(obj.hindi) ? String(obj.hindi).trim() : "");
 
             if (lang === 'hi') {
-                if (isNonEmptyText(hiVal)) return hiVal;
-                if (isNonEmptyText(enVal)) return enVal;
+                if (hasVisibleContent(hiVal)) return hiVal;
+                if (hasVisibleContent(enVal)) return enVal;
             } else {
-                if (isNonEmptyText(enVal)) return enVal;
-                if (isNonEmptyText(hiVal)) return hiVal;
+                if (hasVisibleContent(enVal)) return enVal;
+                if (hasVisibleContent(hiVal)) return hiVal;
             }
 
-            const anyVal = Object.values(obj).find(v => typeof v === 'string' && v.trim().length > 0);
-            return anyVal || "";
+            // Fallback to text/label/value keys if option/text is wrapped in an object
+            for (const key of ['text', 'label', 'value', 'content', 'title']) {
+                if (obj[key] !== undefined && obj[key] !== null) {
+                    const nested = pickLocalizedText(obj[key], lang);
+                    if (hasVisibleContent(nested)) return nested;
+                }
+            }
+
+            const anyVal = Object.values(obj).find(v => typeof v === 'string' && hasVisibleContent(v));
+            return anyVal ? anyVal.trim() : "";
+        }
+
+        function isPlaceholderOption(val) {
+            if (!hasVisibleContent(val)) return true;
+            const text = String(val).replace(/<[^>]*>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/\s+/g, ' ').trim();
+            return /^(option|choice|विकल्प)\s*[\(\[]?([a-dA-D1-4])[\)\]]?\.?$/i.test(text);
         }
 
         function hasValidOptionsArray(arr) {
-            return Array.isArray(arr) && arr.length > 0 && arr.some(o => isNonEmptyText(o));
+            return Array.isArray(arr) && arr.length > 0 && arr.some(o => hasVisibleContent(o));
+        }
+
+        function hasRealOptionsArray(arr) {
+            return Array.isArray(arr) && arr.length > 0 && arr.some(o => !isPlaceholderOption(o));
         }
 
         function getLocalizedOptions(optionsObj, lang) {
@@ -887,46 +1023,288 @@
                 return optionsObj.map(o => pickLocalizedText(o, lang));
             }
 
-            const primary = lang === 'hi' ? optionsObj.hi : optionsObj.en;
-            const fallback = lang === 'hi' ? optionsObj.en : optionsObj.hi;
+            const primary = lang === 'hi' ? (optionsObj.hi || optionsObj.hindi) : (optionsObj.en || optionsObj.english);
+            const fallback = lang === 'hi' ? (optionsObj.en || optionsObj.english) : (optionsObj.hi || optionsObj.hindi);
 
-            const primaryValid = hasValidOptionsArray(primary);
-            const fallbackValid = hasValidOptionsArray(fallback);
+            const primaryReal = hasRealOptionsArray(primary);
+            const fallbackReal = hasRealOptionsArray(fallback);
 
-            if (!primaryValid && fallbackValid) {
-                return fallback;
+            if (!primaryReal && fallbackReal) {
+                return fallback.map(o => pickLocalizedText(o, lang === 'hi' ? 'en' : 'hi'));
             }
-            if (primaryValid && !fallbackValid) {
-                return primary;
+            if (primaryReal && !fallbackReal) {
+                return primary.map(o => pickLocalizedText(o, lang));
             }
-            if (primaryValid && fallbackValid) {
+            if (primaryReal && fallbackReal) {
                 const maxLen = Math.max(primary.length, fallback.length);
                 const resolved = [];
                 for (let i = 0; i < maxLen; i++) {
-                    const pVal = (primary[i] !== undefined && primary[i] !== null) ? String(primary[i]) : "";
-                    const fVal = (fallback[i] !== undefined && fallback[i] !== null) ? String(fallback[i]) : "";
-                    resolved.push(pVal.trim() !== "" ? pVal : fVal);
+                    const pVal = primary[i] !== undefined ? pickLocalizedText(primary[i], lang) : "";
+                    const fVal = fallback[i] !== undefined ? pickLocalizedText(fallback[i], lang === 'hi' ? 'en' : 'hi') : "";
+                    resolved.push(!isPlaceholderOption(pVal) ? pVal : (hasVisibleContent(fVal) ? fVal : pVal));
                 }
                 return resolved;
             }
 
+            const primaryValid = hasValidOptionsArray(primary);
+            const fallbackValid = hasValidOptionsArray(fallback);
+            if (primaryValid) return primary.map(o => pickLocalizedText(o, lang));
+            if (fallbackValid) return fallback.map(o => pickLocalizedText(o, lang));
+
             const anyArr = Object.values(optionsObj).find(v => hasValidOptionsArray(v));
-            return anyArr ? anyArr.map(o => String(o)) : [];
+            return anyArr ? anyArr.map(o => pickLocalizedText(o, lang)) : [];
         }
 
-        function isValidTableObj(tObj) {
-            return tObj && Array.isArray(tObj.headers) && tObj.headers.length > 0 && Array.isArray(tObj.rows) && tObj.rows.length > 0;
+        // Detect empty or auto-generated default template table cells (e.g., "A. सूची 1", "1. मिलान 1", "A. List 1", "1. Match 1")
+        function isPlaceholderTableCell(cell) {
+            if (!hasVisibleContent(cell)) return true;
+            const text = String(cell)
+                .replace(/<[^>]*>/g, ' ')
+                .replace(/&nbsp;/gi, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            if (!text) return true;
+            const core = text.replace(/^(\(?[a-zA-Z0-9\u0900-\u097F]{1,3}[\)\.\-:]\s*)+/, '').trim();
+            if (!core) return true;
+            if (/^(list|match|item|row|col|column|cell|option|entry|value|text|data|header|heading|सूची|मिलान|मद|पंक्ति|स्तंभ|विकल्प|विषय|तत्व)[\s\-_#]*([0-9IVX]+|[a-zA-Z])?$/i.test(core)) {
+                return true;
+            }
+            if (/^(enter|type|write|placeholder|sample|dummy)\b/i.test(core)) {
+                return true;
+            }
+            return false;
         }
 
-        function pickLocalizedTableObj(tableObjWrapper, lang) {
-            if (!tableObjWrapper) return null;
-            if (isValidTableObj(tableObjWrapper)) return tableObjWrapper;
-            const primary = lang === 'hi' ? tableObjWrapper.hi : tableObjWrapper.en;
-            const fallback = lang === 'hi' ? tableObjWrapper.en : tableObjWrapper.hi;
-            if (isValidTableObj(primary)) return primary;
-            if (isValidTableObj(fallback)) return fallback;
-            const anyTable = Object.values(tableObjWrapper).find(v => isValidTableObj(v));
-            return anyTable || null;
+        function normalizeTableRowsArray(rawRows, lang) {
+            if (!Array.isArray(rawRows)) return [];
+            return rawRows
+                .map(row => {
+                    if (Array.isArray(row)) {
+                        return row.map(cell => pickLocalizedText(cell, lang));
+                    }
+                    if (row && typeof row === 'object') {
+                        if (Array.isArray(row.cells)) {
+                            return row.cells.map(cell => pickLocalizedText(cell, lang));
+                        }
+                        if (row.en !== undefined || row.hi !== undefined) {
+                            const chosen = lang === 'hi' ? (row.hi || row.en) : (row.en || row.hi);
+                            if (Array.isArray(chosen)) return chosen.map(cell => pickLocalizedText(cell, lang));
+                        }
+                        return Object.values(row).map(cell => pickLocalizedText(cell, lang));
+                    }
+                    return hasVisibleContent(row) ? [String(row).trim()] : [];
+                })
+                .filter(row => row.length > 0 && row.some(cell => hasVisibleContent(cell)));
+        }
+
+        function extractSingleTableStructure(node, lang) {
+            if (!node) return null;
+            if (typeof node === 'string') {
+                return hasVisibleContent(node) ? { html: node.trim(), headers: [], rows: [] } : null;
+            }
+            if (Array.isArray(node)) {
+                const rows = normalizeTableRowsArray(node, lang);
+                return rows.length > 0 ? { headers: [], rows } : null;
+            }
+            if (typeof node !== 'object') return null;
+
+            if (typeof node.html === 'string' && hasVisibleContent(node.html)) {
+                return { html: node.html.trim(), headers: [], rows: [] };
+            }
+
+            let rawHeaders = node.headers !== undefined ? node.headers : (node.columns !== undefined ? node.columns : node.head);
+            let rawRows = node.rows !== undefined ? node.rows : (node.data !== undefined ? node.data : node.body);
+
+            // Handle case where headers or rows are themselves localized objects: { en: [...], hi: [...] }
+            if (rawHeaders && !Array.isArray(rawHeaders) && typeof rawHeaders === 'object') {
+                const pH = lang === 'hi' ? (rawHeaders.hi || rawHeaders.hindi) : (rawHeaders.en || rawHeaders.english);
+                const fH = lang === 'hi' ? (rawHeaders.en || rawHeaders.english) : (rawHeaders.hi || rawHeaders.hindi);
+                rawHeaders = (Array.isArray(pH) && pH.some(hasVisibleContent)) ? pH : (Array.isArray(fH) ? fH : []);
+            }
+            if (rawRows && !Array.isArray(rawRows) && typeof rawRows === 'object') {
+                const pR = lang === 'hi' ? (rawRows.hi || rawRows.hindi) : (rawRows.en || rawRows.english);
+                const fR = lang === 'hi' ? (rawRows.en || rawRows.english) : (rawRows.hi || rawRows.hindi);
+                const pNorm = normalizeTableRowsArray(pR, lang);
+                const fNorm = normalizeTableRowsArray(fR, lang === 'hi' ? 'en' : 'hi');
+                const pReal = pNorm.some(r => r.some(c => !isPlaceholderTableCell(c)));
+                const fReal = fNorm.some(r => r.some(c => !isPlaceholderTableCell(c)));
+                rawRows = pReal ? pR : (fReal ? fR : (pNorm.length > 0 ? pR : fR));
+            }
+
+            if (!Array.isArray(rawHeaders) && !Array.isArray(rawRows)) {
+                return null;
+            }
+
+            const headers = Array.isArray(rawHeaders) ? rawHeaders.map(h => pickLocalizedText(h, lang)) : [];
+            const rows = normalizeTableRowsArray(rawRows, lang);
+
+            if (rows.length === 0 && !headers.some(hasVisibleContent)) return null;
+            return { headers, rows };
+        }
+
+        function evaluateTableQuality(tObj) {
+            if (!tObj) return 0;
+            if (tObj.html && hasVisibleContent(tObj.html)) return 2;
+            const hasRows = Array.isArray(tObj.rows) && tObj.rows.length > 0;
+            if (hasRows) {
+                const hasRealCell = tObj.rows.some(row => Array.isArray(row) && row.some(cell => !isPlaceholderTableCell(cell)));
+                if (hasRealCell) return 2;
+                const hasAnyVisibleCell = tObj.rows.some(row => Array.isArray(row) && row.some(cell => hasVisibleContent(cell)));
+                if (hasAnyVisibleCell) return 1;
+            }
+            if (Array.isArray(tObj.headers) && tObj.headers.some(h => hasVisibleContent(h))) {
+                return 1;
+            }
+            return 0;
+        }
+
+        function resolveTableData(tableData, lang) {
+            if (!tableData) return null;
+
+            const otherLang = lang === 'hi' ? 'en' : 'hi';
+            const container = (tableData && typeof tableData === 'object' && !Array.isArray(tableData))
+                ? (tableData.tableObj || tableData.table || tableData.matrix || tableData)
+                : tableData;
+
+            let chosenTable = null;
+            let resolvedLang = lang;
+
+            if (container && typeof container === 'object' && !Array.isArray(container) &&
+                (container.en !== undefined || container.hi !== undefined || container.english !== undefined || container.hindi !== undefined)) {
+                const primaryRaw = lang === 'hi' ? (container.hi || container.hindi) : (container.en || container.english);
+                const fallbackRaw = lang === 'hi' ? (container.en || container.english) : (container.hi || container.hindi);
+
+                const primaryCand = extractSingleTableStructure(primaryRaw, lang);
+                const fallbackCand = extractSingleTableStructure(fallbackRaw, otherLang);
+                const pScore = evaluateTableQuality(primaryCand);
+                const fScore = evaluateTableQuality(fallbackCand);
+
+                if (pScore === 2) {
+                    chosenTable = primaryCand;
+                    resolvedLang = lang;
+                } else if (fScore === 2) {
+                    chosenTable = fallbackCand;
+                    resolvedLang = otherLang;
+                } else {
+                    const anyReal = Object.values(container)
+                        .map(v => extractSingleTableStructure(v, lang))
+                        .find(c => evaluateTableQuality(c) === 2);
+                    if (anyReal) {
+                        chosenTable = anyReal;
+                    } else if (pScore >= fScore && pScore > 0) {
+                        chosenTable = primaryCand;
+                        resolvedLang = lang;
+                    } else if (fScore > 0) {
+                        chosenTable = fallbackCand;
+                        resolvedLang = otherLang;
+                    }
+                }
+            } else {
+                const directCand = extractSingleTableStructure(container, lang);
+                if (evaluateTableQuality(directCand) > 0) {
+                    chosenTable = directCand;
+                } else {
+                    const directFallback = extractSingleTableStructure(container, otherLang);
+                    if (evaluateTableQuality(directFallback) > 0) {
+                        chosenTable = directFallback;
+                        resolvedLang = otherLang;
+                    }
+                }
+            }
+
+            if (!chosenTable) return null;
+
+            // Resolve intro & conclusion in the same resolved language as the table (with fallback)
+            let intro = "";
+            let conclusion = "";
+            if (tableData && typeof tableData === 'object' && !Array.isArray(tableData)) {
+                intro = pickLocalizedText(tableData.intro, resolvedLang);
+                if (!intro && tableData[resolvedLang] && tableData[resolvedLang].intro) {
+                    intro = pickLocalizedText(tableData[resolvedLang].intro, resolvedLang);
+                }
+                if (!intro && tableData[otherLang] && tableData[otherLang].intro) {
+                    intro = pickLocalizedText(tableData[otherLang].intro, otherLang);
+                }
+                if (!intro && tableData.title) {
+                    intro = pickLocalizedText(tableData.title, resolvedLang);
+                }
+
+                conclusion = pickLocalizedText(tableData.conclusion, resolvedLang);
+                if (!conclusion && tableData[resolvedLang] && tableData[resolvedLang].conclusion) {
+                    conclusion = pickLocalizedText(tableData[resolvedLang].conclusion, resolvedLang);
+                }
+            }
+
+            return { table: chosenTable, intro, conclusion, resolvedLang };
+        }
+
+        function resolveStatementData(statementData, lang) {
+            if (!statementData) return null;
+            if (typeof statementData === 'string') {
+                return hasVisibleContent(statementData) ? { intro: '', listHtml: statementData.trim().replace(/\n/g, '<br>'), conclusion: '' } : null;
+            }
+            if (Array.isArray(statementData)) {
+                const lines = statementData.map(item => pickLocalizedText(item, lang)).filter(hasVisibleContent);
+                return lines.length > 0 ? { intro: '', listHtml: lines.join('<br>'), conclusion: '' } : null;
+            }
+            if (typeof statementData !== 'object') return null;
+
+            const otherLang = lang === 'hi' ? 'en' : 'hi';
+
+            // Case 1: Language nested at top level: statementData = { en: { intro, list, conclusion }, hi: { ... } }
+            if (statementData.en !== undefined || statementData.hi !== undefined || statementData.english !== undefined || statementData.hindi !== undefined) {
+                const pObj = lang === 'hi' ? (statementData.hi || statementData.hindi) : (statementData.en || statementData.english);
+                const fObj = lang === 'hi' ? (statementData.en || statementData.english) : (statementData.hi || statementData.hindi);
+                const pRes = resolveStatementData(pObj, lang);
+                if (pRes) return pRes;
+                const fRes = resolveStatementData(fObj, otherLang);
+                if (fRes) return fRes;
+            }
+
+            // Case 2: Fields hold localized objects/strings/arrays: { intro: {en,hi}, list: {en,hi}, conclusion: {en,hi} }
+            const intro = pickLocalizedText(statementData.intro, lang);
+            const rawList = statementData.list !== undefined ? statementData.list : statementData.statements;
+            let listText = "";
+            if (Array.isArray(rawList)) {
+                listText = rawList.map(item => pickLocalizedText(item, lang)).filter(hasVisibleContent).join('\n');
+            } else if (rawList && typeof rawList === 'object') {
+                const pList = lang === 'hi' ? (rawList.hi || rawList.hindi) : (rawList.en || rawList.english);
+                const fList = lang === 'hi' ? (rawList.en || rawList.english) : (rawList.hi || rawList.hindi);
+                const pStr = Array.isArray(pList) ? pList.map(i => pickLocalizedText(i, lang)).filter(hasVisibleContent).join('\n') : pickLocalizedText(pList, lang);
+                const fStr = Array.isArray(fList) ? fList.map(i => pickLocalizedText(i, otherLang)).filter(hasVisibleContent).join('\n') : pickLocalizedText(fList, otherLang);
+                listText = hasVisibleContent(pStr) ? pStr : fStr;
+            } else {
+                listText = pickLocalizedText(rawList, lang);
+            }
+            const conclusion = pickLocalizedText(statementData.conclusion, lang);
+
+            if (!hasVisibleContent(intro) && !hasVisibleContent(listText) && !hasVisibleContent(conclusion)) {
+                return null;
+            }
+            return {
+                intro: intro || '',
+                listHtml: listText ? listText.replace(/\n/g, '<br>') : '',
+                conclusion: conclusion || ''
+            };
+        }
+
+        function resolveAssertionReason(q, lang) {
+            let aSource = q.assertion;
+            let rSource = q.reason;
+            let dSource = q.direction;
+
+            if (q.assertionReason && typeof q.assertionReason === 'object') {
+                const ar = q.assertionReason;
+                if (!aSource) aSource = ar.assertion || { en: ar.en?.assertion, hi: ar.hi?.assertion };
+                if (!rSource) rSource = ar.reason || { en: ar.en?.reason, hi: ar.hi?.reason };
+                if (!dSource) dSource = ar.direction || { en: ar.en?.direction, hi: ar.hi?.direction };
+            }
+
+            return {
+                direction: pickLocalizedText(dSource, lang),
+                assertion: pickLocalizedText(aSource, lang),
+                reason: pickLocalizedText(rSource, lang)
+            };
         }
 
         function loadSavedCandidateName() {
@@ -1003,6 +1381,13 @@
                 });
             }
 
+            const instDocLangSelect = document.getElementById('inst-doc-language-select');
+            if (instDocLangSelect) {
+                instDocLangSelect.addEventListener('change', (e) => {
+                    renderGeneralInstructions(e.target.value);
+                });
+            }
+
             document.getElementById('language-select').addEventListener('change', (e) => {
                 currentLanguage = e.target.value;
                 renderQuestion();
@@ -1055,12 +1440,13 @@
                     pyqTag: q.pyqTag || q.examTag || q.examName || q.exam || "General PYQ",
                     image: q.image || q.img || q.imageUrl || null,
                     optionImages: q.optionImages || q.optImages || null,
-                    passage: q.passage || null,
-                    statementData: q.statementData || null,
+                    passage: q.passage || q.context || null,
+                    statementData: q.statementData || q.statementsData || q.statements || null,
                     direction: q.direction || null,
                     assertion: q.assertion || null,
                     reason: q.reason || null,
-                    tableData: (q.tableData && q.tableData.tableObj) ? q.tableData : null
+                    assertionReason: q.assertionReason || null,
+                    tableData: q.tableData || q.table || q.matrix || q.matchData || null
                 };
 
                 // Question text normalization with clean single-language fallback
@@ -1069,7 +1455,7 @@
                 let qTextHi = pickLocalizedText(qSource, 'hi');
                 nQ.question = { en: qTextEn, hi: qTextHi };
 
-                // Options normalization with clean single-language & per-option fallback
+                // Options normalization with clean single-language & placeholder-safe fallback
                 let rawOpts = q.options || q.choices || q.answers || q.optionList || ["Option A", "Option B", "Option C", "Option D"];
                 let optsEn = [];
                 let optsHi = [];
@@ -1080,27 +1466,35 @@
                 } else if (rawOpts && typeof rawOpts === 'object') {
                     const rawEn = rawOpts.en || rawOpts.english;
                     const rawHi = rawOpts.hi || rawOpts.hindi;
+                    const enReal = hasRealOptionsArray(rawEn);
+                    const hiReal = hasRealOptionsArray(rawHi);
                     const enValid = hasValidOptionsArray(rawEn);
                     const hiValid = hasValidOptionsArray(rawHi);
 
-                    if (enValid && hiValid) {
+                    if (enReal && hiReal) {
                         const maxLen = Math.max(rawEn.length, rawHi.length);
                         for (let i = 0; i < maxLen; i++) {
-                            const eStr = (rawEn[i] !== undefined && rawEn[i] !== null) ? String(rawEn[i]) : "";
-                            const hStr = (rawHi[i] !== undefined && rawHi[i] !== null) ? String(rawHi[i]) : "";
-                            optsEn.push(eStr.trim() !== "" ? eStr : hStr);
-                            optsHi.push(hStr.trim() !== "" ? hStr : eStr);
+                            const eStr = rawEn[i] !== undefined ? pickLocalizedText(rawEn[i], 'en') : "";
+                            const hStr = rawHi[i] !== undefined ? pickLocalizedText(rawHi[i], 'hi') : "";
+                            optsEn.push(!isPlaceholderOption(eStr) ? eStr : (hasVisibleContent(hStr) ? hStr : eStr));
+                            optsHi.push(!isPlaceholderOption(hStr) ? hStr : (hasVisibleContent(eStr) ? eStr : hStr));
                         }
+                    } else if (enReal) {
+                        optsEn = rawEn.map(o => pickLocalizedText(o, 'en'));
+                        optsHi = [...optsEn];
+                    } else if (hiReal) {
+                        optsHi = rawHi.map(o => pickLocalizedText(o, 'hi'));
+                        optsEn = [...optsHi];
                     } else if (enValid) {
-                        optsEn = rawEn.map(o => (o !== undefined && o !== null) ? String(o) : "");
+                        optsEn = rawEn.map(o => pickLocalizedText(o, 'en'));
                         optsHi = [...optsEn];
                     } else if (hiValid) {
-                        optsHi = rawHi.map(o => (o !== undefined && o !== null) ? String(o) : "");
+                        optsHi = rawHi.map(o => pickLocalizedText(o, 'hi'));
                         optsEn = [...optsHi];
                     } else {
                         const firstValidArr = Object.values(rawOpts).find(v => hasValidOptionsArray(v));
                         if (firstValidArr) {
-                            optsEn = firstValidArr.map(o => (o !== undefined && o !== null) ? String(o) : "");
+                            optsEn = firstValidArr.map(o => pickLocalizedText(o, 'en'));
                             optsHi = [...optsEn];
                         } else {
                             optsEn = ["Option A", "Option B", "Option C", "Option D"];
@@ -1176,10 +1570,8 @@
             document.getElementById('inst-pos-marks').innerText = posMarks;
             document.getElementById('inst-neg-marks').innerText = negMarks;
 
-            document.getElementById('inst-rule-duration').innerText = duration;
-            document.getElementById('inst-rule-maxmarks').innerText = maxMarks;
-            document.getElementById('inst-rule-pos').innerText = posMarks;
-            document.getElementById('inst-rule-neg').innerText = negMarks;
+            currentExamStats = { duration, maxMarks, posMarks, negMarks };
+            renderGeneralInstructions(currentInstructionsLanguage);
 
             // Sync candidate name input & preview
             const nameInput = document.getElementById('candidate-name-input');
@@ -1364,22 +1756,22 @@
             let subjectTag = q.subjectTag || "General";
             document.getElementById('subject-badge').innerText = subjectTag;
 
-            // Individual PYQ Exam Tag where Subject was previously (Right side)
+            // PYQ & Topic Tags: Strictly visible in Quiz Mode ONLY (hidden in Test Mode)
             let tagDisplay = document.getElementById('q-tag-display');
-            let pyqTag = q.pyqTag || "General PYQ";
+            let pyqTag = q.pyqTag || "";
             let topicTag = q.topicTag || "";
             let subTopicTag = q.subTopicTag || "";
 
             if (currentMode === 'quiz') {
+                tagDisplay.classList.remove('hidden');
                 tagDisplay.innerHTML = `
-                    <span class="bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full font-semibold border border-amber-200 shadow-sm"><i class="fa-solid fa-medal mr-1"></i>${pyqTag}</span>
-                    <span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-semibold border border-blue-200 shadow-sm"><i class="fa-solid fa-book-open mr-1"></i>${topicTag}</span>
+                    ${pyqTag ? `<span class="bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full font-semibold border border-amber-200 shadow-sm"><i class="fa-solid fa-medal mr-1"></i>${pyqTag}</span>` : ''}
+                    ${topicTag ? `<span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-semibold border border-blue-200 shadow-sm"><i class="fa-solid fa-book-open mr-1"></i>${topicTag}</span>` : ''}
                     ${subTopicTag ? `<span class="bg-purple-100 text-purple-800 px-2.5 py-0.5 rounded-full font-semibold border border-purple-200 shadow-sm hidden sm:inline"><i class="fa-solid fa-tag mr-1"></i>${subTopicTag}</span>` : ''}
                 `;
             } else {
-                tagDisplay.innerHTML = `
-                    <span class="bg-amber-100 text-amber-900 px-3 py-1 rounded-full font-semibold border border-amber-200 shadow-sm"><i class="fa-solid fa-medal mr-1"></i>${pyqTag}</span>
-                `;
+                tagDisplay.innerHTML = '';
+                tagDisplay.classList.add('hidden');
             }
             
             let statusBadge = document.getElementById('q-status-badge');
@@ -1402,74 +1794,112 @@
             // 1. Passage Section
             let passageEl = document.getElementById('question-passage');
             let passageData = pickLocalizedText(q.passage, currentLanguage);
-            if (passageData && passageData.trim() !== "") {
+            if (hasVisibleContent(passageData)) {
                 passageEl.innerHTML = passageData;
                 passageEl.classList.remove('hidden');
             } else {
+                passageEl.innerHTML = '';
                 passageEl.classList.add('hidden');
             }
 
-            // 2. Statement / Multi-statement Box
+            // 2. Statement / Multi-statement Box (Single-language & multi-format safe)
             let stmtBox = document.getElementById('question-statement-box');
-            if (q.statementData && (q.statementData.intro || q.statementData.list || q.statementData.conclusion)) {
-                let sData = q.statementData;
-                let intro = pickLocalizedText(sData.intro, currentLanguage);
-                let list = pickLocalizedText(sData.list, currentLanguage);
-                let conclusion = pickLocalizedText(sData.conclusion, currentLanguage);
-
-                document.getElementById('stmt-intro').innerHTML = intro || "";
+            let resolvedStmt = resolveStatementData(q.statementData, currentLanguage);
+            if (resolvedStmt) {
+                let introEl = document.getElementById('stmt-intro');
                 let listEl = document.getElementById('stmt-list');
-                if (list) {
-                    listEl.innerHTML = typeof list === 'string' ? list.replace(/\n/g, '<br>') : "";
+                let conclEl = document.getElementById('stmt-conclusion');
+
+                introEl.innerHTML = resolvedStmt.intro;
+                introEl.classList.toggle('hidden', !hasVisibleContent(resolvedStmt.intro));
+
+                if (hasVisibleContent(resolvedStmt.listHtml)) {
+                    listEl.innerHTML = resolvedStmt.listHtml;
                     listEl.classList.remove('hidden');
                 } else {
+                    listEl.innerHTML = '';
                     listEl.classList.add('hidden');
                 }
-                document.getElementById('stmt-conclusion').innerHTML = conclusion || "";
+
+                conclEl.innerHTML = resolvedStmt.conclusion;
+                conclEl.classList.toggle('hidden', !hasVisibleContent(resolvedStmt.conclusion));
+
                 stmtBox.classList.remove('hidden');
             } else {
                 stmtBox.classList.add('hidden');
             }
 
-            // 3. Direction Box (for Assertion & Reason)
+            // 3 & 4. Direction & Assertion/Reason Boxes (Single-language safe)
+            let arResolved = resolveAssertionReason(q, currentLanguage);
+
             let directionBox = document.getElementById('question-direction-box');
-            let directionText = pickLocalizedText(q.direction, currentLanguage);
-            if (directionText && directionText.trim() !== "") {
-                directionBox.innerHTML = directionText;
+            if (hasVisibleContent(arResolved.direction)) {
+                directionBox.innerHTML = arResolved.direction;
                 directionBox.classList.remove('hidden');
             } else {
+                directionBox.innerHTML = '';
                 directionBox.classList.add('hidden');
             }
 
-            // 4. Assertion & Reason Box
             let assertionBox = document.getElementById('question-assertion-box');
-            let assertionText = pickLocalizedText(q.assertion, currentLanguage);
-            let reasonText = pickLocalizedText(q.reason, currentLanguage);
-            if (assertionText || reasonText) {
-                document.getElementById('assertion-text').innerHTML = assertionText;
-                document.getElementById('reason-text').innerHTML = reasonText;
+            let assertionRow = document.getElementById('assertion-row');
+            let reasonRow = document.getElementById('reason-row');
+            if (hasVisibleContent(arResolved.assertion) || hasVisibleContent(arResolved.reason)) {
+                document.getElementById('assertion-text').innerHTML = arResolved.assertion || '';
+                document.getElementById('reason-text').innerHTML = arResolved.reason || '';
+                if (assertionRow) assertionRow.classList.toggle('hidden', !hasVisibleContent(arResolved.assertion));
+                if (reasonRow) reasonRow.classList.toggle('hidden', !hasVisibleContent(arResolved.reason));
                 assertionBox.classList.remove('hidden');
             } else {
                 assertionBox.classList.add('hidden');
             }
 
-            // 5. Table / Matrix Data
+            // 5. Table / Matrix Data (Single-language, placeholder-safe, multi-format)
             let tableContainer = document.getElementById('question-table-container');
-            if (q.tableData && q.tableData.tableObj) {
-                let tObj = pickLocalizedTableObj(q.tableData.tableObj, currentLanguage);
-                let tIntro = pickLocalizedText(q.tableData.intro, currentLanguage);
-                
-                document.getElementById('table-intro').innerHTML = tIntro || "";
-                if (tObj && tObj.headers && tObj.rows) {
-                    let thead = document.querySelector('#question-matrix-table thead');
-                    let tbody = document.querySelector('#question-matrix-table tbody');
-                    
-                    thead.innerHTML = `<tr>${tObj.headers.map(h => `<th class="px-3 py-2 border-b border-slate-200 text-left font-semibold">${h}</th>`).join('')}</tr>`;
-                    tbody.innerHTML = tObj.rows.map(row => `<tr>${row.map(cell => `<td class="px-3 py-2 border-b border-slate-100">${cell}</td>`).join('')}</tr>`).join('');
-                    tableContainer.classList.remove('hidden');
+            let resolvedTable = resolveTableData(q.tableData, currentLanguage);
+            if (resolvedTable && resolvedTable.table) {
+                let tObj = resolvedTable.table;
+                let tIntroEl = document.getElementById('table-intro');
+                let tConclEl = document.getElementById('table-conclusion');
+                let htmlWrapper = document.getElementById('table-html-wrapper');
+                let matrixTable = document.getElementById('question-matrix-table');
+
+                tIntroEl.innerHTML = resolvedTable.intro || "";
+                tIntroEl.classList.toggle('hidden', !hasVisibleContent(resolvedTable.intro));
+
+                if (tObj.html) {
+                    htmlWrapper.innerHTML = tObj.html;
+                    htmlWrapper.classList.remove('hidden');
+                    matrixTable.classList.add('hidden');
                 } else {
-                    tableContainer.classList.add('hidden');
+                    htmlWrapper.innerHTML = '';
+                    htmlWrapper.classList.add('hidden');
+                    matrixTable.classList.remove('hidden');
+
+                    let thead = matrixTable.querySelector('thead');
+                    let tbody = matrixTable.querySelector('tbody');
+
+                    if (Array.isArray(tObj.headers) && tObj.headers.some(hasVisibleContent)) {
+                        thead.innerHTML = `<tr>${tObj.headers.map(h => `<th class="px-3 py-2 border-b border-slate-200 text-left font-semibold">${h}</th>`).join('')}</tr>`;
+                        thead.classList.remove('hidden');
+                    } else {
+                        thead.innerHTML = '';
+                        thead.classList.add('hidden');
+                    }
+
+                    if (Array.isArray(tObj.rows) && tObj.rows.length > 0) {
+                        tbody.innerHTML = tObj.rows.map(row => `<tr>${row.map(cell => `<td class="px-3 py-2 border-b border-slate-100">${cell}</td>`).join('')}</tr>`).join('');
+                    } else {
+                        tbody.innerHTML = '';
+                    }
                 }
+
+                if (tConclEl) {
+                    tConclEl.innerHTML = resolvedTable.conclusion || '';
+                    tConclEl.classList.toggle('hidden', !hasVisibleContent(resolvedTable.conclusion));
+                }
+
+                tableContainer.classList.remove('hidden');
             } else {
                 tableContainer.classList.add('hidden');
             }
@@ -1477,7 +1907,7 @@
             // 6. Question Text (Single-language safe)
             let qText = pickLocalizedText(q.question, currentLanguage);
             let qTextEl = document.getElementById('question-text');
-            if (qText && qText.trim() !== "") {
+            if (hasVisibleContent(qText)) {
                 qTextEl.innerHTML = qText;
                 qTextEl.classList.remove('hidden');
             } else {
@@ -1485,13 +1915,14 @@
                 qTextEl.classList.add('hidden');
             }
 
-            // Optional Main Question Image
+            // Optional Main Question Image (Clear src on hide to avoid stale images)
             let imgContainer = document.getElementById('question-image-container');
             let imgEl = document.getElementById('question-image');
-            if (q.image) {
-                imgEl.src = q.image;
+            if (q.image && String(q.image).trim() !== "") {
+                imgEl.src = String(q.image).trim();
                 imgContainer.classList.remove('hidden');
             } else {
+                imgEl.removeAttribute('src');
                 imgContainer.classList.add('hidden');
             }
 
@@ -1696,57 +2127,62 @@
                 let opts = getLocalizedOptions(q.options, currentLanguage);
                 let expText = pickLocalizedText(q.explanation, currentLanguage);
 
-                let qImgMarkup = q.image ? `<div class="my-2"><img src="${q.image}" alt="Question Image" class="max-h-40 object-contain rounded border border-slate-200"></div>` : '';
+                let qImgMarkup = (q.image && String(q.image).trim() !== "") ? `<div class="my-2"><img src="${String(q.image).trim()}" alt="Question Image" class="max-h-40 object-contain rounded border border-slate-200"></div>` : '';
                 
                 let revTableHtml = '';
-                if (q.tableData && q.tableData.tableObj) {
-                    let tObj = pickLocalizedTableObj(q.tableData.tableObj, currentLanguage);
-                    let tIntro = pickLocalizedText(q.tableData.intro, currentLanguage);
-                    if (tObj && tObj.headers && tObj.rows) {
+                let revResolvedTable = resolveTableData(q.tableData, currentLanguage);
+                if (revResolvedTable && revResolvedTable.table) {
+                    let tObj = revResolvedTable.table;
+                    let introMarkup = hasVisibleContent(revResolvedTable.intro) ? `<div class="text-xs font-medium mb-1 text-slate-700">${revResolvedTable.intro}</div>` : '';
+                    let conclMarkup = hasVisibleContent(revResolvedTable.conclusion) ? `<div class="text-xs font-medium mt-1 text-slate-700">${revResolvedTable.conclusion}</div>` : '';
+                    if (tObj.html) {
+                        revTableHtml = `${introMarkup}<div class="overflow-x-auto my-2">${tObj.html}</div>${conclMarkup}`;
+                    } else {
+                        let headMarkup = (Array.isArray(tObj.headers) && tObj.headers.some(hasVisibleContent))
+                            ? `<thead class="bg-slate-100 text-slate-700"><tr>${tObj.headers.map(h => `<th class="px-2 py-1 border-b text-left font-semibold">${h}</th>`).join('')}</tr></thead>`
+                            : '';
+                        let bodyMarkup = (Array.isArray(tObj.rows) && tObj.rows.length > 0)
+                            ? `<tbody class="divide-y divide-slate-200 bg-white">${tObj.rows.map(row => `<tr>${row.map(cell => `<td class="px-2 py-1 border-b">${cell}</td>`).join('')}</tr>`).join('')}</tbody>`
+                            : '';
                         revTableHtml = `
-                            <div class="text-xs font-medium mb-1 text-slate-700">${tIntro || ''}</div>
+                            ${introMarkup}
                             <div class="overflow-x-auto my-2">
                                 <table class="min-w-full divide-y divide-slate-200 border border-slate-200 text-xs">
-                                    <thead class="bg-slate-100 text-slate-700"><tr>${tObj.headers.map(h => `<th class="px-2 py-1 border-b text-left font-semibold">${h}</th>`).join('')}</tr></thead>
-                                    <tbody class="divide-y divide-slate-200 bg-white">${tObj.rows.map(row => `<tr>${row.map(cell => `<td class="px-2 py-1 border-b">${cell}</td>`).join('')}</tr>`).join('')}</tbody>
+                                    ${headMarkup}
+                                    ${bodyMarkup}
                                 </table>
                             </div>
+                            ${conclMarkup}
                         `;
                     }
                 }
 
                 let revPassageText = pickLocalizedText(q.passage, currentLanguage);
-                let revPassageHtml = revPassageText ? `<div class="p-2 bg-slate-50 border-l-4 border-blue-600 text-xs italic">${revPassageText}</div>` : '';
+                let revPassageHtml = hasVisibleContent(revPassageText) ? `<div class="p-2 bg-slate-50 border-l-4 border-blue-600 text-xs italic">${revPassageText}</div>` : '';
                 
                 let revStmtHtml = '';
-                if (q.statementData) {
-                    let sData = q.statementData;
-                    let intro = pickLocalizedText(sData.intro, currentLanguage);
-                    let list = pickLocalizedText(sData.list, currentLanguage);
-                    let conclusion = pickLocalizedText(sData.conclusion, currentLanguage);
+                let revStmt = resolveStatementData(q.statementData, currentLanguage);
+                if (revStmt) {
                     revStmtHtml = `
                         <div class="p-2 bg-slate-50 border border-slate-200 rounded text-xs space-y-1">
-                            <div>${intro || ''}</div>
-                            <div class="pl-3 font-medium">${list ? list.replace(/\n/g, '<br>') : ''}</div>
-                            <div>${conclusion || ''}</div>
+                            ${hasVisibleContent(revStmt.intro) ? `<div>${revStmt.intro}</div>` : ''}
+                            ${hasVisibleContent(revStmt.listHtml) ? `<div class="pl-3 font-medium">${revStmt.listHtml}</div>` : ''}
+                            ${hasVisibleContent(revStmt.conclusion) ? `<div>${revStmt.conclusion}</div>` : ''}
                         </div>
                     `;
                 }
 
-                let revDirectionHtml = '';
-                let dText = pickLocalizedText(q.direction, currentLanguage);
-                if (dText && dText.trim() !== "") {
-                    revDirectionHtml = `<div class="p-2 bg-amber-50 border border-amber-200 rounded text-xs font-medium italic text-amber-900">${dText}</div>`;
-                }
+                let revAr = resolveAssertionReason(q, currentLanguage);
+                let revDirectionHtml = hasVisibleContent(revAr.direction)
+                    ? `<div class="p-2 bg-amber-50 border border-amber-200 rounded text-xs font-medium italic text-amber-900">${revAr.direction}</div>`
+                    : '';
 
                 let revAssertionHtml = '';
-                if (q.assertion || q.reason) {
-                    let aText = pickLocalizedText(q.assertion, currentLanguage);
-                    let rText = pickLocalizedText(q.reason, currentLanguage);
+                if (hasVisibleContent(revAr.assertion) || hasVisibleContent(revAr.reason)) {
                     revAssertionHtml = `
                         <div class="p-2 bg-indigo-50/50 border border-indigo-200 rounded text-xs space-y-1">
-                            <div><strong>Assertion (A):</strong> ${aText || ''}</div>
-                            <div><strong>Reason (R):</strong> ${rText || ''}</div>
+                            ${hasVisibleContent(revAr.assertion) ? `<div><strong>Assertion (A):</strong> ${revAr.assertion}</div>` : ''}
+                            ${hasVisibleContent(revAr.reason) ? `<div><strong>Reason (R):</strong> ${revAr.reason}</div>` : ''}
                         </div>
                     `;
                 }
